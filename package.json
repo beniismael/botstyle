@@ -1,20 +1,20 @@
 {
-  "name": "whatsapp-bot",
+  "name": "botstyle",
   "version": "2.0.0",
   "description": "Whatsapp Bot - Node Js",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "ArugaZ",
+  "author": "Benniismae",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ArugaZ/whatsapp-bot.git"
+    "url": "https://github.com/beniismael/botstyle.git"
   },
   "bugs": {
-    "url": "https://github.com/ArugaZ/whatsapp-bot/issues"
+    "url": "https://github.com/beniismael/botstyle/issues"
   },
-  "homepage": "https://github.com/ArugaZ/whatsapp-bot",
+  "homepage": "https://github.com/beniismael/botstyle",
   "license": "ISC",
   "dependencies": {
     "@open-wa/wa-automate": "^3.0.16",
