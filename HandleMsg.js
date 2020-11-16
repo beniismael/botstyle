@@ -150,9 +150,10 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'donasi':
             await aruga.sendText(from, menuId.textDonasi())
             break
-        case 'ownerbot':
-            await aruga.sendContact(from, ownerNumber)
-            .then(() => aruga.sendText(from, 'Jika kalian ingin request fitur silahkan chat nomor owner!'))
+        case '!ownerbot':
+            if (!isGroupMsg) return client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const Owner_ = chat.groupMetadata.owner
+            await client.sendTextWithMentions(from, `Owner Group : @${Owner_}`)
             break
         case 'join':
             if (args.length == 0) return aruga.reply(from, `Jika kalian ingin mengundang bot kegroup silahkan invite atau dengan\nketik ${prefix}join [link group]`, id)
