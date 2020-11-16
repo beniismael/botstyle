@@ -150,7 +150,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'donasi':
             await aruga.sendText(from, menuId.textDonasi())
             break
-        case '!ownerbot':
+        case 'ownerbot':
             if (!isGroupMsg) return client.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const Owner_ = chat.groupMetadata.owner
             await client.sendTextWithMentions(from, `Owner Group : @${Owner_}`)
