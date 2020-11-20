@@ -840,6 +840,12 @@ module.exports = HandleMsg = async (aruga, message) => {
             q3 = Math.floor(Math.random() * 900) + 300;
             client.sendFileFromUrl(from, 'http://placekitten.com/'+q3+'/'+q2, 'neko.png','Neko ')
             break
+       case 'toxic':
+                Toxic().then(toxic => {
+                    client.sendText(from, toxic)
+                })
+                insert(author, type, content, pushname, from, argv)
+                break
 		//Fun Menu
 		case 'klasmen':
 			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
