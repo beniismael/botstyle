@@ -825,7 +825,10 @@ module.exports = HandleMsg = async (aruga, message) => {
 				await aruga.reply(from, `${res}`, id)
 			})
 			break
-		
+        case 'pokemon':
+            q7 = Math.floor(Math.random() * 890) + 1;
+            client.sendFileFromUrl(from, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+q7+'.png','Pokemon.png',)
+            break
 		//Fun Menu
 		case 'klasmen':
 			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
