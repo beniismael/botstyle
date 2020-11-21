@@ -23,6 +23,7 @@ const {
 
 const { 
     menuId, 
+    brainly,
     cekResi, 
     urlShortener, 
     meme, 
