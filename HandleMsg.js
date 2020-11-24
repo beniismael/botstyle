@@ -22,7 +22,8 @@ const {
 } = require('child_process')
 
 const { 
-    menuId, 
+    menuId,
+    brainly,
     cekResi, 
     urlShortener, 
     meme, 
