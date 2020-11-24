@@ -33,6 +33,7 @@ const {
     resep,
     rugapoi,
     rugaapi,
+    toxic,
     cariKasar
 } = require('./lib')
 
@@ -835,7 +836,7 @@ Menunggu video...`
                     aruga.reply(from, err, id)
                 }
             break
-        case '!brainly':
+        case 'brainly':
             if (args.length >= 2){
                 const BrainlySearch = require('./lib/brainly')
                 let tanya = body.slice(9)
