@@ -20,6 +20,7 @@
     "@open-wa/wa-automate": "^3.0.16",
     "app-root-path": "^3.0.0",
     "axios": "^0.21.0",
+    "brainly-scraper": "^1.0.2",
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
