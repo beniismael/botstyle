@@ -794,6 +794,21 @@ Menunggu video...`
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
+	case '#kbbi':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
+            
+            await limitAdd(serial)
+            if (args.length === 1) return aruga.reply(from, 'Kirim perintah *#wiki [query]*\nContoh : *#wiki asu*', id)
+            const kbbl = body.slice(6)
+            const kbbl2 = await axios.get(`https://mnazria.herokuapp.com/api/kbbi?search=${kbbl}`)
+
+            if (kbbl2.data.error) {
+                aruga.reply(from, kbbl2.data.error, id)
+            } else {
+                aruga.sendText(from, `➸ *Query* : ${kbbl}\n\n➸ *Result* : ${kbbl2.data.result}`, id)
+            }
+            break
         case 'wiki':
             if (args.length == 0) return aruga.reply(from, `Untuk mencari suatu kata dari wikipedia\nketik: ${prefix}wiki [kata]`, id)
             const wikip = body.slice(6)
