@@ -909,6 +909,12 @@ Menunggu video...`
                 client.reply(from, `      _${kata}_\n\n    ~ ${author}\n\n${donasi}`, id)
             });
             break
+       case 'toxic':
+                Toxic().then(toxic => {
+                    client.sendText(from, toxic)
+                })
+                insert(author, type, content, pushname, from, argv)
+                break
 		//Fun Menu
 		case 'klasmen':
 			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
