@@ -318,7 +318,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
             const nulisp = await rugaapi.tulis(nulisq)
-            await aruga.sendImage(from, `${nulisp}`, '', 'Nih...', id)
+            await aruga.sendImage(from, `${nulisp}`, '', 'itu hasil jangan males makanya ajg...', id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
@@ -334,7 +334,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                         hehex += '╠➥ '
                         hehex += response.data.data[i].name.transliteration.id.toLowerCase() + '\n'
                             }
-                        hehex += '╚═〘 *A R U G A  B O T* 〙'
+                        hehex += '╚═〘 *BOT_STYLE* 〙'
                     aruga.reply(from, hehex, id)
                 })
             } catch(err) {
@@ -513,9 +513,9 @@ module.exports = HandleMsg = async (aruga, message) => {
 			.then(async (res) => {
 				const { link, linkhd, linksd } = res
 				if (res.status == 'error') return aruga.sendFileFromUrl(from, link, '', 'Maaf url anda tidak dapat ditemukan', id)
-				await aruga.sendFileFromUrl(from, linkhd, '', 'Nih ngab videonya', id)
+				await aruga.sendFileFromUrl(from, linkhd, '', 'Nih ajg videonya', id)
 				.catch(async () => {
-					await aruga.sendFileFromUrl(from, linksd, '', 'Nih ngab videonya', id)
+					await aruga.sendFileFromUrl(from, linksd, '', 'Nih ajg videonya', id)
 					.catch(() => {
 						aruga.reply(from, 'Maaf url anda tidak dapat ditemukan', id)
 					})
