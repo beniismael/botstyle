@@ -851,7 +851,13 @@ module.exports = HandleMsg = async (aruga, message) => {
 				await aruga.reply(from, `${res}`, id)
 			})
 			break
-		
+        case 'pokemon':
+            if(kotor(body.toLowerCase()) === 'ok') return client.reply(from,jagaOmongan,id)
+            if(cek()==='ok') return client.reply(from,maintan,id)
+            if (!isBlocked) return client.reply(from, 'Hey hey orang yang sudah di blok tidak bisa gunakan bot',id)
+            q7 = Math.floor(Math.random() * 890) + 1;
+            client.sendFileFromUrl(from, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+q7+'.png','Pokemon.png',)
+            break	
 		//Fun Menu
 		case 'klasmen':
 			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
@@ -931,7 +937,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 hehex += '╠➥'
                 hehex += ` @${groupMem[i].id.replace(/@c.us/g, '')}\n`
             }
-            hehex += '╚═〘 *A R U G A  B O T* 〙'
+            hehex += '╚═〘 *BOT_STYLE* 〙'
             await aruga.sendTextWithMentions(from, hehex)
             break
 		case 'simisimi':
