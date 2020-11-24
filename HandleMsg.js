@@ -870,6 +870,18 @@ module.exports = HandleMsg = async (aruga, message) => {
                 client.reply(from,`Info Gempa Terkini\n\nTanggal  : ${jsonn.Tanggal}\nJam      : ${jsonn.Jam}\nLintang  : ${jsonn.Lintang}\nBujur    : ${jsonn.Bujur}\nMagnitude: ${jsonn.Magnitude}\nKedalaman: ${jsonn.Kedalaman}\n\nPada wilayah\n${jsonn.Wilayah1}\n${jsonn.Wilayah2}\n${jsonn.Wilayah3}\n${jsonn.Wilayah4}\n${jsonn.Wilayah5}\n\njsonn.Potensi\nBuka Maps: ${urlla}`,id)
             })
             break
+       case 'katacinta':
+            if(kotor(body.toLowerCase()) === 'ok') return client.reply(from,jagaOmongan,id)
+            if(cek()==='ok') return client.reply(from,maintan,id)
+            if (!isBlocked) return client.reply(from, 'Hey hey orang yang sudah di blok tidak bisa gunakan bot',id)
+            var urll = 'https://jagokata.com/kata-bijak/kata-cinta.html'
+            axios.get(urll).then((result) => {
+                let $ = cheerio.load(result.data);
+                var author = $('a[class="auteurfbnaam"]').contents().first().text();
+                var kata = $('q[class="fbquote"]').contents().first().text();
+                client.reply(from, `      _${kata}_\n\n    ~ ${author}\n\n${donasi}`, id)
+            });
+            break
 		//Fun Menu
 		case 'klasmen':
 			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
