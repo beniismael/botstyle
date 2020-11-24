@@ -480,6 +480,33 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
+        case 'tiktok':
+            if (!isGroupMsg) return tobz.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (isLimit(serial)) return tobz.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
+            
+            await limitAdd(serial)
+            if (args.length === 1) return tobz.reply(from, 'Kirim perintah *#tiktok [linkTiktok]*\nContoh : *#tiktok https://vt.tiktok.com/yqyjPX/*', id)
+            try {
+            tobz.reply(from, mess.wait, id)
+            const resp = await axios.get('https://api.vhtear.com/tiktokdl?link=' + body.slice(8) + '&apikey=' + vhtearkey)
+            const { dibuat, duration, title, desk, video, image  } = resp.data.result
+            const tpk = `*Video Ditemukan!*
+➸ Judul : ${title}
+➸ Deskripsi : ${desk}
+➸ Durasi : ${duration}
+➸ Dibuat : ${dibuat}
+Menunggu video...`
+            
+            const pictk = await bent("buffer")(image)
+            const base64 = `data:image/jpg;base64,${pictk.toString("base64")}`
+            tobz.sendImage(from, base64, title, tpk)
+            tobz.sendFIle(from, video, `${title}.mp4`, '', id)
+            } catch (err) {
+             console.error(err.message)
+             await tobz.sendFileFromUrl(from, errorurl2, 'error.png', '💔️ Maaf, Video tidak ditemukan')
+             tobz.sendText(ownerNumber, 'Tiktok Error : ' + err)
+           }
+            break
         case 'ytmp3':
             if (args.length == 0) return aruga.reply(from, `Untuk mendownload lagu dari youtube\nketik: ${prefix}ytmp3 [link_yt]`, id)
             const linkmp3 = args[0].replace('https://youtu.be/','').replace('https://www.youtube.com/watch?v=','')
