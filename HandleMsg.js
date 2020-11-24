@@ -834,6 +834,29 @@ Menunggu video...`
                     aruga.reply(from, err, id)
                 }
             break
+        case '!brainly':
+            if (args.length >= 2){
+                const BrainlySearch = require('./lib/brainly')
+                let tanya = body.slice(9)
+                let jum = Number(tanya.split('.')[1]) || 2
+                if (jum > 10) return client.reply(from, 'Max 10!', id)
+                if (Number(tanya[tanya.length-1])){
+                    tanya
+                }
+                client.reply(from, `➸ *Pertanyaan* : ${tanya.split('.')[0]}\n\n➸ *Jumlah jawaban* : ${Number(jum)}`, id)
+                await BrainlySearch(tanya.split('.')[0],Number(jum), function(res){
+                    res.forEach(x=>{
+                        if (x.jawaban.fotoJawaban.length == 0) {
+                            client.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* : ${x.jawaban.judulJawaban}\n`, id)
+                        } else {
+                            client.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* : ${x.jawaban.judulJawaban}\n\n➸ *Link foto jawaban* : ${x.jawaban.fotoJawaban.join('\n')}`, id)
+                        }
+                    })
+                })
+            } else {
+                client.reply(from, 'Usage :\n!brainly [pertanyaan] [.jumlah]\n\nEx : \n!brainly NKRI .2', id)
+            }
+            break
         case 'translate':
             if (args.length != 1) return aruga.reply(from, `Maaf, format pesan salah.\nSilahkan reply sebuah pesan dengan caption ${prefix}translate <kode_bahasa>\ncontoh ${prefix}translate id`, id)
             if (!quotedMsg) return aruga.reply(from, `Maaf, format pesan salah.\nSilahkan reply sebuah pesan dengan caption ${prefix}translate <kode_bahasa>\ncontoh ${prefix}translate id`, id)
