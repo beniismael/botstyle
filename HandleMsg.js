@@ -80,6 +80,23 @@ const inArray = (needle, haystack) => {
     return false;
 }
 
+const apakah = [
+            'Ya',
+            'Tidak',
+            'Coba Ulangi'
+            ]
+
+        const bisakah = [
+            'Bisa',
+            'Tidak Bisa',
+            'Coba Ulangi'
+            ]
+
+        const kapankah = [
+            '1 Minggu lagi',
+            '1 Bulan lagi',
+            '1 Tahun lagi'
+            ]
 module.exports = HandleMsg = async (aruga, message) => {
     try {
         const { type, id, from, t, sender, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
@@ -315,6 +332,41 @@ module.exports = HandleMsg = async (aruga, message) => {
             } else {
                 aruga.reply(from, `Pemakaian ${prefix}quotemaker |isi quote|author|theme\n\ncontoh: ${prefix}quotemaker |aku sayang kamu|-benni|random\n\nuntuk theme nya pakai random ya ajg..`)
             }
+            break
+        case 'apakah':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const nanya = args.join(' ')
+            const jawab = apakah[Math.floor(Math.random() * (apakah.length))]
+            if (!nanya) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
+            await aruga.sendText(from, `Pertanyaan: *${nanya}* \n\nJawaban: ${jawab}`)
+            break
+        case 'bisakah':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const bsk = args.join(' ')
+            const jbsk = bisakah[Math.floor(Math.random() * (bisakah.length))]
+            if (!bsk) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
+            await aruga.sendText(from, `Pertanyaan: *${bsk}* \n\nJawaban: ${jbsk}`)
+            break
+        case 'kapankah':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const when = args.join(' ')
+            const ans = kapankah[Math.floor(Math.random() * (kapankah.length))]
+            if (!when) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
+            await aruga.sendText(from, `Pertanyaan: *${when}* \n\nJawaban: ${ans}`)
+            break
+        case 'koin':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const side = Math.floor(Math.random() * 2) + 1
+            if (side == 1) {
+              aruga.sendStickerfromUrl(from, 'https://i.ibb.co/YTWZrZV/2003-indonesia-500-rupiah-copy.png', { method: 'get' })
+            } else {
+              aruga.sendStickerfromUrl(from, 'https://i.ibb.co/bLsRM2P/2003-indonesia-500-rupiah-copy-1.png', { method: 'get' })
+            }
+            break
+        case 'dadu':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const dice = Math.floor(Math.random() * 6) + 1
+            await aruga.sendStickerfromUrl(from, 'https://www.random.org/dice/dice' + dice + '.png', { method: 'get' })
             break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis Benni ganteng`, id)
