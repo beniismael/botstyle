@@ -297,6 +297,27 @@ module.exports = HandleMsg = async (aruga, message) => {
                 await aruga.reply(from, 'Maaf, command sticker giphy hanya bisa menggunakan link dari giphy.  [Giphy Only]', id)
             }
             break
+	case 'stickerfire':
+                if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+                aruga.reply(from, '[WAIT] Sedang di proses⏳ silahkan tunggu ± 1 min!', id)
+                if (isMedia && type === 'image') {
+                const mediaData = await decryptMedia(message, uaOverride)
+                const getUrli = await uploadImages(mediaData, false)
+                const imgnya = await stickerburn(getUrli)
+                const Sfire = imgnya.result.imgUrl
+                await aruga.sendStickerfromUrl(from, Sfire)
+                } else {
+                await aruga.reply(from, 'Wrong Format!\n⚠️ Harap Kirim Gambar Dengan #stickerfire', id)
+                }
+                break
+        case 'stickertoimg':
+            if (quotedMsg && quotedMsg.type == 'sticker') {
+                const mediaData = await decryptMedia(quotedMsg)
+                aruga.reply(from, '[WAIT] Sedang di proses⏳ silahkan tunggu!', id)
+                const imageBase64 = `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`
+                await aruga.sendFile(from, imageBase64, 'imagesticker.jpg', 'Success Convert Sticker to Image!', id)
+            } else if (!quotedMsg) return aruga.reply(from, 'Mohon tag sticker yang ingin dijadikan gambar!', id)
+            break
         case 'meme':
             if ((isMedia || isQuotedImage) && args.length >= 2) {
                 const top = arg.split('|')[0]
@@ -957,9 +978,10 @@ Menunggu video...`
             aruga.sendText(from, text)
             break
         case 'pokemon':
-            if(kotor(body.toLowerCase()) === 'ok') return aruga.reply(from,jagaOmongan,id)
-            if(cek()==='ok') return aruga.reply(from,maintan,id)
-            if (!isBlocked) return aruga.reply(from, 'Hey hey orang yang sudah di blok tidak bisa gunakan bot',id)
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
+            
+            await limitAdd(serial)
             q7 = Math.floor(Math.random() * 890) + 1;
             aruga.sendFileFromUrl(from, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+q7+'.png','Pokemon.png',)
             break
