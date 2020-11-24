@@ -857,7 +857,19 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!isBlocked) return client.reply(from, 'Hey hey orang yang sudah di blok tidak bisa gunakan bot',id)
             q7 = Math.floor(Math.random() * 890) + 1;
             client.sendFileFromUrl(from, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+q7+'.png','Pokemon.png',)
-            break	
+            break
+       case 'infogempa':
+            if(kotor(body.toLowerCase()) === 'ok') return client.reply(from,jagaOmongan,id)
+            if(cek()==='ok') return client.reply(from,maintan,id)
+            if (!isBlocked) return client.reply(from, 'Hey hey orang yang sudah di blok tidak bisa gunakan bot',id)
+            axios.get(`https://data.bmkg.go.id/autogempa.xml`).then(resp =>{
+                jsonn = JSON.parse(xml2js.toJson(resp.data)).Infogempa.gempa
+                urlla = `https://www.google.com/maps/search/${jsonn.Lintang.split(' ')[0]},${jsonn.Bujur.split(' ')[0]}`
+                console.log(urlla)
+                ss(urlla)
+                client.reply(from,`Info Gempa Terkini\n\nTanggal  : ${jsonn.Tanggal}\nJam      : ${jsonn.Jam}\nLintang  : ${jsonn.Lintang}\nBujur    : ${jsonn.Bujur}\nMagnitude: ${jsonn.Magnitude}\nKedalaman: ${jsonn.Kedalaman}\n\nPada wilayah\n${jsonn.Wilayah1}\n${jsonn.Wilayah2}\n${jsonn.Wilayah3}\n${jsonn.Wilayah4}\n${jsonn.Wilayah5}\n\njsonn.Potensi\nBuka Maps: ${urlla}`,id)
+            })
+            break
 		//Fun Menu
 		case 'klasmen':
 			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
