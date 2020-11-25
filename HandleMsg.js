@@ -794,7 +794,7 @@ Menunggu video...`
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-	case '#kbbi':
+	case 'kbbi':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
             
