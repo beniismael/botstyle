@@ -652,6 +652,29 @@ Menunggu video...`
                 aruga.reply(from, `      _${kata}_\n\n    ~ ${author}\n\n${donasi}`, id)
             });
             break
+    case 'zodiak':
+      aruga.sendText(from, msg.wait);
+      getZodiak(args1, args2)
+        .then((result) => {
+          aruga.sendText(from, result);
+          aruga.sendText(from, msg.wait);
+        })
+        .catch((error) => {
+          aruga.sendText(from, msg.errFailed);
+          console.log(error.message);
+        });
+      break;
+    case 'ramalan':
+      aruga.sendText(from, msg.wait);
+      ramalanCinta(args1, args2, args3, args4)
+        .then((result) => {
+          aruga.sendText(from, result);
+          aruga.sendText(from, msg.done);
+        })
+        .catch((error) => {
+          aruga.sendText(from, msg.errFailed);
+          console.log(error.message);
+        });
 			
         // Random Kata
         case 'fakta':
