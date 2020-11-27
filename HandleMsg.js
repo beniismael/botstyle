@@ -635,24 +635,24 @@ Menunggu video...`
 				await aruga.reply(from, `Arti : ${res}`, id)
 			})
 			break
-		case 'cekjodoh':
+	         case 'cekjodoh':
 			if (args.length !== 2) return aruga.reply(from, `Untuk mengecek jodoh melalui nama\nketik: ${prefix}cekjodoh nama pasangan\n\ncontoh: ${prefix}cekjodoh aku kamu\n\nhanya bisa pakai nama panggilan (satu kata)`)
 			rugaapi.cekjodoh(args[0],args[1])
 			.then(async(res) => {
 				await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
 			})
 			break
-                case 'katacinta':
-            if(kotor(body.toLowerCase()) === 'ok') return aruga.reply(from,jagaOmongan,id)
-            if(cek()==='ok') return aruga.reply(from,maintan,id)
-            if (!isBlocked) return aruga.reply(from, 'Hey hey orang yang sudah di blok tidak bisa gunakan bot',id)
-            var urll = 'https://jagokata.com/kata-bijak/kata-cinta.html'
-            axios.get(urll).then((result) => {
-                let $ = cheerio.load(result.data);
-                var author = $('a[class="auteurfbnaam"]').contents().first().text();
-                var kata = $('q[class="fbquote"]').contents().first().text();
-                aruga.reply(from, `      _${kata}_\n\n    ~ ${author}\n\n${donasi}`, id)
-            });
+              case 'katacinta':
+            fetch('https://jagokata.com/kata-bijak/kata-cinta.html')
+            .then(res => res.text())
+            .then(body => {
+                let splitcinta = body.split('\n')
+                let randomcinta = splitcinta[Math.floor(Math.random() * splitcinta.length)]
+                aruga.reply(from, randomcinta, id)
+            })
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+            })
             break
     case 'zodiak':
       aruga.sendText(from, msg.wait);
