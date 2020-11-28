@@ -24,7 +24,6 @@ const {
 const { 
     menuId,
     brainly,
-    kbbi,
     bmkg,
     cekResi, 
     urlShortener, 
@@ -904,23 +903,6 @@ Menunggu video...`
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
-            break
-        case 'kbbi':
-                if (!q) return aruga.reply(from, ind.wrongFormat(), id)
-                aruga.reply(from, ind.wait(), id)
-                kbbi(q)
-                    .then(({ status, result, pesan }) => {
-                        if (status === 'error') {
-                            aruga.reply(from, pesan, id)
-                        } else {
-                            aruga.reply(from, result, id)
-                                .then(() =>  console.log('Success sending definition!'))
-                        }
-                    })
-                    .catch((err) => {
-                        console.error(err)
-                        aruga.reply(from, err, id)
-                    })
             break
             case 'infogempa':
                 aruga.reply(from, ind.wait(), id)
