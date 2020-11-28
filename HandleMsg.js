@@ -100,7 +100,7 @@ const apakah = [
             ]
 module.exports = HandleMsg = async (aruga, message) => {
     try {
-        const { type, id, from, t, sender, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
+        const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
         let { body } = message
         var { name, formattedTitle } = chat
         let { pushname, verifiedName, formattedName } = sender
@@ -395,7 +395,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
             const nulisp = await rugaapi.tulis(nulisq)
-            await aruga.sendImage(from, `${nulisp}`, '', 'tuh hasil jangan males jadi orang ajg...', id)
+            await aruga.sendImage(from, `${nulisp}`, '', 'itu hasil makanya jangan males jadi orang ajg', id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
@@ -549,7 +549,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             })
             break
         //Media
-         case 'tiktok':
+        case 'tiktok':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
             
@@ -574,7 +574,7 @@ Menunggu video...`
              console.error(err.message)
              await aruga.sendFileFromUrl(from, errorurl2, 'error.png', '💔️ Maaf, Video tidak ditemukan')
              aruga.sendText(ownerNumber, 'Tiktok Error : ' + err)
-           })
+           }
             break
         case 'ytmp3':
             if (args.length == 0) return aruga.reply(from, `Untuk mendownload lagu dari youtube\nketik: ${prefix}ytmp3 [link_yt]`, id)
@@ -634,7 +634,8 @@ Menunggu video...`
 				await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
 			})
 			break
-              case 'katacinta':
+               
+	       case 'katacinta':
             fetch('https://jagokata.com/kata-bijak/kata-cinta.html')
             .then(res => res.text())
             .then(body => {
@@ -669,8 +670,7 @@ Menunggu video...`
           aruga.sendText(from, msg.errFailed);
           console.log(error.message);
         })
-      break
-			
+      break	
         // Random Kata
         case 'fakta':
             fetch('https://raw.githubusercontent.com/ArugaZ/grabbed-results/main/random/faktaunix.txt')
@@ -732,6 +732,7 @@ Menunggu video...`
 			.then(async (res) => {
 				await aruga.reply(from, res.result, id)
 			})
+			break
 
         //Random Images
         case 'anime':
@@ -1048,7 +1049,7 @@ Menunggu video...`
 				await aruga.reply(from, `${res}`, id)
 			})
 			break
-                case 'toxic':
+                 case 'toxic':
                 Toxic().then(toxic => {
                     aruga.sendText(from, toxic)
                 })
@@ -1069,7 +1070,6 @@ Menunggu video...`
             const { potensi, koordinat, lokasi, kedalaman, magnitude, waktu, map } = bmkg
             const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
             aruga.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
-            })
             break
 		
 		//Fun Menu
