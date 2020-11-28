@@ -848,20 +848,42 @@ Menunggu video...`
             })
             break
         case 'nekopoi':
-             rugapoi.getLatest()
-            .then((result) => {
-                rugapoi.getVideo(result.link)
-                .then((res) => {
-                    let heheq = '\n'
-                    for (let i = 0; i < res.links.length; i++) {
-                        heheq += `${res.links[i]}\n`
-                    }
-                    aruga.reply(from, `Title: ${res.title}\n\nLink:\n${heheq}\nmasih tester bntr :v`)
-                })
-            })
-            .catch(() => {
-                aruga.reply(from, 'Ada yang Error!', id)
-            })
+                if (isGroupMsg) {
+                    if (!isNsfw) return aruga.reply(from, ind.notNsfw(), id)
+                    aruga.reply(from, ind.wait(), id)
+                    nekopoi.getLatest()
+                        .then((result) => {
+                            nekopoi.getVideo(result.link)
+                                .then((res) => {
+                                    let heheq = '\n'
+                                    for (let i of res.links) {
+                                        heheq += `${i}\n`
+                                    }
+                                    aruga.sendText(from, `Title: ${res.title}\n\nLink:${heheq}`)
+                                })
+                        })
+                        .catch((err) => {
+                            console.error(err)
+                            aruga.reply(from, err, id)
+                        })
+                } else {
+                    aruga.reply(from, ind.wait(), id)
+                    nekopoi.getLatest()
+                        .then((result) => {
+                            nekopoi.getVideo(result.link)
+                                .then((res) => {
+                                    let heheq = '\n'
+                                    for (let i of res.links) {
+                                        heheq += `${i}\n`
+                                    }
+                                    aruga.sendText(from, `Title: ${res.title}\n\nLink:${heheq}`)
+                                })
+                        })
+                        .catch((err) => {
+                            console.error(err)
+                            aruga.reply(from, err, id)
+                        })
+                }
             break
         case 'stalkig':
             if (args.length == 0) return aruga.reply(from, `Untuk men-stalk akun instagram seseorang\nketik ${prefix}stalkig [username]\ncontoh: ${prefix}stalkig ini.arga`, id)
