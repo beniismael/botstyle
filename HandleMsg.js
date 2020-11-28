@@ -852,7 +852,7 @@ Menunggu video...`
                 aruga.reply(from, kbbl2.data.error, id)
             } else {
                 aruga.sendText(from, `➸ *Query* : ${kbbl}\n\n➸ *Result* : ${kbbl2.data.result}`, id)
-            })
+            }
             break
         case 'cuaca':
             if (args.length == 0) return aruga.reply(from, `Untuk melihat cuaca pada suatu daerah\nketik: ${prefix}cuaca [daerah]`, id)
@@ -1054,7 +1054,6 @@ Menunggu video...`
                     aruga.sendText(from, toxic)
                 })
                 insert(author, type, content, pushname, from, argv)
-                })
                 break
         case 'pokemon':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
@@ -1063,7 +1062,7 @@ Menunggu video...`
             await limitAdd(serial)
             q7 = Math.floor(Math.random() * 890) + 1;
             aruga.sendFileFromUrl(from, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+q7+'.png','Pokemon.png',)
-            })
+            }
             break
        case '!infogempa':
             const bmkg = await get.get(`https://mhankbarbar.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
