@@ -904,19 +904,34 @@ Menunggu video...`
             })
             break
         case 'kbbi':
-            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
-            
-            await limitAdd(serial)
-            if (args.length === 1) return aruga.reply(from, 'Kirim perintah *#wiki [query]*\nContoh : *#wiki asu*', id)
-            const kbbl = body.slice(6)
-            const kbbl2 = await axios.get(`https://mnazria.herokuapp.com/api/kbbi?search=${kbbl}`)
-
-            if (kbbl2.data.error) {
-                aruga.reply(from, kbbl2.data.error, id)
-            } else {
-                aruga.sendText(from, `➸ *Query* : ${kbbl}\n\n➸ *Result* : ${kbbl2.data.result}`, id)
-            }
+                if (!q) return aruga.reply(from, ind.wrongFormat(), id)
+                aruga.reply(from, ind.wait(), id)
+                kbbi(q)
+                    .then(({ status, result, pesan }) => {
+                        if (status === 'error') {
+                            aruga.reply(from, pesan, id)
+                        } else {
+                            aruga.reply(from, result, id)
+                                .then(() =>  console.log('Success sending definition!'))
+                        }
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                        aruga.reply(from, err, id)
+                    })
+            break
+            case 'infogempa':
+                aruga.reply(from, ind.wait(), id)
+                bmkg()
+                    .then(({ kedalaman, koordinat, lokasi, magnitude, map, potensi, waktu }) => {
+                        let teksInfo = `${lokasi}\n\nKoordinat: ${koordinat}\nKedalaman: ${kedalaman}\nMagnitudo: ${magnitude} SR\nPotensi: ${potensi}\n\n${waktu}`
+                        aruga.sendFileFromUrl(from, map, 'gempa.jpg', teksInfo, null, null, true)
+                            .then(() => console.log('Success sending info!'))
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                        aruga.reply(from, err, id)
+                    })
             break
         case 'cuaca':
             if (args.length == 0) return aruga.reply(from, `Untuk melihat cuaca pada suatu daerah\nketik: ${prefix}cuaca [daerah]`, id)
@@ -1119,12 +1134,6 @@ Menunggu video...`
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
-       case '!infogempa':
-            const bmkg = await get.get(`https://mhankbarbar.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
-            const { potensi, koordinat, lokasi, kedalaman, magnitude, waktu, map } = bmkg
-            const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
-            aruga.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
-            break
 		
 		//Fun Menu
         case 'klasemen':
