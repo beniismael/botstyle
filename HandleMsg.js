@@ -98,6 +98,28 @@ const apakah = [
             '1 Bulan lagi',
             '1 Tahun lagi'
             ]
+        const rate = [
+            '100%',
+            '95%',
+            '90%',
+            '85%',
+            '80%',
+            '75%',
+            '70%',
+            '65%',
+            '60%',
+            '55%',
+            '50%',
+            '45%',
+            '40%',
+            '35%',
+            '30%',
+            '25%',
+            '20%',
+            '15%',
+            '10%',
+            '5%'
+            ]
 module.exports = HandleMsg = async (aruga, message) => {
     try {
         const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
@@ -390,6 +412,14 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const dice = Math.floor(Math.random() * 6) + 1
             await aruga.sendStickerfromUrl(from, 'https://www.random.org/dice/dice' + dice + '.png', { method: 'get' })
+            break
+        case '#seberapagay':
+        case '#rate':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const rating = args.join(' ')
+            const awr = rate[Math.floor(Math.random() * (rate.length))]
+            if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
+            await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
             break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
@@ -1031,7 +1061,7 @@ Menunggu video...`
                 })
             } else {
                 aruga.reply(from, 'Usage :\n!brainly [pertanyaan] [.jumlah]\n\nEx : \n!brainly NKRI .2', id)
-            })
+            }
             break
         case 'shortlink':
             if (args.length == 0) return aruga.reply(from, `ketik ${prefix}shortlink <url>`, id)
@@ -1062,7 +1092,7 @@ Menunggu video...`
             await limitAdd(serial)
             q7 = Math.floor(Math.random() * 890) + 1;
             aruga.sendFileFromUrl(from, 'https://assets.pokemon.com/assets/cms2/img/pokedex/full/'+q7+'.png','Pokemon.png',)
-            }
+            })
             break
        case '!infogempa':
             const bmkg = await get.get(`https://mhankbarbar.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
