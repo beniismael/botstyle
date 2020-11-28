@@ -98,7 +98,7 @@ const apakah = [
             '1 Bulan lagi',
             '1 Tahun lagi'
             ]
-        const seberapagay = [
+        const seberapalesbi = [
             '100%',
             '95%',
             '90%',
@@ -413,14 +413,26 @@ module.exports = HandleMsg = async (aruga, message) => {
             const dice = Math.floor(Math.random() * 6) + 1
             await aruga.sendStickerfromUrl(from, 'https://www.random.org/dice/dice' + dice + '.png', { method: 'get' })
             break
-        case '#seberapagay':
-        case '#rate':
+        case 'seberapalesbi':
+        case 'rate':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const rating = args.join(' ')
             const awr = rate[Math.floor(Math.random() * (rate.length))]
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
             break
+        case "mirip":
+                name = "*" + body.trim().split(" ").slice(1).toString().replace(/,/g, " ") + "*";
+                let mirip = ["Mang Oleh", "Monyet", "Biawak", "Buaya", "Ngeteh Asw", "Mang Garox", "Yang Lek", "Uzumaki Bayu"];
+                random = Math.floor(Math.random() * (mirip.length - 1) + 1);
+                client.reply(from, `${name} mirip dengan ${mirip[random]}`, id);
+                break;
+
+            case "gay":
+                name = "*" + body.trim().split(" ").slice(1).toString().replace(/,/g, " ") + "*";
+                const { percentage, desc } = getGay();
+                client.reply(from, `Tingkat Gay ${name} ${percentage}% ${desc}`);
+                break;
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
