@@ -98,7 +98,7 @@ const apakah = [
             '1 Bulan lagi',
             '1 Tahun lagi'
             ]
-        const rate = [
+        const seberapagay = [
             '100%',
             '95%',
             '90%',
