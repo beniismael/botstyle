@@ -427,13 +427,13 @@ module.exports = HandleMsg = async (aruga, message) => {
                 name = "*" + body.trim().split(" ").slice(1).toString().replace(/,/g, " ") + "*";
                 let mirip = ["Mang Oleh", "Monyet", "Biawak", "Buaya", "Ngeteh Asw", "Mang Garox", "Yang Lek", "Uzumaki Bayu"];
                 random = Math.floor(Math.random() * (mirip.length - 1) + 1);
-                client.reply(from, `${name} mirip dengan ${mirip[random]}`, id);
+                aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id);
                 break;
 
             case "gay":
                 name = "*" + body.trim().split(" ").slice(1).toString().replace(/,/g, " ") + "*";
                 const { percentage, desc } = getGay();
-                client.reply(from, `Tingkat Gay ${name} ${percentage}% ${desc}`);
+                aruga.reply(from, `Tingkat Gay ${name} ${percentage}% ${desc}`);
                 break;
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
@@ -680,7 +680,7 @@ Menunggu video...`
 			break
                
 	       case 'katacinta':
-            fetch('https://jagokata.com/kata-bijak/kata-cinta.html')
+            fetch('https://api-neraka.vercel.app/api/bucin')
             .then(res => res.text())
             .then(body => {
                 let splitcinta = body.split('\n')
