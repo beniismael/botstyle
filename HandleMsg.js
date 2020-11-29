@@ -120,28 +120,6 @@ const apakah = [
             '10%',
             '5%'
             ]
-	const seberapagay = [
-            '100%',
-            '95%',
-            '90%',
-            '85%',
-            '80%',
-            '75%',
-            '70%',
-            '65%',
-            '60%',
-            '55%',
-            '50%',
-            '45%',
-            '40%',
-            '35%',
-            '30%',
-            '25%',
-            '20%',
-            '15%',
-            '10%',
-            '5%'
-            ]
 module.exports = HandleMsg = async (aruga, message) => {
     try {
         const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
@@ -443,20 +421,6 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
             break
-	case 'seberapagay':
-        case 'rate':
-            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            const seberapagay = args.join(' ')
-            const awr = rate[Math.floor(Math.random() * (rate.length))]
-            if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
-            await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
-            break
-        case "mirip":
-                name = "*" + body.trim().split(" ").slice(1).toString().replace(/,/g, " ") + "*";
-                let mirip = ["Mang Oleh", "Monyet", "Biawak", "Buaya", "Ngeteh Asw", "Mang Garox", "Yang Lek", "Uzumaki Bayu"];
-                random = Math.floor(Math.random() * (mirip.length - 1) + 1);
-                aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id);
-                break;
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
