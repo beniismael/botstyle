@@ -446,7 +446,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	case 'seberapagay':
         case 'rate':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            const rating = args.join(' ')
+            const seberapagay = args.join(' ')
             const awr = seberapagay[Math.floor(Math.random() * (seberapagay.length))]
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
