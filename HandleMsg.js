@@ -436,7 +436,6 @@ module.exports = HandleMsg = async (aruga, message) => {
             await aruga.sendStickerfromUrl(from, 'https://www.random.org/dice/dice' + dice + '.png', { method: 'get' })
             break
         case 'seberapalesbi':
-        case 'rate':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const rating = args.join(' ')
             const awr = seberapalesbi[Math.floor(Math.random() * (seberapalesbi.length))]
@@ -444,12 +443,11 @@ module.exports = HandleMsg = async (aruga, message) => {
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
             break
 	case 'seberapagay':
-        case 'rate':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const ratings = args.join(' ')
             const awr = seberapagay[Math.floor(Math.random() * (seberapagay.length))]
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
-            await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
+            await aruga.sendText(from, `Pertanyaan: *${ratings}* \n\nJawaban: ${awr}`)
             break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
