@@ -417,7 +417,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'rate':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const rating = args.join(' ')
-            const awr = rate[Math.floor(Math.random() * (rate.length))]
+            const awr = seberapalesbi[Math.floor(Math.random() * (seberapalesbi.length))]
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
             break
@@ -430,7 +430,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 
             case "gay":
                 name = "*" + body.trim().split(" ").slice(1).toString().replace(/,/g, " ") + "*";
-                const { percentage, desc } = getGay();
+                const { percentage, desc } = getgay();
                 aruga.reply(from, `Tingkat Gay ${name} ${percentage}% ${desc}`);
                 break;
         case 'nulis':
@@ -678,7 +678,7 @@ Menunggu video...`
 			break
                
 	       case 'katacinta':
-            fetch('https://api-neraka.vercel.app/api/bucin')
+            fetch('https://raw.githubusercontent.com/beniismael/whatsapp-bot/master/bucin.txt')
             .then(res => res.text())
             .then(body => {
                 let splitcinta = body.split('\n')
