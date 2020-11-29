@@ -24,7 +24,6 @@ const {
 const { 
     menuId,
     brainly,
-    bmkg,
     cekResi, 
     urlShortener, 
     meme, 
@@ -903,19 +902,6 @@ Menunggu video...`
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
-            break
-            case 'infogempa':
-                aruga.reply(from, ind.wait(), id)
-                bmkg()
-                    .then(({ kedalaman, koordinat, lokasi, magnitude, map, potensi, waktu }) => {
-                        let teksInfo = `${lokasi}\n\nKoordinat: ${koordinat}\nKedalaman: ${kedalaman}\nMagnitudo: ${magnitude} SR\nPotensi: ${potensi}\n\n${waktu}`
-                        aruga.sendFileFromUrl(from, map, 'gempa.jpg', teksInfo, null, null, true)
-                            .then(() => console.log('Success sending info!'))
-                    })
-                    .catch((err) => {
-                        console.error(err)
-                        aruga.reply(from, err, id)
-                    })
             break
         case 'cuaca':
             if (args.length == 0) return aruga.reply(from, `Untuk melihat cuaca pada suatu daerah\nketik: ${prefix}cuaca [daerah]`, id)
