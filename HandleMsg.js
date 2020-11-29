@@ -120,6 +120,28 @@ const apakah = [
             '10%',
             '5%'
             ]
+        const seberapagay = [
+                '100%\n*Mending lu ganti kartu daripada dishot 1 by 1*',
+                '95%\n*Milos Detected*',
+                '90%',
+                '85%',
+                '80%',
+                '75%',
+                '70%',
+                '65%',
+                '60%',
+                '55%',
+                '50%',
+                '45%',
+                '40%',
+                '35%',
+                '30%',
+                '25%',
+                '20%',
+                '15%',
+                '10%',
+                '5%\n *AMAN BRO*'
+                ]
 module.exports = HandleMsg = async (aruga, message) => {
     try {
         const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
@@ -419,6 +441,14 @@ module.exports = HandleMsg = async (aruga, message) => {
             const awr = seberapalesbi[Math.floor(Math.random() * (seberapalesbi.length))]
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
+            break
+        case '#seberapagay':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const ratings = args.join(' ')
+            const kimakss_ = body.slice(9)
+            const awrs = seberapagay[Math.floor(Math.random() * (seberapagay.length))]
+            if (!ratings) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
+            await aruga.reply(from, `Seberapa Gay : *${kimakss_}*\nJawaban : *${awrs}*`)
             break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
