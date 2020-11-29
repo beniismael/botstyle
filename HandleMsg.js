@@ -120,6 +120,28 @@ const apakah = [
             '10%',
             '5%'
             ]
+	const seberapagay = [
+            '100%',
+            '95%',
+            '90%',
+            '85%',
+            '80%',
+            '75%',
+            '70%',
+            '65%',
+            '60%',
+            '55%',
+            '50%',
+            '45%',
+            '40%',
+            '35%',
+            '30%',
+            '25%',
+            '20%',
+            '15%',
+            '10%',
+            '5%'
+            ]
 module.exports = HandleMsg = async (aruga, message) => {
     try {
         const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
@@ -418,6 +440,14 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const rating = args.join(' ')
             const awr = seberapalesbi[Math.floor(Math.random() * (seberapalesbi.length))]
+            if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
+            await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
+            break
+	case 'seberapagay':
+        case 'rate':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const ratings = args.join(' ')
+            const awr = seberapagay[Math.floor(Math.random() * (seberapagay.length))]
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
             break
