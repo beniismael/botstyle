@@ -1349,6 +1349,20 @@ Menunggu video...`
         default:
             break
         }
+
+            //ngirim kick function
+              if (isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
+                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
+                        const check = await aruga.inviteInfo(chats);
+                        if (!check) {
+                            return
+                        } else {
+                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\neh ajg ngapain lo mengirimkan link grup chat, maaf Lo gw kick dari grup ajg :(`, id).then(() => {
+                                aruga.removeParticipant(groupId, sender.id)
+                            })
+                        }
+                    }
+                }
 		
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
