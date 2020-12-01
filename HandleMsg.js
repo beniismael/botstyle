@@ -456,8 +456,9 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         case "mirip": 
               name = "*" + body.trim().split(" ").slice(1).toString().replace(/,/g, " ") + "*"; 
-              let mirip = ["Mang Oleh", "Monyet", "Biawak", "Buaya", "Orang Gila", "Mang Garox", "Benni Ganteng", "Yang Lek", "Aliando", "Pakboy"]; 
-              random = Math.floor(Math.random() * (mirip.length - 1) + 1); client.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
+              let mirip = ["Mang Oleh", "Monyet", "Biawak", "Buaya", "Orang Gila", "Mang Garox", "Benni Ganteng", "Yang Lek", "Aliando", "Pakboy", "Pak Girls"]; 
+              random = Math.floor(Math.random() * (mirip.length - 1) + 1); 
+	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
