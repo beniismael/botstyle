@@ -171,7 +171,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 
 	    // END HELPER FUNCTION
-                if (!isCmd && isGroupMsg && isAdmin && isOwner){
+                if (!isCmd && isGroupMsg && isAdmin){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
                         if (!check) {
