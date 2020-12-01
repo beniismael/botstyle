@@ -1351,7 +1351,7 @@ Menunggu video...`
         }
 
             //ngirim kick function
-              if (isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
+              if (!isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
                         if (!check) {
