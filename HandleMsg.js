@@ -440,6 +440,48 @@ module.exports = HandleMsg = async (aruga, message) => {
             const dice = Math.floor(Math.random() * 6) + 1
             await aruga.sendStickerfromUrl(from, 'https://www.random.org/dice/dice' + dice + '.png', { method: 'get' })
             break
+	case 'ttp':
+                if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
+                try
+                {
+                    const string = body.toLowerCase().includes('#ttp') ? body.slice(5) : body.slice(5)
+                    if(args)
+                    {
+                        if(quotedMsgObj == null)
+                        {
+                            const gasMake = await getStickerMaker(string)
+                            if(gasMake.status == true)
+                            {
+                                try{
+                                    await aruga.sendImageAsSticker(from, gasMake.base64)
+                                }catch(err) {
+                                    await aruga.reply(from, 'Gagal membuat.', id)
+                                } 
+                            }else{
+                                await aruga.reply(from, gasMake.reason, id)
+                            }
+                        }else if(quotedMsgObj != null){
+                            const gasMake = await getStickerMaker(quotedMsgObj.body)
+                            if(gasMake.status == true)
+                            {
+                                try{
+                                    await aruga.sendImageAsSticker(from, gasMake.base64)
+                                }catch(err) {
+                                    await aruga.reply(from, 'Gagal membuat.', id)
+                                } 
+                            }else{
+                                await aruga.reply(from, gasMake.reason, id)
+                            }
+                        }
+                       
+                    }else{
+                        await aruga.reply(from, 'Tidak boleh kosong.', id)
+                    }
+                }catch(error)
+                {
+                    console.log(error)
+                }
+            break
         case 'seberapalesbi':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const rating = args.join(' ')
