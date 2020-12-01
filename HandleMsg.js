@@ -1351,19 +1351,7 @@ Menunggu video...`
             break
         }
 	    
-	    // END HELPER FUNCTION
-                if (isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
-                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
-                        const check = await aruga.inviteInfo(chats);
-                        if (!check) {
-                            return
-                        } else {
-                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`, id).then(() => {
-                                aruga.removeParticipant(groupId, sender.id)
-                            })
-                        }
-                    }
-                }
+	    
                 // MRHRTZ
                 if (chats.match("anjing") || chats.match("gblk") || chats.match("tolol") || chats.match("kntl")) {
                     if (!isGroupAdmins) {
