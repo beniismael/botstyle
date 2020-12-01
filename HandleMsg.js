@@ -1139,7 +1139,7 @@ Menunggu video...`
 			break
 
         // Group Commands (group admin only)
-	    case 'ceksider': 
+	    case 'reader': 
                     if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
                     if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
                     if (!quotedMsgObj.fromMe) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
