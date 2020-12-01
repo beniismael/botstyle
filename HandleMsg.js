@@ -170,19 +170,6 @@ module.exports = HandleMsg = async (aruga, message) => {
         const isQuotedImage = quotedMsg && quotedMsg.type === 'image'
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 
-	    // END HELPER FUNCTION
-                if (!isCmd && isGroupMsg && isOwner){
-                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
-                        const check = await aruga.inviteInfo(chats);
-                        if (!check) {
-                            return
-                        } else {
-                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\neh ajg ngapain lo mengirimkan link grup chat, maaf lo gw kick dari grup ajg :(`, id).then(() => {
-                                aruga.removeParticipant(groupId, sender.id)
-                            })
-                        }
-                    }
-                }
 	    
 		// [IDENTIFY]
 		const isOwnerBot = ownerNumber.includes(pengirim)
@@ -1363,6 +1350,32 @@ Menunggu video...`
         default:
             break
         }
+	    
+	    // END HELPER FUNCTION
+                if (isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
+                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
+                        const check = await aruga.inviteInfo(chats);
+                        if (!check) {
+                            return
+                        } else {
+                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`, id).then(() => {
+                                aruga.removeParticipant(groupId, sender.id)
+                            })
+                        }
+                    }
+                }
+                // MRHRTZ
+                if (chats.match("anjing") || chats.match("gblk") || chats.match("tolol") || chats.match("kntl")) {
+                    if (!isGroupAdmins) {
+                        return aruga.reply(from, "JAGA UCAPAN DONG!! 😠", id)
+                        .then(() => aruga.removeParticipant(groupId, sender.id))
+                        .then(() => {
+                            aruga.sendText(from, `*「 ANTI BADWORD 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup 🙁`)
+                        }).catch(() => aruga.sendText(from, `Untung Elaina Bukan Admin, Kalo Jadi Admin Udah Aku Kick Tuh! 😑`))
+                    } else {
+                        return aruga.reply(from, "Tolong Jaga Ucapan Min 😇", id)
+                    }
+                }
 
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
