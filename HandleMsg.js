@@ -142,6 +142,7 @@ const apakah = [
                 '10%',
                 '5%\n *AMAN BRO*'
                 ]
+
 module.exports = HandleMsg = async (aruga, message) => {
     try {
         const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
@@ -186,7 +187,10 @@ module.exports = HandleMsg = async (aruga, message) => {
 
         // [BETA] Avoid Spam Message
         msgFilter.addFilter(from)
-
+	
+	//[AUTO READ] Auto read message 
+	aruga.sendSeen(chatId)
+	    
 	// Filter Banned People
         if (isBanned) {
             return console.log(color('[BAN]', 'red'), color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${command} [${args.length}]`), 'from', color(pushname))
@@ -442,7 +446,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!rating) aruga.reply(from, '⚠️ Format salah! Ketik *#menu* untuk penggunaan.')
             await aruga.sendText(from, `Pertanyaan: *${rating}* \n\nJawaban: ${awr}`)
             break
-        case '#seberapagay':
+        case 'seberapagay':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const ratings = args.join(' ')
             const kimakss_ = body.slice(9)
@@ -454,7 +458,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
             const nulisp = await rugaapi.tulis(nulisq)
-            await aruga.sendImage(from, `${nulisp}`, '', 'itu hasil makanya jangan males jadi orang ajg', id)
+            await aruga.sendImage(from, `${nulisp}`, '', 'ini hasilnya ajg jadi orang Jangan males', id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
@@ -693,8 +697,7 @@ Menunggu video...`
 				await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
 			})
 			break
-               
-	       case 'katacinta':
+               case 'katacinta':
             fetch('https://raw.githubusercontent.com/beniismael/whatsapp-bot/master/bucin.txt')
             .then(res => res.text())
             .then(body => {
@@ -730,6 +733,7 @@ Menunggu video...`
           console.log(error.message);
         })
       break	
+			
         // Random Kata
         case 'fakta':
             fetch('https://raw.githubusercontent.com/ArugaZ/grabbed-results/main/random/faktaunix.txt')
@@ -865,42 +869,20 @@ Menunggu video...`
             })
             break
         case 'nekopoi':
-                if (isGroupMsg) {
-                    if (!isNsfw) return aruga.reply(from, ind.notNsfw(), id)
-                    aruga.reply(from, ind.wait(), id)
-                    nekopoi.getLatest()
-                        .then((result) => {
-                            nekopoi.getVideo(result.link)
-                                .then((res) => {
-                                    let heheq = '\n'
-                                    for (let i of res.links) {
-                                        heheq += `${i}\n`
-                                    }
-                                    aruga.sendText(from, `Title: ${res.title}\n\nLink:${heheq}`)
-                                })
-                        })
-                        .catch((err) => {
-                            console.error(err)
-                            aruga.reply(from, err, id)
-                        })
-                } else {
-                    aruga.reply(from, ind.wait(), id)
-                    nekopoi.getLatest()
-                        .then((result) => {
-                            nekopoi.getVideo(result.link)
-                                .then((res) => {
-                                    let heheq = '\n'
-                                    for (let i of res.links) {
-                                        heheq += `${i}\n`
-                                    }
-                                    aruga.sendText(from, `Title: ${res.title}\n\nLink:${heheq}`)
-                                })
-                        })
-                        .catch((err) => {
-                            console.error(err)
-                            aruga.reply(from, err, id)
-                        })
-                }
+             rugapoi.getLatest()
+            .then((result) => {
+                rugapoi.getVideo(result.link)
+                .then((res) => {
+                    let heheq = '\n'
+                    for (let i = 0; i < res.links.length; i++) {
+                        heheq += `${res.links[i]}\n`
+                    }
+                    aruga.reply(from, `Title: ${res.title}\n\nLink:\n${heheq}\nmasih tester bntr :v`)
+                })
+            })
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+            })
             break
         case 'stalkig':
             if (args.length == 0) return aruga.reply(from, `Untuk men-stalk akun instagram seseorang\nketik ${prefix}stalkig [username]\ncontoh: ${prefix}stalkig ini.arga`, id)
@@ -1115,13 +1097,12 @@ Menunggu video...`
 				await aruga.reply(from, `${res}`, id)
 			})
 			break
-                 case 'toxic':
+                case 'toxic':
                 Toxic().then(toxic => {
                     aruga.sendText(from, toxic)
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
-        
 		
 		//Fun Menu
         case 'klasemen':
@@ -1193,7 +1174,7 @@ Menunggu video...`
             if (!quotedMsgObj.fromMe) return aruga.reply(from, `Maaf, format pesan salah silahkan.\nReply pesan bot dengan caption ${prefix}del`, id)
             aruga.deleteMessage(quotedMsgObj.chatId, quotedMsgObj.id, false)
             break
-        case 'mentionall':
+        case 'mentionAll':
         case 'everyone':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
             if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
@@ -1335,8 +1316,8 @@ Menunggu video...`
             const chatz = await aruga.getAllChatIds()
             for (let idk of chatz) {
                 var cvk = await aruga.getChatById(idk)
-                if (!cvk.isReadOnly) aruga.sendText(idk, `〘 *A R U G A  B C* 〙\n\n${msg}`)
-                if (cvk.isReadOnly) aruga.sendText(idk, `〘 *A R U G A  B C* 〙\n\n${msg}`)
+                if (!cvk.isReadOnly) aruga.sendText(idk, `〘 *BOT_STYLE B C* 〙\n\n${msg}`)
+                if (cvk.isReadOnly) aruga.sendText(idk, `〘 *BOT_STYLE  B C* 〙\n\n${msg}`)
             }
             aruga.reply(from, 'Broadcast Success!', id)
             break
