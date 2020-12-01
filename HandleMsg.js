@@ -1121,19 +1121,7 @@ Menunggu video...`
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
-        case 'ceksider': 
-                    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
-                    if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
-                    if (!quotedMsgObj.fromMe) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
-                    try {
-                        const reader = await aruga.getMessageReaders(quotedMsgObj.id)
-                        let list = ''
-                        for (let pembaca of reader) {
-                        list += `- @${pembaca.id.replace(/@c.us/g, '')}\n` 
-                        }
-                        aruga.sendTextWithMentions(from, `Heyy. dia telah melihat pesan\n${list}`)
-		    })
-                break
+        
 		
 		//Fun Menu
         case 'klasemen':
@@ -1151,6 +1139,19 @@ Menunggu video...`
 			break
 
         // Group Commands (group admin only)
+	    case 'ceksider': 
+                    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
+                    if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
+                    if (!quotedMsgObj.fromMe) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
+                    try {
+                        const reader = await aruga.getMessageReaders(quotedMsgObj.id)
+                        let list = ''
+                        for (let pembaca of reader) {
+                        list += `- @${pembaca.id.replace(/@c.us/g, '')}\n` 
+                        }
+                        aruga.sendTextWithMentions(from, `Heyy. dia telah melihat pesan\n${list}`)
+		    }
+                break
 	    case 'add':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
             if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
