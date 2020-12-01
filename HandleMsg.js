@@ -169,7 +169,21 @@ module.exports = HandleMsg = async (aruga, message) => {
         const url = args.length !== 0 ? args[0] : ''
         const isQuotedImage = quotedMsg && quotedMsg.type === 'image'
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
-		
+
+	    // END HELPER FUNCTION
+                if (isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
+                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
+                        const check = await aruga.inviteInfo(chats);
+                        if (!check) {
+                            return
+                        } else {
+                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\neh ajg ngapain lo mengirimkan link grup chat, maaf lo gw kick dari grup ajg :(`, id).then(() => {
+                                aruga.removeParticipant(groupId, sender.id)
+                            })
+                        }
+                    }
+                }
+	    
 		// [IDENTIFY]
 		const isOwnerBot = ownerNumber.includes(pengirim)
         const isBanned = banned.includes(pengirim)
@@ -1350,20 +1364,6 @@ Menunggu video...`
             break
         }
 
-            //ngirim kick function
-              if (!isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
-                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
-                        const check = await aruga.inviteInfo(chats);
-                        if (!check) {
-                            return
-                        } else {
-                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\neh ajg ngapain lo mengirimkan link grup chat, maaf Lo gw kick dari grup ajg :(`, id).then(() => {
-                                aruga.removeParticipant(groupId, sender.id)
-                            })
-                        }
-                    }
-                }
-		
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
 			axios.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${encodeURIComponent(message.body)}&apikey=${apiSimi}`)
