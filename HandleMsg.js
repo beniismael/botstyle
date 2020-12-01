@@ -1121,6 +1121,19 @@ Menunggu video...`
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
+        case 'reader': 
+                    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
+                    if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
+                    if (!quotedMsgObj.fromMe) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
+                    try {
+                        const reader = await aruga.getMessageReaders(quotedMsgObj.id)
+                        let list = ''
+                        for (let pembaca of reader) {
+                        list += `- @${pembaca.id.replace(/@c.us/g, '')}\n` 
+                        }
+                        aruga.sendTextWithMentions(from, `Heyy. dia telah melihat pesan\n${list}`)
+                    }
+                break
 		
 		//Fun Menu
         case 'klasemen':
