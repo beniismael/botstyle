@@ -1132,7 +1132,6 @@ Menunggu video...`
                         list += `- @${pembaca.id.replace(/@c.us/g, '')}\n` 
                         }
                         aruga.sendTextWithMentions(from, `Heyy. dia telah melihat pesan\n${list}`)
-                    }
                 break
 		
 		//Fun Menu
