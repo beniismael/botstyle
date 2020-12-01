@@ -1121,7 +1121,7 @@ Menunggu video...`
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
-        case 'reader': 
+        case 'ceksider': 
                     if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
                     if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
                     if (!quotedMsgObj.fromMe) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
