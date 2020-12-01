@@ -1351,20 +1351,7 @@ Menunggu video...`
             break
         }
 	    
-	    
-                // MRHRTZ
-                if (chats.match("anjing") || chats.match("gblk") || chats.match("tolol") || chats.match("kntl")) {
-                    if (!isGroupAdmins) {
-                        return aruga.reply(from, "JAGA UCAPAN DONG!! 😠", id)
-                        .then(() => aruga.removeParticipant(groupId, sender.id))
-                        .then(() => {
-                            aruga.sendText(from, `*「 ANTI BADWORD 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup 🙁`)
-                        }).catch(() => aruga.sendText(from, `Untung Elaina Bukan Admin, Kalo Jadi Admin Udah Aku Kick Tuh! 😑`))
-                    } else {
-                        return aruga.reply(from, "Tolong Jaga Ucapan Min 😇", id)
-                    }
-                }
-
+	   
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
 			axios.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${encodeURIComponent(message.body)}&apikey=${apiSimi}`)
