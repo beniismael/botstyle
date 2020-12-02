@@ -30,7 +30,7 @@ const {
     translate,
     getZodiak,
     getLocationData,
-    ttp,
+    getStickerMaker,
     images,
     ramalanCinta,
     resep,
