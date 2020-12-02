@@ -161,6 +161,8 @@ module.exports = HandleMsg = async (aruga, message) => {
 	const serial = sender.id
 	
 	const isAdmin = adminNumber.includes(sender.id)
+        const ownerNumber = '6282114499086@c.us'
+        const isOwner = ownerNumber.includes(sender.id)
 
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
