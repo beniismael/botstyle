@@ -154,11 +154,11 @@ module.exports = HandleMsg = async (aruga, message) => {
         const botNumber = await aruga.getHostNumber() + '@c.us'
         const groupId = isGroupMsg ? chat.groupMetadata.id : ''
         const groupAdmins = isGroupMsg ? await aruga.getGroupAdmins(groupId) : ''
-	const isAdmin = adminNumber.includes(sender.id)
         const isGroupAdmins = groupAdmins.includes(sender.id) || false
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
+	const isAdmin = adminNumber.includes(sender.id)
 
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
