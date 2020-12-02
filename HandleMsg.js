@@ -9,6 +9,7 @@ const fetch = require('node-fetch')
 const appRoot = require('app-root-path')
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
+const { getStickerMaker } = require('./lib/ttp')
 const db_group = new FileSync(appRoot+'/lib/data/group.json')
 const db = low(db_group)
 db.defaults({ group: []}).write()
@@ -30,7 +31,6 @@ const {
     translate,
     getZodiak,
     getLocationData,
-    getStickerMaker,
     images,
     ramalanCinta,
     resep,
