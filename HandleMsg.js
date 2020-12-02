@@ -159,10 +159,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 	
-	const isAdmin = adminNumber.includes(sender.id)
-        const ownerNumber = '6282114499086@c.us'
-        const isOwner = ownerNumber.includes(sender.id)
-
+	
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
@@ -1417,21 +1414,7 @@ Menunggu video...`
             break
         }
 	    
-	    
-	    
-	    // END HELPER FUNCTION
-                if (isGroupMsg && !isGroupAdmins && !isAdmin && !isOwner){
-                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
-                        const check = await aruga.inviteInfo(chats);
-                        if (!check) {
-                            return
-                        } else {
-                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`, id).then(() => {
-                                aruga.removeParticipant(groupId, sender.id)
-                            })
-                        }
-                    }
-                }
+	   
 	   
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
