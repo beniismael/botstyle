@@ -1173,6 +1173,13 @@ Menunggu video...`
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
+         case 'fakename':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            const linkfake = await axios.get(`https://freerestapi.herokuapp.com/api/v1/fakename?country=en`)
+            const fakelink = linkfake.data
+            aruga.reply(from, `_*Name :*_ _${fakelink.name}_\n_*Birthday :*_ _${fakelink.birthday}_\n_*Address :*_ _${fakelink.address}_\n_*City :*_ _${fakelink.city}_\n*Region :* _${fakelink.region}_\n*Country :* _${fakelink.country}_\n*Zip :* _${fakelink.zip}_\n*Phone Numbber :* _${fakelink.phone_number}_\n*Username :* _${fakelink.username}_\n*Password :* _${fakelink.password}_\n*Email :* _${fakelink.email}_`, id)
+            console.log(fakelink)
+            break
 		
 		//Fun Menu
         case 'klasemen':
