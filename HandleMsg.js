@@ -482,6 +482,14 @@ module.exports = HandleMsg = async (aruga, message) => {
               random = Math.floor(Math.random() * (mirip.length - 1) + 1); 
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
+        case 'tahta':
+    jojo.reply(from, mess.wait, id)
+    const ttahta = body.slice(7)
+    if (!ttahta) return jojo.reply(from, 'Masukin nama lo ajg!\nMax 8 huruf biar bagus!', id)
+    if (ttahta.length > 8) return jojo.reply(from, 'Tesk nya kepanjangan ajg!', id)
+    await jojo.sendFileFromUrl(from, `https://api.vhtear.com/hartatahta?text=${ttahta}&apikey=tapi boong hayyuk papale papale`, `harta-tahta-${ttahta}.jpg`, `*Harta*\n*Tahta*\n*${ttahta}*`, id)
+    limitAdd(serial)
+    break
 	case 'ttp':
                 if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
                 try
