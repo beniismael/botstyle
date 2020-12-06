@@ -767,7 +767,7 @@ Menunggu video...`
 			
 		//Primbon Menu
 		case 'cekzodiak':
-            if (args.length !== 4) return aruga.reply(from, `Untuk mengecek zodiak, gunakan ${prefix}cekzodiak nama tanggallahir bulanlahir tahunlahir\nContoh: ${prefix}cekzodiak fikri 13 06 2004`, id)
+            if (args.length !== 4) return aruga.reply(from, `Untuk mengecek zodiak, gunakan ${prefix}cekzodiak nama tanggallahir bulanlahir tahunlahir\nContoh: ${prefix}cekzodiak Benni 13 12 2000`, id)
             const cekzodiak = await rugaapi.cekzodiak(args[0],args[1],args[2])
             await aruga.reply(from, cekzodiak, id)
             .catch(() => {
