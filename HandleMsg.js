@@ -174,6 +174,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
+	        const isAdmin = adminNumber.includes(pengirim)
 		const isOwnerBot = ownerNumber.includes(pengirim)
 		const isDetectorLink = antilink.includes(chatId)
         const isBanned = banned.includes(pengirim)
@@ -1207,6 +1208,30 @@ Menunggu video...`
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
+	case 'family100':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
+            
+            await limitAdd(serial)
+            try {
+            const resp = await axios.get('https://api.i-tech.id/tools/f100?key=')
+            if (resp.data.error) return aruga.reply(from, resp.data.error, id)
+            const anm2 = `➸ Soal : ${resp.data.result.soal}\n_Silahkan DiJawab_`
+            const jwban = `➸ Jawaban : ${resp.data.result.jawaban}`
+            aruga.reply(from, anm2, id)
+            aruga.sendText(from, `30 Detik Lagi...`, id)
+            await sleep(10000)
+            aruga.sendText(from, `20 Detik Lagi...`, id)
+            await sleep(10000)
+            aruga.sendText(from, `10 Detik Lagi...`, id)
+            await sleep(10000)
+            aruga.reply(from, jwban, id)
+            } catch (err) {
+                console.error(err.message)
+                await aruga.sendFileFromUrl(from, errorurl2, 'error.png', '💔️ Maaf, Soal Quiz tidak ditemukan')
+                aruga.sendText(ownerNumber, 'Family100 Error : ' + err)
+           }
+           break
          case 'fakename':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const linkfake = await axios.get(`https://freerestapi.herokuapp.com/api/v1/fakename?country=en`)
@@ -1488,10 +1513,10 @@ Menunggu video...`
 		
 	    
 	     // END HELPER FUNCTION
-                if (!isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
+                if (isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwnerBot){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
-                        if (check) {
+                        if (!check) {
                             return
                         } else {
                             aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`, id).then(() => {
