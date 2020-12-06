@@ -9,7 +9,6 @@ const fetch = require('node-fetch')
 const appRoot = require('app-root-path')
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
-const { getStickerMaker } = require('./lib/ttp')
 const db_group = new FileSync(appRoot+'/lib/data/group.json')
 const db = low(db_group)
 db.defaults({ group: []}).write()
@@ -24,15 +23,14 @@ const {
 
 const { 
     menuId,
-    brainly,
+    brainly, 
     cekResi, 
     urlShortener, 
     meme, 
-    translate,
-    getZodiak,
+    translate, 
     getLocationData,
-    images,
     ramalanCinta,
+    images,
     resep,
     rugapoi,
     rugaapi,
@@ -55,6 +53,7 @@ const banned = JSON.parse(fs.readFileSync('./settings/banned.json'))
 const simi = JSON.parse(fs.readFileSync('./settings/simi.json'))
 const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
 const setting = JSON.parse(fs.readFileSync('./settings/setting.json'))
+const welcome = JSON.parse(fs.readFileSync('./settings/welcome.json'))
 
 let { 
     ownerNumber, 
@@ -158,8 +157,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
-	
-	
+
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
@@ -171,8 +169,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         const url = args.length !== 0 ? args[0] : ''
         const isQuotedImage = quotedMsg && quotedMsg.type === 'image'
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
-
-	    
+		
 		// [IDENTIFY]
 		const isOwnerBot = ownerNumber.includes(pengirim)
         const isBanned = banned.includes(pengirim)
@@ -261,6 +258,14 @@ module.exports = HandleMsg = async (aruga, message) => {
         }
 
         // Sticker Creator
+	case 'coolteks':
+	case 'cooltext':
+            if (args.length == 0) return aruga.reply(from, `Untuk membuat teks keren CoolText pada gambar, gunakan ${prefix}cooltext teks\n\nContoh: ${prefix}cooltext fikriganteng`, id)
+		rugaapi.cooltext(args[0])
+		.then(async(res) => {
+		await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
+		})
+		break
         case 'sticker':
         case 'stiker':
             if ((isMedia || isQuotedImage) && args.length === 0) {
@@ -483,11 +488,11 @@ module.exports = HandleMsg = async (aruga, message) => {
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
         case 'tahta':
-    jojo.reply(from, mess.wait, id)
+    aruga.reply(from, mess.wait, id)
     const ttahta = body.slice(7)
-    if (!ttahta) return jojo.reply(from, 'Masukin nama lo ajg!\nMax 8 huruf biar bagus!', id)
+    if (!ttahta) return aruga.reply(from, 'Masukin nama lo ajg!\nMax 8 huruf biar bagus!', id)
     if (ttahta.length > 8) return jojo.reply(from, 'Tesk nya kepanjangan ajg!', id)
-    await jojo.sendFileFromUrl(from, `https://api.vhtear.com/hartatahta?text=${ttahta}&apikey=tapi boong hayyuk papale papale`, `harta-tahta-${ttahta}.jpg`, `*Harta*\n*Tahta*\n*${ttahta}*`, id)
+    await aruga.sendFileFromUrl(from, `https://api.vhtear.com/hartatahta?text=${ttahta}&apikey=tapi boong hayyuk papale papale`, `harta-tahta-${ttahta}.jpg`, `*Harta*\n*Tahta*\n*${ttahta}*`, id)
     limitAdd(serial)
     break
 	case 'ttp':
@@ -536,7 +541,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
             const nulisp = await rugaapi.tulis(nulisq)
-            await aruga.sendImage(from, `${nulisp}`, '', 'ini hasilnya ajg jadi orang Jangan males', id)
+            await aruga.sendImage(from, `${nulisp}`, '', 'ini hasilnya jadi orang jangan males ajg', id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
@@ -761,6 +766,26 @@ Menunggu video...`
 			break
 			
 		//Primbon Menu
+		case 'cekzodiak':
+            if (args.length !== 4) return aruga.reply(from, `Untuk mengecek zodiak, gunakan ${prefix}cekzodiak nama tanggallahir bulanlahir tahunlahir\nContoh: ${prefix}cekzodiak fikri 13 06 2004`, id)
+            const cekzodiak = await rugaapi.cekzodiak(args[0],args[1],args[2])
+            await aruga.reply(from, cekzodiak, id)
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+            })
+            break
+             case 'ramalan':
+      aruga.sendText(from, msg.wait);
+      ramalanCinta(args1, args2, args3, args4)
+        .then((result) => {
+          aruga.sendText(from, result);
+          aruga.sendText(from, msg.done);
+        })
+        .catch((error) => {
+          aruga.sendText(from, msg.errFailed);
+          console.log(error.message);
+        })
+      break	
 		case 'artinama':
 			if (args.length == 0) return aruga.reply(from, `Untuk mengetahui arti nama seseorang\nketik ${prefix}artinama namakamu`, id)
             rugaapi.artinama(body.slice(10))
@@ -787,32 +812,33 @@ Menunggu video...`
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-    case 'zodiak':
-      aruga.sendText(from, msg.wait);
-      getZodiak(args1, args2)
-        .then((result) => {
-          aruga.sendText(from, result);
-          aruga.sendText(from, msg.wait);
-        })
-        .catch((error) => {
-          aruga.sendText(from, msg.errFailed);
-          console.log(error.message);
-        })
-      break
-    case 'ramalan':
-      aruga.sendText(from, msg.wait);
-      ramalanCinta(args1, args2, args3, args4)
-        .then((result) => {
-          aruga.sendText(from, result);
-          aruga.sendText(from, msg.done);
-        })
-        .catch((error) => {
-          aruga.sendText(from, msg.errFailed);
-          console.log(error.message);
-        })
-      break	
 			
         // Random Kata
+	case 'motivasi':
+            fetch('https://raw.githubusercontent.com/selyxn/motivasi/main/motivasi.txt')
+            .then(res => res.text())
+            .then(body => {
+                let splitmotivasi = body.split('\n')
+                let randommotivasi = splitmotivasi[Math.floor(Math.random() * splitmotivasi.length)]
+                aruga.reply(from, randommotivasi, id)
+            })
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+            })
+            break
+	case 'howgay':
+		if (args.length == 0) return aruga.reply(from, `Untuk mengetahui seberapa gay seseorang gunakan ${prefix}howgay namanya\n\nContoh: #howgay burhan`, id)
+            fetch('https://raw.githubusercontent.com/MrPawNO/howgay/main/howgay.txt')
+            .then(res => res.text())
+            .then(body => {
+                let splithowgay = body.split('\n')
+                let randomhowgay = splithowgay[Math.floor(Math.random() * splithowgay.length)]
+                aruga.reply(from, randomhowgay, id)
+            })
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+            })
+            break
         case 'fakta':
             fetch('https://raw.githubusercontent.com/ArugaZ/grabbed-results/main/random/faktaunix.txt')
             .then(res => res.text())
@@ -1171,7 +1197,7 @@ Menunggu video...`
 				await aruga.reply(from, `${res}`, id)
 			})
 			break
-                case 'toxic':
+               case 'toxic':
                 Toxic().then(toxic => {
                     aruga.sendText(from, toxic)
                 })
@@ -1214,7 +1240,6 @@ Menunggu video...`
            aruga.sendTextWithMentions(from, `nah. ini nih sider mau nimbrung apa gua kick\n${list}`)
 		   }
            break
-
 	    case 'add':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
             if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
@@ -1364,6 +1389,24 @@ Menunggu video...`
 				aruga.reply(from, `Commands ini digunakan untuk mengganti icon/profile group chat\n\n\nPenggunaan:\n1. Silahkan kirim/reply sebuah gambar dengan caption ${prefix}setprofile\n\n2. Silahkan ketik ${prefix}setprofile linkImage`)
 			}
 			break
+		case 'welcome':
+			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
+            if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
+            if (!isBotGroupAdmins) return aruga.reply(from, 'Gagal, silahkan tambahkan bot sebagai admin grup!', id)
+			if (args.length !== 1) return aruga.reply(from, `Membuat BOT menyapa member yang baru join kedalam group chat!\n\nPenggunaan:\n${prefix}welcome on --aktifkan\n${prefix}welcome off --nonaktifkan`, id)
+			if (args[0] == 'on') {
+				welcome.push(chatId)
+				fs.writeFileSync('./settings/welcome.json', JSON.stringify(welcome))
+				aruga.reply(from, 'Welcome Message sekarang diaktifkan!', id)
+			} else if (args[0] == 'off') {
+				let xporn = welcome.indexOf(chatId)
+				welcome.splice(xporn, 1)
+				fs.writeFileSync('./settings/welcome.json', JSON.stringify(welcome))
+				aruga.reply(from, 'Welcome Message sekarang dinonaktifkan', id)
+			} else {
+				aruga.reply(from, `Membuat BOT menyapa member yang baru join kedalam group chat!\n\nPenggunaan:\n${prefix}welcome on --aktifkan\n${prefix}welcome off --nonaktifkan`, id)
+			}
+			break
 			
         //Owner Group
         case 'kickall': //mengeluarkan semua member
@@ -1411,8 +1454,8 @@ Menunggu video...`
             const chatz = await aruga.getAllChatIds()
             for (let idk of chatz) {
                 var cvk = await aruga.getChatById(idk)
-                if (!cvk.isReadOnly) aruga.sendText(idk, `〘 *BOT_STYLE B C* 〙\n\n${msg}`)
-                if (cvk.isReadOnly) aruga.sendText(idk, `〘 *BOT_STYLE  B C* 〙\n\n${msg}`)
+                if (!cvk.isReadOnly) aruga.sendText(idk, `〘 *A R U G A  B C* 〙\n\n${msg}`)
+                if (cvk.isReadOnly) aruga.sendText(idk, `〘 *A R U G A  B C* 〙\n\n${msg}`)
             }
             aruga.reply(from, 'Broadcast Success!', id)
             break
@@ -1438,9 +1481,7 @@ Menunggu video...`
         default:
             break
         }
-	    
-	   
-	   
+		
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
 			axios.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${encodeURIComponent(message.body)}&apikey=${apiSimi}`)
