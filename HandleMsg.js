@@ -31,6 +31,7 @@ const {
     getLocationData,
     ramalanCinta,
     images,
+    ttp,
     resep,
     rugapoi,
     rugaapi,
