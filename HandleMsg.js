@@ -1484,6 +1484,20 @@ Menunggu video...`
             break
         }
 		
+	    
+	     // END HELPER FUNCTION
+                if (isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
+                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
+                        const check = await aruga.inviteInfo(chats);
+                        if (!check) {
+                            return
+                        } else {
+                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`, id).then(() => {
+                                aruga.removeParticipant(groupId, sender.id)
+                            })
+                        }
+                    }
+                }
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
 			axios.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${encodeURIComponent(message.body)}&apikey=${apiSimi}`)
