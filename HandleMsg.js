@@ -1491,7 +1491,7 @@ Menunggu video...`
                 if (!isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
-                        if (!check) {
+                        if (check) {
                             return
                         } else {
                             aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`, id).then(() => {
