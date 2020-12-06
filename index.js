@@ -8,7 +8,7 @@ const start = (aruga = new Client()) => {
     console.log(color(figlet.textSync('----------------', { horizontalLayout: 'default' })))
     console.log(color(figlet.textSync('BOT_STYLE', { font: 'Ghost', horizontalLayout: 'default' })))
     console.log(color(figlet.textSync('----------------', { horizontalLayout: 'default' })))
-    console.log(color('[DEV]'), color('beniismael', 'yellow'))
+    console.log(color('[DEV]'), color('Benni', 'yellow'))
     console.log(color('[~>>]'), color('BOT Started!', 'green'))
 
     // Mempertahankan sesi agar tetap nyala
@@ -35,7 +35,7 @@ const start = (aruga = new Client()) => {
 	    })
 	    } else {
         await aruga.simulateTyping(chat.id, true).then(async () => {
-          await aruga.sendText(chat.id, `Hai minna~, Im Aruga BOT. To find out the commands on this bot type ${prefix}menu`)
+          await aruga.sendText(chat.id, `Hai minna~, Im BOT_STYLE. To find out the commands on this bot type ${prefix}menu`)
         })
 	    }
 	}
@@ -44,13 +44,19 @@ const start = (aruga = new Client()) => {
     // ketika seseorang masuk/keluar dari group
     aruga.onGlobalParicipantsChanged(async (event) => {
         const host = await aruga.getHostNumber() + '@c.us'
+		const welcome = JSON.parse(fs.readFileSync('./settings/welcome.json'))
+		const isWelcome = welcome.includes(event.chat)
+		let profile = await aruga.getProfilePicFromServer(event.who)
+		if (profile == '' || profile == undefined) profile = 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQcODjk7AcA4wb_9OLzoeAdpGwmkJqOYxEBA&usqp=CAU'
         // kondisi ketika seseorang diinvite/join group lewat link
-        if (event.action === 'add' && event.who !== host) {
-            await aruga.sendTextWithMentions(event.chat, `Hello, Selamat datang di gruop kami @${event.who.replace('@c.us', '')} \n\nSemoga betah ya setan✨`)
+        if (event.action === 'add' && event.who !== host && isWelcome) {
+			await aruga.sendFileFromUrl(event.chat, profile, 'profile.jpg', '')
+            await aruga.sendTextWithMentions(event.chat, `Hello, Selamat datang di grup  @${event.who.replace('@c.us', '')} \n\njangan lupa intro ya setan✨`)
         }
         // kondisi ketika seseorang dikick/keluar dari group
         if (event.action === 'remove' && event.who !== host) {
-            await aruga.sendTextWithMentions(event.chat, `nitip gorengan ajg yang keluar itu @${event.who.replace('@c.us', '')}, Semoga Tenang dia disana Al-fatihah✨`)
+			await aruga.sendFileFromUrl(event.chat, profile, 'profile.jpg', '')
+            await aruga.sendTextWithMentions(event.chat, `Good bye @${event.who.replace('@c.us', '')}, We'll miss you✨`)
         }
     })
 
