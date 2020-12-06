@@ -1486,7 +1486,7 @@ Menunggu video...`
 		
 	    
 	     // END HELPER FUNCTION
-                if (isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
+                if (!isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
                         if (!check) {
