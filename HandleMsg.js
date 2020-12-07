@@ -492,13 +492,12 @@ module.exports = HandleMsg = async (aruga, message) => {
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
         case 'tahta':
-    aruga.reply(from, mess.wait, id)
-    const ttahta = body.slice(7)
-    if (!ttahta) return aruga.reply(from, 'Masukin nama lo ajg!\nMax 8 huruf biar bagus!', id)
-    if (ttahta.length > 8) return jojo.reply(from, 'Tesk nya kepanjangan ajg!', id)
-    await aruga.sendFileFromUrl(from, `https://api.vhtear.com/hartatahta?text=${ttahta}&apikey=tapi boong hayyuk papale papale`, `harta-tahta-${ttahta}.jpg`, `*Harta*\n*Tahta*\n*${ttahta}*`, id)
-    limitAdd(serial)
-    break
+    if (args[1].toLowerCase() == '1'){
+	    const htt =`https://api.vhtear.com/hartatahta?text=${jreng}&apikey=${vhtearkey}`
+	    if (args.length == 1) return aruga.reply(from, 'Kirim perintah *#tahta [teks]*\n\nContoh *#tahta Benni ganteng*', id)
+	    {
+            aruga.sendFileFromUrl(from, `${htt}`, 'htt.jpg', ' ', id)
+	break
 	case 'ttp':
                 if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
                 try
@@ -1327,19 +1326,11 @@ Menunggu video...`
             if (!isGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan oleh Admin group!`, id)
             if (!isBotGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`, id)
             if (args[1] == 'enable') {
-                var cek = antilink.includes(chatId);
-                if(cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin ajg`, id)
-                } else {
                     antilink.push(chatId)
                     fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
                     aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin ajg`, id)
                 }
              } else if (args[1] == 'disable') {
-                var cek = antilink.includes(chatId);
-                if(!cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin ajg`, id)
-                } else {
                     let nixx = antilink.indexOf(chatId)
                     antilink.splice(nixx, 1)
                     fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
