@@ -497,6 +497,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    if (args.length == 1) return aruga.reply(from, 'Kirim perintah *#tahta [teks]*\n\nContoh *#tahta Benni ganteng*', id)
 	    {
             aruga.sendFileFromUrl(from, `${htt}`, 'htt.jpg', ' ', id)
+	    }
 	break
 	case 'ttp':
                 if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
