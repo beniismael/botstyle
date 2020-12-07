@@ -26,6 +26,7 @@ const {
     menuId,
     brainly,
     cekResi, 
+    ttp,
     urlShortener, 
     meme, 
     translate, 
