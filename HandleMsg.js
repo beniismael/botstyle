@@ -435,17 +435,6 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, `Pemakaian ${prefix}quotemaker |isi quote|author|theme\n\ncontoh: ${prefix}quotemaker |aku sayang kamu|-aruga|random\n\nuntuk theme nya pakai random ya kak..`)
             }
             break
-	case 'tahta':
-    if (!isGroupMsg) return tobz.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-             if (isLimit(serial)) return tobz.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
-    
-             await limitAdd(serial)
-             const jreng = body.slice(7)
-             if (!jreng) return aruga.reply(from, 'Kirim perintah *#tahta [teks]*\n\nContoh *#tahta Benni ganteng*', id)
-             if (jreng.length > 7) return aruga.reply(from, 'Maksimal 7 Huruf!', id)
-             aruga.sendText(from, '_Sedang diproses, mohon tunggu sebentar!..._', id)
-             await aruga.sendFileFromUrl(from, `https://api.vhtear.com/hartatahta?text=${jreng}&apikey=${vhtearkey}`,`${jreng}.jpg`,`Harta Tahta ${jreng}`, id)        
-             break
         case 'apakah':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const nanya = args.join(' ')
