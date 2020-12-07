@@ -435,6 +435,13 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, `Pemakaian ${prefix}quotemaker |isi quote|author|theme\n\ncontoh: ${prefix}quotemaker |aku sayang kamu|-aruga|random\n\nuntuk theme nya pakai random ya kak..`)
             }
             break
+	case 'tahta':
+    if (args[1].toLowerCase() == '1'){
+	    const htt =`https://api.vhtear.com/hartatahta?text=${jreng}&apikey=${vhtearkey}`
+	    if (args.length == 1) return aruga.reply(from, 'Kirim perintah *#tahta [teks]*\n\nContoh *#tahta Benni ganteng*', id)
+	    {
+            aruga.sendFileFromUrl(from, `${htt}`, 'htt.jpg', ' ', id)
+	break
         case 'apakah':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const nanya = args.join(' ')
