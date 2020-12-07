@@ -491,14 +491,6 @@ module.exports = HandleMsg = async (aruga, message) => {
               random = Math.floor(Math.random() * (mirip.length - 1) + 1); 
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
-        case 'tahta':
-    if (args[1].toLowerCase() == '1'){
-	    const htt =`https://api.vhtear.com/hartatahta?text=${jreng}&apikey=${vhtearkey}`
-	    if (args.length == 1) return aruga.reply(from, 'Kirim perintah *#tahta [teks]*\n\nContoh *#tahta Benni ganteng*', id)
-	    {
-            aruga.sendFileFromUrl(from, `${htt}`, 'htt.jpg', ' ', id)
-	    }
-	break
 	case 'ttp':
                 if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
                 try
