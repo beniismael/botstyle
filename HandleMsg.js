@@ -1322,6 +1322,33 @@ Menunggu video...`
             if (!quotedMsgObj.fromMe) return aruga.reply(from, `Maaf, format pesan salah silahkan.\nReply pesan bot dengan caption ${prefix}del`, id)
             aruga.deleteMessage(quotedMsgObj.chatId, quotedMsgObj.id, false)
             break
+	case 'antilink':
+            if (!isGroupMsg) return aruga.reply(from, `Perintah ini hanya bisa di gunakan dalam group!`, id)
+            if (!isGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan oleh Admin group!`, id)
+            if (!isBotGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`, id)
+            if (args[1] == 'on') {
+                var cek = antilink.includes(chatId);
+                if(cek){
+                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin ajg`, id)
+                } else {
+                    antilink.push(chatId)
+                    fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
+                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin ajg`, id)
+                }
+            } else if (args[1] == 'off') {
+                var cek = antilink.includes(chatId);
+                if(!cek){
+                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin ajg`, id)
+                } else {
+                    let nixx = antilink.indexOf(chatId)
+                    antilink.splice(nixx, 1)
+                    fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
+                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin ajg`, id)
+                }
+            } else {
+                aruga.reply(from, `Pilih on atau off udin!`, id)
+            } 
+            break   
         case 'mentionall':
         case 'everyone':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
