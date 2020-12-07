@@ -25,7 +25,6 @@ const {
 const { 
     menuId,
     brainly,
-    ttp,
     cekResi, 
     urlShortener, 
     meme, 
@@ -33,7 +32,6 @@ const {
     getLocationData,
     ramalanCinta,
     images,
-    ttp,
     resep,
     rugapoi,
     rugaapi,
