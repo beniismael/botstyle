@@ -24,7 +24,8 @@ const {
 
 const { 
     menuId,
-    brainly, 
+    brainly,
+    ttp,
     cekResi, 
     urlShortener, 
     meme, 
