@@ -174,7 +174,6 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
-	        const isAdmin = adminNumber.includes(pengirim)
 		const isOwnerBot = ownerNumber.includes(pengirim)
 		const isDetectorLink = antilink.includes(chatId)
         const isBanned = banned.includes(pengirim)
