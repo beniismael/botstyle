@@ -1322,6 +1322,7 @@ Menunggu video...`
                     antilink.push(chatId)
                     fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
                     aruga.reply(from, 'Fitur Antilink sudah di Aktifkan', id)
+	         }
             } else if (args[0] == 'off') {
                     let nixx = antilink.indexOf(chatId)
                     antilink.splice(nixx, 1)
