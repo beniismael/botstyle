@@ -1319,19 +1319,11 @@ Menunggu video...`
             if (!isGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan oleh Admin group!`, id)
             if (!isBotGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`, id)
             if (args[1] == 'enable') {
-                   var cek = antilink.includes(chatId);
-                if(cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                } else {
                     antilink.push(chatId)
                     fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
                     aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
                 }
             } else if (args[1] == 'disable') {
-                var cek = antilink.includes(chatId);
-                if(!cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                } else {
                     let nixx = antilink.indexOf(chatId)
                     antilink.splice(nixx, 1)
                     fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
