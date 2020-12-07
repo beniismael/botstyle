@@ -1317,17 +1317,16 @@ Menunggu video...`
 	case 'antilink':
             if (!isGroupMsg) return aruga.reply(from, `Perintah ini hanya bisa di gunakan dalam group!`, id)
             if (!isGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan oleh Admin group!`, id)
-            if (!isBotGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`, id)
-            if (args[1] == 'enable') {
+            if (args.length !== 1) return aruga.reply(from, `Untuk mengaktifkan antilink pada Group Chat\n\nPenggunaan\n${prefix}antilink on --mengaktifkan\n${prefix}antilink off --nonaktifkan\n`, id)
+            if (args[0] == 'on') {
                     antilink.push(chatId)
                     fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
-                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                }
-            } else if (args[1] == 'disable') {
+                    aruga.reply(from, 'Fitur Antilink sudah di Aktifkan', id)
+            } else if (args[0] == 'off') {
                     let nixx = antilink.indexOf(chatId)
                     antilink.splice(nixx, 1)
                     fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
-                    tobz.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
+                    aruga.reply(from, 'Fitur Antilink sudah di non-Aktifkan', id)
                 }
             } else {
                 aruga.reply(from, `Pilih enable atau disable setan!`, id)
