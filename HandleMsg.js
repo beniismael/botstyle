@@ -536,6 +536,24 @@ module.exports = HandleMsg = async (aruga, message) => {
                     console.log(error)
                 }
             break
+        case 'kbbi':
+                if (!isRegistered) return await aruga.reply(from, ind.notRegistered(), id)
+                if (!q) return await aruga.reply(from, ind.wrongFormat(), id)
+                await aruga.reply(from, ind.wait(), id)
+                kbbi(q)
+                    .then(async ({ status, result, pesan }) => {
+                        if (status === 'error') {
+                            await aruga.reply(from, pesan, id)
+                        } else {
+                            await aruga.reply(from, result, id)
+                                .then(() =>  console.log('Success sending definition!'))
+                        }
+                    })
+                    .catch(async (err) => {
+                        console.error(err)
+                        await aruga.reply(from, err, id)
+                    })
+            break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
