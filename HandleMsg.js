@@ -161,8 +161,8 @@ module.exports = HandleMsg = async (aruga, message) => {
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 
-	const isAdmin = adminNumber.includes(sender.id)
-        const isOwner = ownerNumber.includes(sender.id)
+	const isAdmin = adminNumber.includes(pengirim)
+        const isOwner = ownerNumber.includes(pengirim)
 	
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
