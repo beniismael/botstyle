@@ -1107,6 +1107,20 @@ Menunggu video...`
             break
             
         // Other Command
+        case 'gempa':
+                if (!isRegistered) return await aruga.reply(from, ind.notRegistered(), id)
+                await aruga.reply(from, ind.wait(), id)
+                bmkg()
+                    .then(async ({ kedalaman, koordinat, lokasi, magnitude, map, potensi, waktu }) => {
+                        let teksInfo = `${lokasi}\n\nKoordinat: ${koordinat}\nKedalaman: ${kedalaman}\nMagnitudo: ${magnitude} SR\nPotensi: ${potensi}\n\n${waktu}`
+                        await aruga.sendFileFromUrl(from, map, 'gempa.jpg', teksInfo, id)
+                            .then(() => console.log('Success sending info!'))
+                    })
+                    .catch(async (err) => {
+                        console.error(err)
+                        await aruga.reply(from, err, id)
+                    })
+            break
         case 'resi':
             if (args.length !== 2) return aruga.reply(from, `Maaf, format pesan salah.\nSilahkan ketik pesan dengan ${prefix}resi <kurir> <no_resi>\n\nKurir yang tersedia:\njne, pos, tiki, wahana, jnt, rpx, sap, sicepat, pcp, jet, dse, first, ninja, lion, idl, rex`, id)
             const kurirs = ['jne', 'pos', 'tiki', 'wahana', 'jnt', 'rpx', 'sap', 'sicepat', 'pcp', 'jet', 'dse', 'first', 'ninja', 'lion', 'idl', 'rex']
