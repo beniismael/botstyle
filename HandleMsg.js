@@ -27,6 +27,8 @@ const {
 const { 
     menuId,
     brainly,
+    kbbi,
+    bmkg,
     cekResi, 
     ttp,
     urlShortener, 
