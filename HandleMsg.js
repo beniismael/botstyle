@@ -1325,18 +1325,18 @@ Menunggu video...`
                     return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
                 } else {
                     antilink.push(chatId)
-                    fs.writeFileSync('./lib/database/antilink.json', JSON.stringify(antilink))
+                    fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
                     aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
                 }
             } else if (args[1] == 'disable') {
                 var cek = antilink.includes(chatId);
                 if(!cek){
-                    return tobz.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
+                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
                 } else {
                     let nixx = antilink.indexOf(chatId)
                     antilink.splice(nixx, 1)
-                    fs.writeFileSync('./lib/database/antilink.json', JSON.stringify(antilink))
-                    tobz.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
+                    fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
+                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
                 }
             } else {
                 aruga.reply(from, `Pilih enable atau disable setan!`, id)
