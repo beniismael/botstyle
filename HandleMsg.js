@@ -11,7 +11,6 @@ const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const { getStickerMaker } = require('./lib/ttp')
 
-const { kbbi, bmkg } = require('../lib')
 const db_group = new FileSync(appRoot+'/lib/data/group.json')
 const db = low(db_group)
 db.defaults({ group: []}).write()
