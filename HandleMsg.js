@@ -1494,6 +1494,13 @@ Menunggu video...`
                 }
             }
             break
+        case 'afk': 
+              If (groupMsg) = aruga.sendText(from,  'Hanya bisa di gunakan dalam group',  id) 
+              var Afk = body.slice(8) arg == ('  ') 
+              var kangafk  = aruga.reply (from,  `Sekarang afk`, id)
+          } else {
+              aruga.sendText (sekarang tidak afk, id) 
+            break
         case 'bc': //untuk broadcast atau promosi
             if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
             if (args.length == 0) return aruga.reply(from, `Untuk broadcast ke semua chat ketik:\n${prefix}bc [isi chat]`)
