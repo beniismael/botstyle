@@ -159,8 +159,11 @@ module.exports = HandleMsg = async (aruga, message) => {
         const isGroupAdmins = groupAdmins.includes(sender.id) || false
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
 		const pengirim = sender.id
-        const isBotGroupAdmins = isGroupMsg ? groupAdmins.includes(botNumber) || false
+        const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 
+	const isAdmin = adminNumber.includes(sender.id)
+        const isOwner = ownerNumber.includes(sender.id)
+	
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
