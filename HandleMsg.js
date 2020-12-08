@@ -161,9 +161,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 
-	const isAdmin = adminNumber.includes(pengirim)
-        const isOwner = ownerNumber.includes(pengirim)
-	
+      
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
@@ -177,7 +175,8 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
-		const isOwnerBot = ownerNumber.includes(pengirim)
+	        const isAdmin = adminNumber.includes(pengirim)
+		const isOwner = ownerNumber.includes(pengirim)
 		const isDetectorLink = antilink.includes(chatId)
         const isBanned = banned.includes(pengirim)
 		const isSimi = simi.includes(chatId)
@@ -227,7 +226,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'donasi':
             await aruga.sendText(from, menuId.textDonasi())
             break
-        case 'ownerbot':
+        case 'owner':
             await aruga.sendContact(from, ownerNumber)
             .then(() => aruga.sendText(from, 'Jika kalian ingin request fitur silahkan chat nomor owner!'))
             break
@@ -237,7 +236,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             let islink = linkgrup.match(/(https:\/\/chat.whatsapp.com)/gi)
             let chekgrup = await aruga.inviteInfo(linkgrup)
             if (!islink) return aruga.reply(from, 'Maaf link group-nya salah! silahkan kirim link yang benar', id)
-            if (isOwnerBot) {
+            if (isOwner) {
                 await aruga.joinGroupViaLink(linkgrup)
                       .then(async () => {
                           await aruga.sendText(from, 'Berhasil join grup via link!')
