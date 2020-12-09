@@ -26,8 +26,6 @@ const {
 const { 
     menuId,
     brainly,
-    kbbi,
-    bmkg,
     cekResi, 
     ttp,
     urlShortener, 
@@ -536,24 +534,6 @@ module.exports = HandleMsg = async (aruga, message) => {
                 {
                     console.log(error)
                 }
-            break
-        case 'kbbi':
-                if (!isRegistered) return await aruga.reply(from, ind.notRegistered(), id)
-                if (!q) return await aruga.reply(from, ind.wrongFormat(), id)
-                await aruga.reply(from, ind.wait(), id)
-                kbbi(q)
-                    .then(async ({ status, result, pesan }) => {
-                        if (status === 'error') {
-                            await aruga.reply(from, pesan, id)
-                        } else {
-                            await aruga.reply(from, result, id)
-                                .then(() =>  console.log('Success sending definition!'))
-                        }
-                    })
-                    .catch(async (err) => {
-                        console.error(err)
-                        await aruga.reply(from, err, id)
-                    })
             break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
@@ -1128,19 +1108,11 @@ Menunggu video...`
             break
             
         // Other Command
-        case 'gempa':
-                if (!isRegistered) return await aruga.reply(from, ind.notRegistered(), id)
-                await aruga.reply(from, ind.wait(), id)
-                bmkg()
-                    .then(async ({ kedalaman, koordinat, lokasi, magnitude, map, potensi, waktu }) => {
-                        let teksInfo = `${lokasi}\n\nKoordinat: ${koordinat}\nKedalaman: ${kedalaman}\nMagnitudo: ${magnitude} SR\nPotensi: ${potensi}\n\n${waktu}`
-                        await aruga.sendFileFromUrl(from, map, 'gempa.jpg', teksInfo, id)
-                            .then(() => console.log('Success sending info!'))
-                    })
-                    .catch(async (err) => {
-                        console.error(err)
-                        await aruga.reply(from, err, id)
-                    })
+        case 'infogempa':
+            const bmkg = await get.get(`https://mhankbarbars.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
+            const { potensi, koordinat, lokasi, kedalaman, magnitude, waktu, map } = bmkg
+            const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
+            aruga.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
             break
         case 'resi':
             if (args.length !== 2) return aruga.reply(from, `Maaf, format pesan salah.\nSilahkan ketik pesan dengan ${prefix}resi <kurir> <no_resi>\n\nKurir yang tersedia:\njne, pos, tiki, wahana, jnt, rpx, sap, sicepat, pcp, jet, dse, first, ninja, lion, idl, rex`, id)
