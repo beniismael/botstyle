@@ -149,6 +149,7 @@ const apakah = [
 
 module.exports = HandleMsg = async (aruga, message) => {
     try {
+	const apiKey = 'API-KEY'
         const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
         let { body } = message
         var { name, formattedTitle } = chat
