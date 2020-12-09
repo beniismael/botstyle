@@ -696,30 +696,25 @@ module.exports = HandleMsg = async (aruga, message) => {
         //Media
         case 'tiktok':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
-            
-            await limitAdd(serial)
             if (args.length === 1) return aruga.reply(from, 'Kirim perintah *#tiktok [linkTiktok]*\nContoh : *#tiktok https://vt.tiktok.com/yqyjPX/*', id)
-            try {
+            const tkdl = body.slice(8)
             aruga.reply(from, mess.wait, id)
-            const resp = await axios.get('https://api.vhtear.com/tiktokdl?link=' + body.slice(8) + '&apikey=' + vhtearkey)
-            const { dibuat, duration, title, desk, video, image  } = resp.data.result
-            const tpk = `*Video Ditemukan!*
-➸ Judul : ${title}
-➸ Deskripsi : ${desk}
-➸ Durasi : ${duration}
-➸ Dibuat : ${dibuat}
-Menunggu video...`
-            
-            const pictk = await bent("buffer")(image)
-            const base64 = `data:image/jpg;base64,${pictk.toString("base64")}`
-            aruga.sendImage(from, base64, title, tpk)
-            aruga.sendFIle(from, video, `${title}.mp4`, '', id)
+            try {
+                const titkod = await fetch(`https://api.vhtear.com/tiktokdl?link=${tkdl}&apikey=${apiKey}`)
+                if (!titkod.ok) throw new Error(`Error Tiktok : ${titkod.statusText}`)
+                const tiktod = await titkod.json()
+                if (tiktod.status == false) {
+                    aruga.reply(from, `*Maaf Terdapat kesalahan saat mengambil data, mohon pilih media lain...*`, id)
+                } else {
+                    const { video, title, image, desk, dibuat, duration } = await tiktod.result
+                    aruga.sendFileFromUrl(from, image, 'thumb.jpg', `*「 TIKTOK DOWNLOADER 」*\n\n➸ *Judul* : ${title}\n➸ Deskripsi : ${desk}\n➸ Durasi : ${duration}\n➸ Dibuat : ${dibuat}\n\n_Silahkan tunggu sebentar proses pengiriman file membutuhkan waktu beberapa menit._`, id)
+                    await aruga.sendFileFromUrl(from, video, `${title}.mp4`, '', id).catch(() => tobz.reply(from, mess.error.Yt4, id))
+                }
             } catch (err) {
-             console.error(err.message)
-             await aruga.sendFileFromUrl(from, errorurl2, 'error.png', '💔️ Maaf, Video tidak ditemukan')
-             aruga.sendText(ownerNumber, 'Tiktok Error : ' + err)
-           }
+                aruga.sendText(ownerNumber, 'Tiktok Download Error : '+ err)
+                aruga.reply(from, mess.error.Yt4, id)
+                console.log(err)
+            }
             break
         case 'ytmp3':
             if (args.length == 0) return aruga.reply(from, `Untuk mendownload lagu dari youtube\nketik: ${prefix}ytmp3 [link_yt]`, id)
@@ -1111,7 +1106,7 @@ Menunggu video...`
         // Other Command
         case 'infogempa':
 	    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            const bmkg = await get.get(`https://mhankbarbars.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
+            const bmkg = await axios.get(`https://mhankbarbars.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
             const { potensi, koordinat, lokasi, kedalaman, magnitude, waktu, map } = bmkg
             const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
             aruga.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
