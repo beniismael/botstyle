@@ -1103,7 +1103,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 			}
             break
 	case 'loli':
-            const loli = await axios.get('https://mhankbarbars.herokuapp.com/api/randomloli').json()
+            const loli = await axios.get('https://mhankbarbars.herokuapp.com/api/randomloli')
             aruga.sendFileFromUrl(from, loli.result, 'loli.jpeg', 'Lolinya om pedo', id)
             break
             
