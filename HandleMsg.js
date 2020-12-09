@@ -402,6 +402,23 @@ module.exports = HandleMsg = async (aruga, message) => {
                 await aruga.reply(from, `Wrong Format!\n⚠️ Harap Kirim Gambar Dengan #stickerlightning`, id)
             }
             break
+        case 'stickernobg':
+        case 'stikernobg':
+	    if (isMedia) {
+                try {
+                    var mediaData = await decryptMedia(message, uaOverride)
+                    var imageBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`
+                    var base64img = imageBase64
+                    var outFile = './media/img/noBg.png'
+                    // untuk api key kalian bisa dapatkan pada website remove.bg
+                    var result = await removeBackgroundFromImageBase64({ base64img, apiKey: 'API-KEY', size: 'auto', type: 'auto', outFile })
+                    await fs.writeFile(outFile, result.base64img)
+                    await aruga.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`)
+                } catch(err) {
+                    console.log(err)
+                }
+            }
+            break
         case 'meme':
             if ((isMedia || isQuotedImage) && args.length >= 2) {
                 const top = arg.split('|')[0]
@@ -698,7 +715,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             if (args.length === 1) return aruga.reply(from, 'Kirim perintah *#tiktok [linkTiktok]*\nContoh : *#tiktok https://vt.tiktok.com/yqyjPX/*', id)
             const tkdl = body.slice(8)
-            aruga.reply(from, wait, id)
+            aruga.reply(from, '[WAIT] Sedang di proses⏳ silahkan tunggu ± 1 min!', id)
             try {
                 const titkod = await fetch(`https://api.vhtear.com/tiktokdl?link=${tkdl}&apikey=${apiKey}`)
                 if (!titkod.ok) throw new Error(`Error Tiktok : ${titkod.statusText}`)
@@ -712,7 +729,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 }
             } catch (err) {
                 aruga.sendText(ownerNumber, 'Tiktok Download Error : '+ err)
-                aruga.reply(from, mess.error.Yt4, id)
+                await aruga.reply(from, 'Wrong Format!\n⚠️ Harap Kirim YANG BENER', id)
                 console.log(err)
             }
             break
@@ -1079,7 +1096,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 .then(respon => respon.json())
                 .then(resolt => {
                 	if (resolt.docs && resolt.docs.length <= 0) {
-                		aruga.reply(from, 'Maaf, saya tidak tau ini anime apa, pastikan gambar yang akan di Search tidak Buram/Kepotong', id)
+                		aruga.reply(from, 'Maaf, saya tidak tau ini anime apa, pa\an gambar yang akan di Search tidak Buram/Kepotong', id)
                 	}
                     const { is_adult, title, title_chinese, title_romaji, title_english, episode, similarity, filename, at, tokenthumb, anilist_id } = resolt.docs[0]
                     teks = ''
@@ -1103,7 +1120,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 			}
             break
 	case 'loli':
-            const loli = await get.get('https://mhankbarbars.herokuapp.com/api/randomloli')
+            const loli = await axios.get('https://mhankbarbars.herokuapp.com/api/randomloli')
             aruga.sendFileFromUrl(from, loli.result, 'loli.jpeg', 'Lolinya om pedo', id)
             break
             
@@ -1248,6 +1265,13 @@ module.exports = HandleMsg = async (aruga, message) => {
                 mimin += `➸ @${admon.replace(/@c.us/g, '')}\n` 
             }
             await aruga.sendTextWithMentions(from, mimin)
+            break
+	    case 'listblock':
+            let hih = `This is list of blocked number\nTotal : ${blockNumber.length}\n`
+            for (let i of blockNumber) {
+                hih += `➸ @${i.replace(/@c.us/g,'')}\n`
+            }
+            aruga.sendTextWithMentions(from, hih, id)
             break
             case 'ceksider': 
            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
