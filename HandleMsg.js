@@ -1102,6 +1102,10 @@ module.exports = HandleMsg = async (aruga, message) => {
 				aruga.reply(from, `Maaf format salah\n\nSilahkan kirim foto dengan caption ${prefix}whatanime\n\nAtau reply foto dengan caption ${prefix}whatanime`, id)
 			}
             break
+	case 'loli':
+            const loli = await axios.get('https://mhankbarbars.herokuapp.com/api/randomloli').json()
+            aruga.sendFileFromUrl(from, loli.result, 'loli.jpeg', 'Lolinya om pedo', id)
+            break
             
         // Other Command
         case 'infogempa':
