@@ -228,7 +228,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         case 'owner':
             await aruga.sendContact(from, ownerNumber)
-            .then(() => aruga.sendText(from, 'Jika kalian ingin request fitur silahkan chat nomor owner!'))
+            .then(() => aruga.sendText(from, 'Jika kalian mau donasi / undang bot ke grup bayar bisa chat nomor owner!'))
             break
         case 'join':
             if (args.length == 0) return aruga.reply(from, `Jika kalian ingin mengundang bot kegroup silahkan invite atau dengan\nketik ${prefix}join [link group]`, id)
@@ -1207,30 +1207,6 @@ Menunggu video...`
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
-	case 'family100':
-            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            if (isLimit(serial)) return aruga.reply(from, `Maaf ${pushname}, Kuota Limit Kamu Sudah Habis, Ketik #limit Untuk Mengecek Kuota Limit Kamu`, id)
-            
-            await limitAdd(serial)
-            try {
-            const resp = await axios.get('https://api.i-tech.id/tools/f100?key=')
-            if (resp.data.error) return aruga.reply(from, resp.data.error, id)
-            const anm2 = `➸ Soal : ${resp.data.result.soal}\n_Silahkan DiJawab_`
-            const jwban = `➸ Jawaban : ${resp.data.result.jawaban}`
-            aruga.reply(from, anm2, id)
-            aruga.sendText(from, `30 Detik Lagi...`, id)
-            await sleep(10000)
-            aruga.sendText(from, `20 Detik Lagi...`, id)
-            await sleep(10000)
-            aruga.sendText(from, `10 Detik Lagi...`, id)
-            await sleep(10000)
-            aruga.reply(from, jwban, id)
-            } catch (err) {
-                console.error(err.message)
-                await aruga.sendFileFromUrl(from, errorurl2, 'error.png', '💔️ Maaf, Soal Quiz tidak ditemukan')
-                aruga.sendText(ownerNumber, 'Family100 Error : ' + err)
-           }
-           break
          case 'fakename':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const linkfake = await axios.get(`https://freerestapi.herokuapp.com/api/v1/fakename?country=en`)
