@@ -698,7 +698,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             if (args.length === 1) return aruga.reply(from, 'Kirim perintah *#tiktok [linkTiktok]*\nContoh : *#tiktok https://vt.tiktok.com/yqyjPX/*', id)
             const tkdl = body.slice(8)
-            aruga.reply(from, mess.wait, id)
+            aruga.reply(from, wait, id)
             try {
                 const titkod = await fetch(`https://api.vhtear.com/tiktokdl?link=${tkdl}&apikey=${apiKey}`)
                 if (!titkod.ok) throw new Error(`Error Tiktok : ${titkod.statusText}`)
@@ -1106,7 +1106,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         // Other Command
         case 'infogempa':
 	    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            const bmkg = await axios.get(`https://mhankbarbars.herokuapp.com/api/infogempa?apiKey=${apiKey}`).json()
+            const bmkg = await axios.get(`https://mhankbarbars.herokuapp.com/api/infogempa?apiKey=${apiKey}`)
             const { potensi, koordinat, lokasi, kedalaman, magnitude, waktu, map } = bmkg
             const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
             aruga.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
