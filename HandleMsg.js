@@ -1103,7 +1103,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 			}
             break
 	case 'loli':
-            const loli = await axios.get('https://mhankbarbars.herokuapp.com/api/randomloli')
+            const loli = await get.get('https://mhankbarbars.herokuapp.com/api/randomloli')
             aruga.sendFileFromUrl(from, loli.result, 'loli.jpeg', 'Lolinya om pedo', id)
             break
             
@@ -1232,6 +1232,23 @@ module.exports = HandleMsg = async (aruga, message) => {
 			break
 
         // Group Commands (group admin only)
+	    case 'linkgrup':
+            if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
+            if (isGroupMsg) {
+                const inviteLink = await aruga.getGroupInviteLink(groupId);
+                aruga.sendLinkWithAutoPreview(from, inviteLink, `\nLink group *${name}*`)
+            } else {
+            	aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            }
+            break
+	    case 'adminlist':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            let mimin = ''
+            for (let admon of groupAdmins) {
+                mimin += `➸ @${admon.replace(/@c.us/g, '')}\n` 
+            }
+            await aruga.sendTextWithMentions(from, mimin)
+            break
             case 'ceksider': 
            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
            if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
