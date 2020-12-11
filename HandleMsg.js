@@ -511,8 +511,8 @@ module.exports = HandleMsg = async (aruga, message) => {
               random = Math.floor(Math.random() * (mirip.length - 1) + 1); 
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
-        case "iri" :
-          aruga.senPtt(from, './media/iri.mp3, id)
+        case "waalaikumsalam" :
+          aruga.senPtt(from, './media/waalaikumsalam.mp3, id)
           break
 	case 'ttp':
                 if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
