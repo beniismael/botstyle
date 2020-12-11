@@ -22,20 +22,20 @@ const start = (aruga = new Client()) => {
 	const groups = await aruga.getAllGroups()
 	// kondisi ketika batas group bot telah tercapai,ubah di file settings/setting.json
 	if (groups.length > groupLimit) {
-	await aruga.sendText(chat.id, `Sorry, the group on this bot is full\nMax Group is: ${groupLimit}`).then(() => {
+	await aruga.sendText(chat.id, `Sorry, the group on this Bot is full\nMax Group is: ${groupLimit}`).then(() => {
 	      aruga.leaveGroup(chat.id)
 	      aruga.deleteChat(chat.id)
 	  }) 
 	} else {
 	// kondisi ketika batas member group belum tercapai, ubah di file settings/setting.json
 	    if (chat.groupMetadata.participants.length < memberLimit) {
-	    await aruga.sendText(chat.id, `Sorry, BOT comes out if the group members do not exceed ${memberLimit} people`).then(() => {
+	    await aruga.sendText(chat.id, `Sorry, Bot comes out if the group members do not exceed ${memberLimit} people`).then(() => {
 	      aruga.leaveGroup(chat.id)
 	      aruga.deleteChat(chat.id)
 	    })
 	    } else {
         await aruga.simulateTyping(chat.id, true).then(async () => {
-          await aruga.sendText(chat.id, `Hai minna~, Im Im Aruga BOT. To find out the commands on this bot type ${prefix}menu`)
+          await aruga.sendText(chat.id, `Hai minna~, Im Aruga Bot. To find out the commands on this bot type ${prefix}menu`)
         })
 	    }
 	}
@@ -62,7 +62,7 @@ const start = (aruga = new Client()) => {
 
     aruga.onIncomingCall(async (callData) => {
         // ketika seseorang menelpon nomor bot akan mengirim pesan
-        await aruga.sendText(callData.peerJid, 'Maaf sedang tidak bisa menerima panggilan.\n\n-bot')
+        await aruga.sendText(callData.peerJid, 'Maaf sedang tidak bisa menerima panggilan ajg.\n\n-BOT_STYLE')
         .then(async () => {
             // bot akan memblock nomor itu
             await aruga.contactBlock(callData.peerJid)
