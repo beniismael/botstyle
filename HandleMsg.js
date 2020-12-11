@@ -383,8 +383,8 @@ module.exports = HandleMsg = async (aruga, message) => {
                 await aruga.sendFile(from, imageBase64, 'imagesticker.jpg', 'Success Convert Sticker to Image!', id)
             } else if (!quotedMsg) return aruga.reply(from, 'Mohon tag sticker yang ingin dijadikan gambar!', id)
             break
-	case '#stickerlightning':
-        case '#slightning':
+	case 'stickerlightning':
+        case 'slightning':
              aruga.reply(from, `[WAIT] Sedang di proses⏳ silahkan tunggu ± 1 min!`, id)
             if (isMedia && type === 'image') {
                 const mediaData = await decryptMedia(message, uaOverride)
@@ -511,9 +511,6 @@ module.exports = HandleMsg = async (aruga, message) => {
               random = Math.floor(Math.random() * (mirip.length - 1) + 1); 
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
-        case "waalaikumsalam" :
-          aruga.senPtt(from, './media/waalaikumsalam.mp3, id)
-          break
 	case 'ttp':
                 if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
                 try
