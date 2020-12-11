@@ -553,6 +553,38 @@ module.exports = HandleMsg = async (aruga, message) => {
                     console.log(error)
                 }
             break
+        case "revoke":
+	if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
+                    if (isBotGroupAdmins) {
+                        aruga
+                            .revokeGroupInviteLink(from)
+                            .then((res) => {
+                                aruga.reply(from, `Berhasil Revoke Grup Link gunakan *${prefix}grouplink* untuk mendapatkan group invite link yang terbaru`, id);
+                            })
+                            .catch((err) => {
+                                console.log(`[ERR] ${err}`);
+                            });
+                    }
+                    break;
+        case 'dewabatch':
+		if (args.length == 0) return aruga.reply(from, `Untuk mencari anime batch dari Dewa Batch, ketik ${prefix}dewabatch judul\n\nContoh: ${prefix}dewabatch naruto`, id)
+		rugaapi.dewabatch(args[0])
+		.then(async(res) => {
+		await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
+		})
+		break
+        case 'motivasi':
+            fetch('https://raw.githubusercontent.com/selyxn/motivasi/main/motivasi.txt')
+            .then(res => res.text())
+            .then(body => {
+                let splitmotivasi = body.split('\n')
+                let randommotivasi = splitmotivasi[Math.floor(Math.random() * splitmotivasi.length)]
+                aruga.reply(from, randommotivasi, id)
+            })
+            .catch(() => {
+                aruga.reply(from, 'Ada yang Error!', id)
+            })
+            break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
