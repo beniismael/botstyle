@@ -46,7 +46,7 @@ const start = (aruga = new Client()) => {
         const host = await aruga.getHostNumber() + '@c.us'
         // kondisi ketika seseorang diinvite/join group lewat link
         if (event.action === 'add' && event.who !== host) {
-            await aruga.sendTextWithMentions(event.chat, `
+            await aruga.sendTextWithMentions(event.chat, `Hello,@${event.who.replace('@c.us', '')} \n\n
 ╔╦╦╦═╦╗╔═╦═╦══╦═╗
 ║║║║╩╣╚╣═╣║║║║║╩╣
 ╚══╩═╩═╩═╩═╩╩╩╩═╝ 
@@ -66,7 +66,7 @@ const start = (aruga = new Client()) => {
 │╰──✪══⟪ END ⟫══
 ━━━━❰･❉･❱━━━━
         
-*Patuhi aturan group ini  jika ingin dihargai*`
+*Patuhi aturan group ini  jika ingin dihargai*`)
         }
         // kondisi ketika seseorang dikick/keluar dari group
         if (event.action === 'remove' && event.who !== host) {
