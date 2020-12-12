@@ -51,7 +51,7 @@ const start = (aruga = new Client()) => {
 ║║║║╩╣╚╣═╣║║║║║╩╣
 ╚══╩═╩═╩═╩═╩╩╩╩═╝ 
 ╔━━❖❖❁❖❖❖❖❁❖❖━━╗
-║ *${name}*          ║
+║ creat : Benniismael║
 ╚━━❖❖❁❖❖❖❖❁❖❖━━╝
 
 ╭───✪═⟪ *MEMBER BARU INTRO* ! ⟫═✪
