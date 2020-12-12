@@ -44,6 +44,7 @@ const start = (aruga = new Client()) => {
     // ketika seseorang masuk/keluar dari group
     aruga.onGlobalParicipantsChanged(async (event) => {
         const host = await aruga.getHostNumber() + '@c.us'
+	const host = await aruga.getHostName() + '${name}'
         // kondisi ketika seseorang diinvite/join group lewat link
         if (event.action === 'add' && event.who !== host) {
             await aruga.sendTextWithMentions(event.chat, `
