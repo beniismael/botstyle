@@ -66,7 +66,7 @@ const start = (aruga = new Client()) => {
 │╰──✪══⟪ END ⟫══
 ━━━━❰･❉･❱━━━━
         
-*Patuhi aturan group ini  jika ingin dihargai*`
+*Patuhi aturan group ini  jika ingin dihargai*`)
         }
         // kondisi ketika seseorang dikick/keluar dari group
         if (event.action === 'remove' && event.who !== host) {
