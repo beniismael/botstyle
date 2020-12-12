@@ -170,6 +170,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         const arg = body.trim().substring(body.indexOf(' ') + 1)
         const args = body.trim().split(/ +/).slice(1)
 		const argx = chats.slice(0).trim().split(/ +/).shift().toLowerCase()
+		const c = isGroupMsg ? NoLink.includes(chat.id) : false
         const isCmd = body.startsWith(prefix)
         const uaOverride = process.env.UserAgent
         const url = args.length !== 0 ? args[0] : ''
@@ -1388,11 +1389,11 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (args.length === 1) return aruga.reply(from, 'Pilih enable atau disable!', id)
             if (args[1].toLowerCase() === 'enable') {
                 antilink.push(chat.id)
-                fs.writeFileSync('./settings/antilink.json', JSON.stringify(NoLink))
+                fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
                 aruga.reply(from, 'Fitur antilink berhasil di aktifkan di group ini!', id)
             } else if (args[1].toLowerCase() === 'disable') {
                 antilink.splice(chat.id, 1)
-                fs.writeFileSync('./settings/antilink.json', JSON.stringify(NoLink))
+                fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
                 aruga.reply(from, 'Fitur antilink berhasil di nonaktifkan di group ini!', id)
             } else {
                 aruga.reply(from, 'Pilih enable atau disable setan!', id)
@@ -1571,7 +1572,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
 	    
 	     // END HELPER FUNCTION
-                if (isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwnerBot){
+                if (isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
                         if (!check) {
