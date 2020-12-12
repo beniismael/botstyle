@@ -4,7 +4,6 @@ const { decryptMedia } = require('@open-wa/wa-automate')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Asia/Jakarta').locale('id')
 const axios = require('axios')
-const fs = require('fs-extra')
 const fetch = require('node-fetch')
 
 const appRoot = require('app-root-path')
