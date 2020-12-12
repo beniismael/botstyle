@@ -4,9 +4,11 @@ const { decryptMedia } = require('@open-wa/wa-automate')
 const moment = require('moment-timezone')
 moment.tz.setDefault('Asia/Jakarta').locale('id')
 const axios = require('axios')
+const fs = require('fs-extra')
 const fetch = require('node-fetch')
 
 const appRoot = require('app-root-path')
+const get = require('got')
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
 const { getStickerMaker } = require('./lib/ttp')
@@ -1234,6 +1236,16 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Usage :\n#brainly [pertanyaan] [.jumlah]\n\nEx : \n#brainly NKRI .2', id)
             }
             break
+        case 'math':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (args.length === 1) return aruga.reply(from, '[❗] Kirim perintah *@math [ Angka ]*\nContoh : @math 12*12\n*NOTE* :\n- Untuk Perkalian Menggunakan *\n- Untuk Pertambahan Menggunakan +\n- Untuk Pengurangan Mennggunakan -\n- Untuk Pembagian Menggunakan /')
+            const mtk = body.slice(6)
+            if (typeof Math_js.evaluate(mtk) !== "number") {
+            aruga.reply(from, `"${mtk}", bukan angka!\n[❗] Kirim perintah *@math [ Angka ]*\nContoh : @math 12*12\n*NOTE* :\n- Untuk Perkalian Menggunakan *\n- Untuk Pertambahan Menggunakan +\n- Untuk Pengurangan Mennggunakan -\n- Untuk Pembagian Menggunakan /`, id)
+        } else {
+            aruga.reply(from, `*「 MATH 」*\n\n*Kalkulator*\n${mtk} = ${Math_js.evaluate(mtk)}`, id)
+        }
+        break
         case 'shortlink':
             if (args.length == 0) return aruga.reply(from, `ketik ${prefix}shortlink <url>`, id)
             if (!isUrl(args[0])) return aruga.reply(from, 'Maaf, url yang kamu kirim tidak valid.', id)
@@ -1372,32 +1384,21 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.deleteMessage(quotedMsgObj.chatId, quotedMsgObj.id, false)
             break
 	case 'antilink':
-            if (!isGroupMsg) return aruga.reply(from, `Perintah ini hanya bisa di gunakan dalam group!`, id)
-            if (!isGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan oleh Admin group!`, id)
-	    if (!isBotGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`, id)
-            if (args[1] == 'enable') {
-                var cek = antilink.includes(chatId);
-                if(cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                } else {
-                    antilink.push(chatId)
-                    fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
-                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                }
-            } else if (args[1] == 'disable') {
-                var cek = antilink.includes(chatId);
-                if(!cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                } else {
-                    let nixx = antilink.indexOf(chatId)
-                    antilink.splice(nixx, 1)
-                    fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
-                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                }
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (!isGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan oleh Admin group!', id)
+            if (args.length === 1) return aruga.reply(from, 'Pilih enable atau disable!', id)
+            if (args[1].toLowerCase() === 'enable') {
+                antilink.push(chat.id)
+                fs.writeFileSync('./settings/antilink.json', JSON.stringify(NoLink))
+                aruga.reply(from, 'Fitur antilink berhasil di aktifkan di group ini!', id)
+            } else if (args[1].toLowerCase() === 'disable') {
+                antilink.splice(chat.id, 1)
+                fs.writeFileSync('./settings/antilink.json', JSON.stringify(NoLink))
+                aruga.reply(from, 'Fitur antilink berhasil di nonaktifkan di group ini!', id)
             } else {
-                aruga.reply(from, `Pilih enable atau disable setan!`, id)
-            } 
-            break   
+                aruga.reply(from, 'Pilih enable atau disable setan!', id)
+            }
+            break
         case 'mentionall':
         case 'everyone':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
