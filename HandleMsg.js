@@ -59,8 +59,8 @@ const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
 const setting = JSON.parse(fs.readFileSync('./settings/setting.json'))
 
 //LOAD FILE
-let antilink = JSON.parse(fs.readFileSync('./lib/data/antilink.json'))
-let adminNumber = JSON.parse(fs.readFileSync('./lib/data/admin.json'))
+const Antilink = JSON.parse(fs.readFileSync('./lib/data/antilink.json'))
+const adminNumber = JSON.parse(fs.readFileSync('./lib/data/admin.json'))
 
 let { 
     ownerNumber, 
@@ -153,7 +153,7 @@ const apakah = [
 module.exports = HandleMsg = async (aruga, message) => {
     try {
 	const apiKey = 'API-KEY'
-        const { type, id, from, t, sender, author, isGroupMsg, adminNumber, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
+        const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
         let { body } = message
         var { name, formattedTitle } = chat
         let { pushname, verifiedName, formattedName } = sender
@@ -167,13 +167,13 @@ module.exports = HandleMsg = async (aruga, message) => {
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 	
         
-      const isAdmin = adminNumber.includes(pengirim)
+      const isAdmin = adminNumber.includes(sender.id)
         const ownerNumber = '6282114499086@c.us'
-        const isOwner = ownerNumber.includes(pengirim)
+        const isOwner = ownerNumber.includes(sender.id)
         
         const isWhite = (chatId) => adminNumber.includes(chatId) ? true : false
         const isWhiteList = (chatId) => {
-            if(adminNumber.includes(pengirim)){
+            if(adminNumber.includes(sender.id)){
                 if(muted.includes(chatId)) return false
                 return true
             }else{
