@@ -57,8 +57,10 @@ const banned = JSON.parse(fs.readFileSync('./settings/banned.json'))
 const simi = JSON.parse(fs.readFileSync('./settings/simi.json'))
 const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
 const setting = JSON.parse(fs.readFileSync('./settings/setting.json'))
-const antilink = JSON.parse(fs.readFileSync('./settings/antilink.json'))
-const adminNumber = JSON.parse(fs.readFileSync('./settings/admin.json'))
+
+//LOAD FILE
+let antilink = JSON.parse(fs.readFileSync('./lib/data/antilink.json'))
+let adminNumber = JSON.parse(fs.readFileSync('./lib/data/admin.json'))
 
 let { 
     ownerNumber, 
@@ -180,7 +182,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
-	        //const isAdmin = adminNumber.includes(sender.id)
+	        const isAdmin = adminNumber.includes(sender.id)
 		const ownerNumber = '6282114499086@c.us'
         const isOwner = ownerNumber.includes(pengirim)
         const isBanned = banned.includes(pengirim)
