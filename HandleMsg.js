@@ -167,7 +167,19 @@ module.exports = HandleMsg = async (aruga, message) => {
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 	
         
-      
+      const isAdmin = adminNumber.includes(pengirim)
+        const ownerNumber = '6282114499086@c.us'
+        const isOwner = ownerNumber.includes(pengirim)
+        
+        const isWhite = (chatId) => adminNumber.includes(chatId) ? true : false
+        const isWhiteList = (chatId) => {
+            if(adminNumber.includes(pengirim)){
+                if(muted.includes(chatId)) return false
+                return true
+            }else{
+                return false
+            }
+        }
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
