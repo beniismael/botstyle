@@ -170,7 +170,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         const arg = body.trim().substring(body.indexOf(' ') + 1)
         const args = body.trim().split(/ +/).slice(1)
 		const argx = chats.slice(0).trim().split(/ +/).shift().toLowerCase()
-		const antilink = isGroupMsg ? antilink.includes(chat.id) : false
+		const isantilink = isGroupMsg ? antilink.includes(chat.id) : false
         const isCmd = body.startsWith(prefix)
         const uaOverride = process.env.UserAgent
         const url = args.length !== 0 ? args[0] : ''
