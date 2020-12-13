@@ -44,9 +44,12 @@ const start = (aruga = new Client()) => {
     // ketika seseorang masuk/keluar dari group
     aruga.onGlobalParicipantsChanged(async (event) => {
         const host = await aruga.getHostNumber() + '@c.us'
+	const gChat = await aruga.getChatById(event.chat)
+            const pChat = await aruga.getContact(event.who)
+            const { contact, groupMetadata, name } = gChat
         // kondisi ketika seseorang diinvite/join group lewat link
         if (event.action === 'add' && event.who !== host) {
-            await aruga.sendTextWithMentions(event.chat, `Hello,@${event.who.replace('@c.us', '')} \n\n
+            await aruga.sendTextWithMentions(event.chat, `@${event.who.replace('@c.us', '')} \n\n
 ╔╦╦╦═╦╗╔═╦═╦══╦═╗
 ║║║║╩╣╚╣═╣║║║║║╩╣
 ╚══╩═╩═╩═╩═╩╩╩╩═╝ 
