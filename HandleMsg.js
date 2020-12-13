@@ -167,13 +167,13 @@ module.exports = HandleMsg = async (aruga, message) => {
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 	
         
-      const isAdmin = adminNumber.includes(sender.id)
+      const isAdmin = adminNumber.includes(pengirim)
         const ownerNumber = '6282114499086@c.us'
-        const isOwner = ownerNumber.includes(sender.id)
+        const isOwner = ownerNumber.includes(pengirim)
         
         const isWhite = (chatId) => adminNumber.includes(chatId) ? true : false
         const isWhiteList = (chatId) => {
-            if(adminNumber.includes(sender.id)){
+            if(adminNumber.includes(pengirim)){
                 if(muted.includes(chatId)) return false
                 return true
             }else{
