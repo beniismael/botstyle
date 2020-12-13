@@ -1394,11 +1394,11 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (args.length === 1) return aruga.reply(from, 'Pilih enable atau disable!', id)
             if (args[1].toLowerCase() === 'enable') {
                 antilink.push(chat.id)
-                fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
+                fs.writeFileSync('./lib/data/antilink.json', JSON.stringify(antilink))
                 aruga.reply(from, 'Fitur antilink berhasil di aktifkan di group ini!', id)
             } else if (args[1].toLowerCase() === 'disable') {
                 antilink.splice(chat.id, 1)
-                fs.writeFileSync('./settings/antilink.json', JSON.stringify(antilink))
+                fs.writeFileSync('./lib/data/antilink.json', JSON.stringify(antilink))
                 aruga.reply(from, 'Fitur antilink berhasil di nonaktifkan di group ini!', id)
             } else {
                 aruga.reply(from, 'Pilih enable atau disable setan!', id)
