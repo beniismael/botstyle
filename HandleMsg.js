@@ -186,7 +186,6 @@ module.exports = HandleMsg = async (aruga, message) => {
         const arg = body.trim().substring(body.indexOf(' ') + 1)
         const args = body.trim().split(/ +/).slice(1)
 		const argx = chats.slice(0).trim().split(/ +/).shift().toLowerCase()
-		const isDetectorLink = antilink.includes(chatId)
         const isCmd = body.startsWith(prefix)
         const uaOverride = process.env.UserAgent
         const url = args.length !== 0 ? args[0] : ''
@@ -194,6 +193,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
+	       const isDetectorLink = antilink.includes(chatId)
         const isBanned = banned.includes(pengirim)
 		const isSimi = simi.includes(chatId)
 		const isNgegas = ngegas.includes(chatId)
