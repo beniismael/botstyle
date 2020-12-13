@@ -169,7 +169,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         
       const isAdmin = adminNumber.includes(pengirim)
         const ownerNumber = '6282114499086@c.us'
-        const isOwner = ownerNumber.includes(pengirim)
+        const isOwnerBot = ownerNumber.includes(pengirim)
         
         const isWhite = (chatId) => adminNumber.includes(chatId) ? true : false
         const isWhiteList = (chatId) => {
@@ -252,7 +252,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             let islink = linkgrup.match(/(https:\/\/chat.whatsapp.com)/gi)
             let chekgrup = await aruga.inviteInfo(linkgrup)
             if (!islink) return aruga.reply(from, 'Maaf link group-nya salah! silahkan kirim link yang benar', id)
-            if (isOwner) {
+            if (isOwnerBot) {
                 await aruga.joinGroupViaLink(linkgrup)
                       .then(async () => {
                           await aruga.sendText(from, 'Berhasil join grup via link!')
@@ -1528,7 +1528,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'kickall': //mengeluarkan semua member
         if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
         let isOwner = chat.groupMetadata.owner == pengirim
-        if (!isOwner) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai oleh owner grup!', id)
+        if (!isOwnerBot) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai oleh owner grup!', id)
         if (!isBotGroupAdmins) return aruga.reply(from, 'Gagal, silahkan tambahkan bot sebagai admin grup!', id)
             const allMem = await aruga.getGroupMembers(groupId)
             for (let i = 0; i < allMem.length; i++) {
@@ -1543,7 +1543,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 
         //Owner Bot
         case 'ban':
-            if (!isOwner) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
+            if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
             if (args.length == 0) return aruga.reply(from, `Untuk banned seseorang agar tidak bisa menggunakan commands\n\nCaranya ketik: \n${prefix}ban add 628xx --untuk mengaktifkan\n${prefix}ban del 628xx --untuk nonaktifkan\n\ncara cepat ban banyak digrup ketik:\n${prefix}ban @tag @tag @tag`, id)
             if (args[0] == 'add') {
                 banned.push(args[1]+'@c.us')
@@ -1565,7 +1565,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         
         case 'bc': //untuk broadcast atau promosi
-            if (!isOwner) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
+            if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
             if (args.length == 0) return aruga.reply(from, `Untuk broadcast ke semua chat ketik:\n${prefix}bc [isi chat]`)
             let msg = body.slice(4)
             const chatz = await aruga.getAllChatIds()
@@ -1577,7 +1577,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.reply(from, 'Broadcast Success!', id)
             break
         case 'leaveall': //mengeluarkan bot dari semua group serta menghapus chatnya
-            if (!isOwner) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot', id)
+            if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot', id)
             const allChatz = await aruga.getAllChatIds()
             const allGroupz = await aruga.getAllGroups()
             for (let gclist of allGroupz) {
@@ -1588,7 +1588,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.reply(from, 'Success leave all group!', id)
             break
         case 'clearall': //menghapus seluruh pesan diakun bot
-            if (!isOwner) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot', id)
+            if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot', id)
             const allChatx = await aruga.getAllChats()
             for (let dchat of allChatx) {
                 await aruga.deleteChat(dchat.id)
@@ -1601,7 +1601,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
 	    
 	     // END HELPER FUNCTION
-                if (isGroupMsg && isAntiLink && !isGroupAdmins && !isAdmin && !isOwner){
+                if (!isGroupMsg && isAntiLink && !isGroupAdmins && !isAdmin && !isOwnerBot){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
                         if (!check) {
