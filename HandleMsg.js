@@ -162,7 +162,10 @@ module.exports = HandleMsg = async (aruga, message) => {
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
-
+        
+	const isAdmin = adminNumber.includes(pengirim)
+        const ownerNumber = '6282114499086@c.us'
+        const isOwner = ownerNumber.includes(pengirim)
       
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
@@ -170,7 +173,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         const arg = body.trim().substring(body.indexOf(' ') + 1)
         const args = body.trim().split(/ +/).slice(1)
 		const argx = chats.slice(0).trim().split(/ +/).shift().toLowerCase()
-		const isantilink = isGroupMsg ? antilink.includes(chat.id) : false
+		const isAntilink = isGroupMsg ? antilink.includes(chat.id) : false
         const isCmd = body.startsWith(prefix)
         const uaOverride = process.env.UserAgent
         const url = args.length !== 0 ? args[0] : ''
@@ -178,8 +181,6 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
-		const isOwner = ownerNumber.includes(pengirim)
-		const isDetectorLink = antilink.includes(chatId)
         const isBanned = banned.includes(pengirim)
 		const isSimi = simi.includes(chatId)
 		const isNgegas = ngegas.includes(chatId)
@@ -1572,7 +1573,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
 	    
 	     // END HELPER FUNCTION
-                if (isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
+                if (isGroupMsg && isAntilink && !isGroupAdmins && !isAdmin && !isOwner){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
                         if (!check) {
