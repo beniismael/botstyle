@@ -1282,6 +1282,9 @@ module.exports = HandleMsg = async (aruga, message) => {
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
+	case 'assalamualaikum':
+			aruga.sendPtt(from,'./media/waalaikumsalam.mp3', id)
+			break
          case 'fakename':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const linkfake = await axios.get(`https://freerestapi.herokuapp.com/api/v1/fakename?country=en`)
@@ -1398,31 +1401,20 @@ module.exports = HandleMsg = async (aruga, message) => {
             aruga.deleteMessage(quotedMsgObj.chatId, quotedMsgObj.id, false)
             break
 	case 'antilink':		
-	    if (!isGroupMsg) return aruga.reply(from, `Perintah ini hanya bisa di gunakan dalam group!`, id)
-            if (!isGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan oleh Admin group!`, id)
-            if (!isBotGroupAdmins) return aruga.reply(from, `Perintah ini hanya bisa di gunakan jika Bot menjadi Admin!`, id)
-            if (args[1] == 'enable') {
-                var cek = AntiLink.includes(chatId);
-                if(cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                } else {
-                    AntiLink.push(chatId)
-                    fs.writeFileSync('./lib/data/AntiLink.json', JSON.stringify(AntiLink))
-                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                }
-            } else if (args[1] == 'disable') {
-                var cek = AntiLink.includes(chatId);
-                if(!cek){
-                    return aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                } else {
-                    let nixx = AntiLink.indexOf(chatId)
-                    AntiLink.splice(nixx, 1)
-                    fs.writeFileSync('./lib/data/AntiLink.json', JSON.stringify(AntiLink))
-                    aruga.reply(from, `*「 ANTI GROUP LINK 」*\nPerhatian Untuk Member Grup ${name} Tercinta\nJika Ingin Send Link Harap Izin Ke Admin`, id)
-                }
+	    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            if (!isGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan oleh Admin group!', id)
+            if (args.length === 1) return aruga.reply(from, 'Pilih enable atau disable setan!', id)
+            if (args[1].toLowerCase() === 'enable') {
+                AntiLink.push(chat.id)
+                fs.writeFileSync('./lib/database/AntiLink.json', JSON.stringify(AntiLink))
+                aruga.reply(from, 'Fitur AntiLink berhasil di aktifkan di group ini!', id)
+            } else if (args[1].toLowerCase() === 'disable') {
+                AntiLink.splice(chat.id, 1)
+                fs.writeFileSync('./lib/data/AntiLink.json', JSON.stringify(AntiLink))
+                aruga.reply(from, 'Fitur AntiLink berhasil di nonaktifkan di group ini!', id)
             } else {
-                aruga.reply(from, `Pilih enable atau disable setan!`, id)
-            } 
+                aruga.reply(from, 'Pilih enable atau disable setan!', id)
+            }
             break
         case 'mentionall':
         case 'everyone':
