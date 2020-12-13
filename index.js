@@ -49,12 +49,12 @@ const start = (aruga = new Client()) => {
             const { contact, groupMetadata, name } = gChat
         // kondisi ketika seseorang diinvite/join group lewat link
         if (event.action === 'add' && event.who !== host) {
-            await aruga.sendTextWithMentions(event.chat, `@${event.who.replace('@c.us', '')} \n\n
+            await aruga.sendTextWithMentions(event.chat, `
 ╔╦╦╦═╦╗╔═╦═╦══╦═╗
 ║║║║╩╣╚╣═╣║║║║║╩╣
 ╚══╩═╩═╩═╩═╩╩╩╩═╝ 
 ╔━━❖❖❁❖❖❖❖❁❖❖━━╗
-║  ${name}             ║
+║      ${name}               ║
 ╚━━❖❖❁❖❖❖❖❁❖❖━━╝
 
 ╭───✪═⟪ *MEMBER BARU INTRO* ! ⟫═✪
