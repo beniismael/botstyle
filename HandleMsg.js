@@ -561,7 +561,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                         aruga
                             .revokeGroupInviteLink(from)
                             .then((res) => {
-                                aruga.reply(from, `Berhasil Revoke Grup Link gunakan *${prefix}grouplink* untuk mendapatkan group invite link yang terbaru`, id);
+                                aruga.reply(from, `Berhasil Revoke Grup Link gunakan *${prefix}linkgrup* untuk mendapatkan group invite link yang terbaru`, id);
                             })
                             .catch((err) => {
                                 console.log(`[ERR] ${err}`);
