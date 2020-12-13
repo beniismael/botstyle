@@ -150,7 +150,7 @@ const apakah = [
 module.exports = HandleMsg = async (aruga, message) => {
     try {
 	const apiKey = 'API-KEY'
-        const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
+        const { type, id, from, t, sender, author, isGroupMsg, adminNumber, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
         let { body } = message
         var { name, formattedTitle } = chat
         let { pushname, verifiedName, formattedName } = sender
@@ -158,12 +158,13 @@ module.exports = HandleMsg = async (aruga, message) => {
         const botNumber = await aruga.getHostNumber() + '@c.us'
         const groupId = isGroupMsg ? chat.groupMetadata.id : ''
         const groupAdmins = isGroupMsg ? await aruga.getGroupAdmins(groupId) : ''
+	
         const isGroupAdmins = groupAdmins.includes(sender.id) || false
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
-        
-	const isAdmin = adminNumber.includes(pengirim)
+	
+        const isAdmin = adminNumber.includes(pengirim)
         const ownerNumber = '6282114499086@c.us'
         const isOwner = ownerNumber.includes(pengirim)
       
