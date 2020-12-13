@@ -49,7 +49,7 @@ const start = (aruga = new Client()) => {
             const { contact, groupMetadata, name } = gChat
         // kondisi ketika seseorang diinvite/join group lewat link
         if (event.action === 'add' && event.who !== host) {
-            await aruga.sendTextWithMentions(event.chat, `
+            await aruga.sendTextWithMentions(event.chat, `\n
 ╔╦╦╦═╦╗╔═╦═╦══╦═╗
 ║║║║╩╣╚╣═╣║║║║║╩╣
 ╚══╩═╩═╩═╩═╩╩╩╩═╝ 
