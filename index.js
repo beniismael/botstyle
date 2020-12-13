@@ -3,6 +3,9 @@ const figlet = require('figlet')
 const options = require('./utils/options')
 const { color, messageLog } = require('./utils')
 const HandleMsg = require('./HandleMsg')
+const fs = require('fs')
+const adminNumber = JSON.parse(fs.readFileSync('./lib/data/admin.json'))
+const isWhite = (chatId) => adminNumber.includes(chatId) ? true : false
 
 const start = (aruga = new Client()) => {
     console.log(color(figlet.textSync('----------------', { horizontalLayout: 'default' })))
