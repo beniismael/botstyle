@@ -164,7 +164,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 	
-        const isAdmin = adminNumber.includes(pengirim)
+        const isAdmin = adminNumber.includes(sender.id)
         const ownerNumber = '6282114499086@c.us'
         const isOwner = ownerNumber.includes(pengirim)
       
