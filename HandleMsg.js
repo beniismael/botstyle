@@ -160,13 +160,11 @@ module.exports = HandleMsg = async (aruga, message) => {
         const groupId = isGroupMsg ? chat.groupMetadata.id : ''
         const groupAdmins = isGroupMsg ? await aruga.getGroupAdmins(groupId) : ''
         const isGroupAdmins = groupAdmins.includes(sender.id) || false
-	        const isAdmin = adminNumber.includes(sender.id)
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
 	
-        const ownerNumber = '6282114499086@c.us'
-        const isOwner = ownerNumber.includes(pengirim)
+        
       
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
@@ -182,6 +180,9 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
+	        const isAdmin = adminNumber.includes(sender.id)
+		const ownerNumber = '6282114499086@c.us'
+        const isOwner = ownerNumber.includes(pengirim)
         const isBanned = banned.includes(pengirim)
 		const isSimi = simi.includes(chatId)
 		const isNgegas = ngegas.includes(chatId)
