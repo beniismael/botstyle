@@ -1400,14 +1400,14 @@ module.exports = HandleMsg = async (aruga, message) => {
 	case 'antilink':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             if (!isGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan oleh Admin group!', id)
-            if (args.length === 1) return aruga.reply(from, 'Pilih enable atau disable!', id)
+            if (args.length === 1) return aruga.reply(from, 'Pilih enable atau disable setan!', id)
             if (args[1].toLowerCase() === 'enable') {
-                antilink.push(chat.id)
-                fs.writeFileSync('./lib/data/antilink.json', JSON.stringify(antilink))
+                AntiLink.push(chat.id)
+                fs.writeFileSync('./lib/data/AntiLink.json', JSON.stringify(AntiLink))
                 aruga.reply(from, 'Fitur antilink berhasil di aktifkan di group ini!', id)
             } else if (args[1].toLowerCase() === 'disable') {
-                antilink.splice(chat.id, 1)
-                fs.writeFileSync('./lib/data/antilink.json', JSON.stringify(antilink))
+                AntiLink.splice(chat.id, 1)
+                fs.writeFileSync('./lib/data/AntiLink.json', JSON.stringify(AntiLink))
                 aruga.reply(from, 'Fitur antilink berhasil di nonaktifkan di group ini!', id)
             } else {
                 aruga.reply(from, 'Pilih enable atau disable setan!', id)
