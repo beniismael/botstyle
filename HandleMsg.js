@@ -1285,6 +1285,9 @@ module.exports = HandleMsg = async (aruga, message) => {
 	case 'assalamualaikum':
 			aruga.sendPtt(from,'./media/waalaikumsalam.mp3', id)
 			break
+         case 'sedih':
+			aruga.sendPtt(from,'./media/sad.mp3', id)
+			break
          case 'fakename':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const linkfake = await axios.get(`https://freerestapi.herokuapp.com/api/v1/fakename?country=en`)
