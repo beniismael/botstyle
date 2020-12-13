@@ -58,6 +58,7 @@ const simi = JSON.parse(fs.readFileSync('./settings/simi.json'))
 const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
 const setting = JSON.parse(fs.readFileSync('./settings/setting.json'))
 const antilink = JSON.parse(fs.readFileSync('./settings/antilink.json'))
+const adminNumber = JSON.parse(fs.readFileSync('./settings/admin.json'))
 
 let { 
     ownerNumber, 
@@ -159,7 +160,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         const groupId = isGroupMsg ? chat.groupMetadata.id : ''
         const groupAdmins = isGroupMsg ? await aruga.getGroupAdmins(groupId) : ''
         const isGroupAdmins = groupAdmins.includes(sender.id) || false
-	const isAdmin = adminNumber.includes(sender.id) || false
+	        const isAdmin = adminNumber.includes(sender.id)
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
 		const pengirim = sender.id
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
