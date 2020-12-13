@@ -59,7 +59,7 @@ const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
 const setting = JSON.parse(fs.readFileSync('./settings/setting.json'))
 
 //LOAD FILE
-const Antilink = JSON.parse(fs.readFileSync('./lib/data/antilink.json'))
+const AntiLink = JSON.parse(fs.readFileSync('./lib/data/AntiLink.json'))
 const adminNumber = JSON.parse(fs.readFileSync('./lib/data/admin.json'))
 
 let { 
@@ -193,8 +193,8 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
-	       const isDetectorLink = antilink.includes(chatId)
         const isBanned = banned.includes(pengirim)
+	        const isAntiLink = isGroupMsg ? AntiLink.includes(chat.id) : false
 		const isSimi = simi.includes(chatId)
 		const isNgegas = ngegas.includes(chatId)
 		const isKasar = await cariKasar(chats)
@@ -1586,7 +1586,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		
 	    
 	     // END HELPER FUNCTION
-                if (isGroupMsg && isDetectorLink && !isGroupAdmins && !isAdmin && !isOwner){
+                if (isGroupMsg && isAntiLink && !isGroupAdmins && !isAdmin && !isOwner){
                     if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
                         const check = await aruga.inviteInfo(chats);
                         if (!check) {
