@@ -3,7 +3,7 @@
     "groupLimit": 5,
     "barbarkey": "YOUR_APIKEY",
     "vhtearkey": "YOUR_APIKEY",
-    "prefix": "#"
+    "prefix": "#",
     "ownerNumber": "6282114499086@c.us",
     "mtc": false,
     "restartState": false,
