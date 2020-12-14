@@ -72,7 +72,21 @@ let {
     prefix,
     restartState: isRestart,
     mtc: mtcState
-} = setting
+    } = setting
+
+let state = {
+    status: () => {
+        if(banChats){
+            return 'Nonaktif'
+        }else if(mtcState){
+            return 'Nonaktif'
+        }else if(!mtcState){
+            return 'Aktif'
+        }else{
+            return 'Aktif'
+        }
+    }
+}
 
 const {
     apiNoBg,
