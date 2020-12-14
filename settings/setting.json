@@ -3,4 +3,11 @@
     "memberLimit": 5,
     "groupLimit": 5,
     "prefix": "#"
+    "barbarkey": "YOUR_APIKEY",
+    "vhtearkey": "YOUR_APIKEY",
+    "mtc": false,
+    "restartState": false,
+    "restartId": "undefined",
+    "banChats": false,
+    "Rest": true
   }
