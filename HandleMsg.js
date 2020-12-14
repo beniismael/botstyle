@@ -66,7 +66,12 @@ let {
     ownerNumber, 
     groupLimit, 
     memberLimit,
-    prefix
+    banChats,
+    barbarkey,
+    vhtearkey,
+    prefix,
+    restartState: isRestart,
+    mtc: mtcState
 } = setting
 
 const {
@@ -1248,21 +1253,6 @@ module.exports = HandleMsg = async (aruga, message) => {
                 })
                 insert(author, type, content, pushname, from, argv)
                 break
-	case 'assalamualaikum':
-			aruga.sendPtt(from,'./media/waalaikumsalam.mp3', id)
-			break
-         case 'sedih':
-			aruga.sendPtt(from,'./media/sad.mp3', id)
-			break
-         case 'sange':
-			aruga.sendPtt(from,'./media/sange.mp3', id)
-                        break
-         case 'mautidur':
-			aruga.sendPtt(from,'./media/mau tidur.mp3', id)
-			break
-         case 'hai':
-			aruga.sendPtt(from,'./media/hai.mp3', id)
-			break
          case 'fakename':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const linkfake = await axios.get(`https://freerestapi.herokuapp.com/api/v1/fakename?country=en`)
