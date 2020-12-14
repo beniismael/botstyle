@@ -66,7 +66,6 @@ let {
     ownerNumber, 
     groupLimit, 
     memberLimit,
-    banChats,
     barbarkey,
     vhtearkey,
     prefix,
@@ -76,9 +75,7 @@ let {
 
 let state = {
     status: () => {
-        if(banChats){
-            return 'Nonaktif'
-        }else if(mtcState){
+        if(mtcState){
             return 'Nonaktif'
         }else if(!mtcState){
             return 'Aktif'
