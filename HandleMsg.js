@@ -435,6 +435,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 }
             }
             break
+
         case 'meme':
             if ((isMedia || isQuotedImage) && args.length >= 2) {
                 const top = arg.split('|')[0]
