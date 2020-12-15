@@ -1251,13 +1251,6 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
             
         // Other Command
-        case 'infogempa':
-	    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            const bmkg = await axios.get(`https://mhankbarbars.herokuapp.com/api/infogempa?apiKey=${apiKey}`)
-            const { potensi, koordinat, lokasi, kedalaman, magnitude, waktu, map } = bmkg
-            const hasil = `*${waktu}*\n📍 *Lokasi* : *${lokasi}*\n〽️ *Kedalaman* : *${kedalaman}*\n💢 *Magnitude* : *${magnitude}*\n🔘 *Potensi* : *${potensi}*\n📍 *Koordinat* : *${koordinat}*`
-            aruga.sendFileFromUrl(from, map, 'shakemap.jpg', hasil, id)
-            break
         case 'resi':
             if (args.length !== 2) return aruga.reply(from, `Maaf, format pesan salah.\nSilahkan ketik pesan dengan ${prefix}resi <kurir> <no_resi>\n\nKurir yang tersedia:\njne, pos, tiki, wahana, jnt, rpx, sap, sicepat, pcp, jet, dse, first, ninja, lion, idl, rex`, id)
             const kurirs = ['jne', 'pos', 'tiki', 'wahana', 'jnt', 'rpx', 'sap', 'sicepat', 'pcp', 'jet', 'dse', 'first', 'ninja', 'lion', 'idl', 'rex']
