@@ -5,7 +5,6 @@ const { color, messageLog } = require('./utils')
 const HandleMsg = require('./HandleMsg')
 const fs = require('fs')
 const adminNumber = JSON.parse(fs.readFileSync('./lib/data/admin.json'))
-const setting = JSON.parse(fs.readFileSync('./settings/setting.json'))
 const isWhite = (chatId) => adminNumber.includes(chatId) ? true : false
 
 const start = (aruga = new Client()) => {
