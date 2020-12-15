@@ -15,7 +15,7 @@ const { getStickerMaker } = require('./lib/ttp')
 const db_group = new FileSync(appRoot+'/lib/data/group.json')
 const db = low(db_group)
 db.defaults({ group: []}).write()
-const vhtearkey = 'ApiKey'
+const vhtearkey = 'apikey'
 
 const { 
     removeBackgroundFromImageBase64
@@ -150,6 +150,24 @@ const apakah = [
                 '10%',
                 '5%\n *AMAN BRO*'
                 ]
+	const mess = {
+            wait: '[ WAIT ] Sedang di proses⏳ silahkan tunggu sebentar',
+            magernulissatu: 'Harap Tunggu, BOT Sedang Menulis Di Buku 1!',
+            error: {
+                St: '[❗] Kirim gambar dengan caption *#sticker* atau tag gambar yang sudah dikirim',
+                Ti: '[❗] Replay sticker dengan caption *#stickertoimg* atau tag sticker yang sudah dikirim',
+                Qm: '[❗] Terjadi kesalahan, mungkin themenya tidak tersedia!',
+                Yt3: '[❗] Terjadi kesalahan, tidak dapat meng konversi ke mp3!',
+                Yt4: '[❗] Terjadi kesalahan, mungkin error di sebabkan oleh sistem.',
+                Ig: '[❗] Terjadi kesalahan, mungkin karena akunnya private',
+                Ki: '[❗] Bot tidak bisa mengeluarkan Admin group!',
+                Sp: '[❗] Bot tidak bisa mengeluarkan Admin',
+                Ow: '[❗] Bot tidak bisa mengeluarkan Owner',
+                Bk: '[❗] Bot tidak bisa memblockir Owner',
+                Ad: '[❗] Tidak dapat menambahkan target, mungkin karena di private',
+                Iv: '[❗] Link yang anda kirim tidak valid!'
+            }
+        }
 
 module.exports = HandleMsg = async (aruga, message) => {
     try {
@@ -435,6 +453,34 @@ module.exports = HandleMsg = async (aruga, message) => {
                 }
             }
             break
+	 case 'blackpink':
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#blackpink [ Teks ]*, contoh *#blackpink benni*`, id)
+            tobz.reply(from, mess.wait, id)
+            const blpk = body.slice(11)
+            if (blpk.length > 10) return aruga.reply(from, '*Teks Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+            await aruga.sendFileFromUrl(from, `https://api.vhtear.com/blackpinkicon?text=${blpk}&apikey=${vhtearkey}`, 'blackpink.jpg', '', id)
+            break
+        case 'thunder':
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#thunder [ Teks ]*, contoh *#thunder Benni*`, id)
+            aruga.reply(from, mess.wait, id)
+            const thndr = body.slice(9)
+            if (thndr.length > 10) return aruga.reply(from, '*Teks Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+            await aruga.sendFileFromUrl(from, `https://api.vhtear.com/thundertext?text=${thndr}&apikey=${vhtearkey}`, 'thndr.jpg', '', id)
+            break
+        case 'pornhub':
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#pornhub [ |Teks1|Teks2 ]*, contoh *#pornhub |Benni|Dev Botstyle*`, id)
+            argz = body.trim().split('|')
+            if (argz.length >= 2) {
+                aruga.reply(from, mess.wait, id)
+                const lpornhub = argz[1]
+                const lpornhub2 = argz[2]
+                if (lpornhub.length > 10) return aruga.reply(from, '*Teks1 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+                if (lpornhub2.length > 10) return aruga.reply(from, '*Teks2 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+                tobz.sendFileFromUrl(from, `https://api.vhtear.com/pornlogo?text1=${lpornhub}&text2=${lpornhub2}&apikey=${vhtearkey}`)
+            } else {
+                await aruga.reply(from, `Wrong Format!\n[❗] Kirim perintah *#pornhub [ |Teks1|Teks2 ]*, contoh *#pornhub |Benni|Dev Botstyle*`, id)
+            }
+            break
 
         case 'meme':
             if ((isMedia || isQuotedImage) && args.length >= 2) {
@@ -510,7 +556,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'slap':
             arg = body.trim().split(' ')
             const person = author.replace('@c.us', '')
-            await client.sendGiphyAsSticker(from, 'https://media.giphy.com/media/S8507sBJm1598XnsgD/source.gif')
+            await aruga.sendGiphyAsSticker(from, 'https://media.giphy.com/media/S8507sBJm1598XnsgD/source.gif')
             aruga.sendTextWithMentions(from, '@' + person + ' *slapped* ' + arg[1])
             break	
         case 'seberapalesbi':
@@ -535,8 +581,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
 	case 'ttp2':
-            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#ttp2 [ Teks ]*, contoh *#ttp2 Benni|Blue*`, id)
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#ttp2 [ Teks ]*, contoh *#ttp2 Benni*`, id)
             const ttp2t = body.slice(6)
             const lttp2 = ["Orange","White","Green","Black","Purple","Red","Yellow","Blue","Navy","Grey","Magenta","Brown","Gold"]
             const rttp2 = lttp2[Math.floor(Math.random() * (lttp2.length))]
@@ -1600,7 +1645,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 
         //Owner Bot
         case 'unban':
-            if(!isowner) return aruga.reply(from, 'Only bot admins can use this CMD', message.id)
+            if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
             let inx = ban.indexOf(mentionedJidList[0])
             ban.splice(inx, 1)
             fs.writeFileSync('./settings/banned.json', JSON.stringify(banned))
