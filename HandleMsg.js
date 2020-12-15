@@ -591,6 +591,94 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
+        case 'maagernulis1':
+                if (args.length === 4) return await aruga.reply(from, 'Kirim Perintah */nulis2 --[nama]--[kelas]--[teks]*\n\n*Contoh :*\n/nulis2 --Benniismael--7B--Subscribe NEOGAMING CH', id)
+                arg = body.trim().split('--')
+                const diNama = arg[1]
+                const diKelas = arg[2]
+                const diTulis = arg[3]
+                await aruga.reply(from, menulis.magernulissatu, id)
+                const panjangKalimat = diTulis.replace(/(\S+\s*){1,10}/g, '$&\n')
+                const panjangNama = diNama.replace(/(\S+\s*){1,10}/g, '$&\n')
+                const panjangKelas = diKelas.replace(/(\S+\s*){1,10}/g, '$&\n')
+                const panjangBaris = panjangKalimat.split('\n').slice(0, 30).join('\n')
+                const panjangBarisNama = panjangNama.split('\n').slice(0, 30).join('\n')
+                const panjangBarisKelas = panjangKelas.split('\n').slice(0, 30).join('\n')
+                var months = ['- 1 -', '- 2 -', '- 3 -', '- 4 -', '- 5 -', '- 6 -', '- 7 -', '- 8 -', '- 9 -', '- 10 -', '- 11 -', '- 12 -'];
+                var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                var date = new Date();
+                var day = date.getDate();
+                var month = date.getMonth();
+                var thisDay = date.getDay(),
+                    thisDay = myDays[thisDay];
+                var yy = date.getYear();
+                var year = (yy < 1000) ? yy + 1900 : yy;
+                const waktu = (day + ' ' + months[month] + ' ' + year)
+                const hari = (thisDay)
+                spawn('convert', [
+                    './mager/magernulis/magernulis1.jpg',
+                    '-font',
+                    './font/Zahraaa.ttf',
+                    '-size',
+                    '700x960',
+                    '-pointsize',
+                    '20',
+                    '-interline-spacing',
+                    '1',
+                    '-annotate',
+                    '+806+78',
+                    harinye,
+                    '-font',
+                    './font/Zahraaa.ttf',
+                    '-size',
+                    '700x960',
+                    '-pointsize',
+                    '18',
+                    '-interline-spacing',
+                    '1',
+                    '-annotate',
+                    '+806+102',
+                    waktunye,
+                    '-font',
+                    './font/Zahraaa.ttf',
+                    '-size',
+                    '700x960',
+                    '-pointsize',
+                    '18',
+                    '-interline-spacing',
+                    '1',
+                    '-annotate',
+                    '+360+100',
+                    panjangBarisNama,
+                    '-font',
+                    './font/Zahraaa.ttf',
+                    '-size',
+                    '700x960',
+                    '-pointsize',
+                    '18',
+                    '-interline-spacing',
+                    '1',
+                    '-annotate',
+                    '+360+120',
+                    panjangBarisKelas, 
+                    '-font',
+                    './font/Zahraaa.ttf',
+                    '-size',
+                    '700x960',
+                    '-pointsize',
+                    '20',
+                    '-interline-spacing',
+                    '-7.5',
+                    '-annotate',
+                    '+344+142',
+                    panjangBaris,
+                    './mager/magernulis√/magernulis1√.jpg'
+                ])
+                .on('error', () => tobz.reply(from, 'Error Bjeer, Keknya Scriptnya Lagi Error', id))
+                .on('exit', () => {
+                    aruga.sendImage(from, './mager/magernulis√/magernulis1√.jpg', 'FarelZahra.jpg', '*Sukses✓ Nulis DiBuku ✓*\n\n*YouTube : MFarelS CH*\n*Instagram : @mfarelsyahtiawan*\n*Twitter : @MSyahtiawan*\n*GitHub : @MFarelS*\n*Saweria : MFarelS*\n\n*© Powered By BOT✓*', id)
+                })
+            break
 
         //Islam Command
         case 'listsurah':
@@ -854,6 +942,13 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
 			
         // Random Kata
+        case 'cat':
+                    await aruga.simulateTyping(from, true)
+                    aruga.sendText(from, '⏳ Tunggu yaa sayang, sedang proses sayang . . . ⏳')
+                    q2 = Math.floor(Math.random() * 900) + 300;
+                    q3 = Math.floor(Math.random() * 900) + 300;
+                    aruga.sendFileFromUrl(from, 'http://placekitten.com/'+q3+'/'+q2, 'kucing.png','Neko');
+                break
 	case 'motivasi':
             fetch('https://raw.githubusercontent.com/selyxn/motivasi/main/motivasi.txt')
             .then(res => res.text())
