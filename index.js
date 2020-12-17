@@ -60,15 +60,10 @@ const start = (aruga = new Client()) => {
 ║      ${name}             ║
 ╚━━❖❖❁❖❖❖❖❁❖❖━━╝
 
-╭───✪═⟪ *MEMBER BARU INTRO* ! ⟫═✪
+╭───✪═⟪ *OPEN LONTE TARIF MURAH* ! ⟫═✪
 │
 │╭──✪═⟪ ⟫══✪
-│├≽ _nama:_
-│├≽ _umur:_
-│├≽ _kota asal:_ 
-│├≽ _kelas:_
-│├≽ _gender:_
-│├≽ _status:_
+│├≽ _berapa jam:_
 │╰──✪══⟪ END ⟫══
 ━━━━❰･❉･❱━━━━
         
