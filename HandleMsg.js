@@ -7,15 +7,11 @@ const axios = require('axios')
 const fetch = require('node-fetch')
 
 const appRoot = require('app-root-path')
-const get = require('got')
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
-const { getStickerMaker } = require('./lib/ttp')
-
 const db_group = new FileSync(appRoot+'/lib/data/group.json')
 const db = low(db_group)
 db.defaults({ group: []}).write()
-const vhtearkey = 'apikey'
 
 const { 
     removeBackgroundFromImageBase64
@@ -26,20 +22,16 @@ const {
 } = require('child_process')
 
 const { 
-    menuId,
-    brainly,
+    menuId, 
     cekResi, 
-    ttp,
     urlShortener, 
     meme, 
     translate, 
     getLocationData,
-    ramalanCinta,
     images,
     resep,
     rugapoi,
     rugaapi,
-    toxic,
     cariKasar
 } = require('./lib')
 
@@ -58,10 +50,11 @@ const banned = JSON.parse(fs.readFileSync('./settings/banned.json'))
 const simi = JSON.parse(fs.readFileSync('./settings/simi.json'))
 const ngegas = JSON.parse(fs.readFileSync('./settings/ngegas.json'))
 const setting = JSON.parse(fs.readFileSync('./settings/setting.json'))
+const welcome = JSON.parse(fs.readFileSync('./settings/welcome.json'))
 
-//LOAD FILE
-const AntiLink = JSON.parse(fs.readFileSync('./lib/data/AntiLink.json'))
-const adminNumber = JSON.parse(fs.readFileSync('./lib/data/admin.json'))
+let antisticker = JSON.parse(fs.readFileSync('./lib/helper/antisticker.json'))
+let stickerspam = JSON.parse(fs.readFileSync('./lib/helper/stickerspam.json'))
+let antilink = JSON.parse(fs.readFileSync('./lib/helper/antilink.json'))
 
 let { 
     ownerNumber, 
@@ -89,6 +82,7 @@ const inArray = (needle, haystack) => {
     }
     return false;
 }
+
 const apakah = [
             'Ya',
             'Tidak',
@@ -150,28 +144,9 @@ const apakah = [
                 '10%',
                 '5%\n *AMAN BRO*'
                 ]
-	const mess = {
-            wait: '[ WAIT ] Sedang di proses⏳ silahkan tunggu sebentar',
-            magernulissatu: 'Harap Tunggu, BOT Sedang Menulis Di Buku 1!',
-            error: {
-                St: '[❗] Kirim gambar dengan caption *#sticker* atau tag gambar yang sudah dikirim',
-                Ti: '[❗] Replay sticker dengan caption *#stickertoimg* atau tag sticker yang sudah dikirim',
-                Qm: '[❗] Terjadi kesalahan, mungkin themenya tidak tersedia!',
-                Yt3: '[❗] Terjadi kesalahan, tidak dapat meng konversi ke mp3!',
-                Yt4: '[❗] Terjadi kesalahan, mungkin error di sebabkan oleh sistem.',
-                Ig: '[❗] Terjadi kesalahan, mungkin karena akunnya private',
-                Ki: '[❗] Bot tidak bisa mengeluarkan Admin group!',
-                Sp: '[❗] Bot tidak bisa mengeluarkan Admin',
-                Ow: '[❗] Bot tidak bisa mengeluarkan Owner',
-                Bk: '[❗] Bot tidak bisa memblockir Owner',
-                Ad: '[❗] Tidak dapat menambahkan target, mungkin karena di private',
-                Iv: '[❗] Link yang anda kirim tidak valid!'
-            }
-        }
 
 module.exports = HandleMsg = async (aruga, message) => {
     try {
-	const apiKey = 'API-KEY'
         const { type, id, from, t, sender, author, isGroupMsg, chat, chatId, caption, isMedia, mimetype, quotedMsg, quotedMsgObj, mentionedJidList } = message
         let { body } = message
         var { name, formattedTitle } = chat
@@ -182,23 +157,12 @@ module.exports = HandleMsg = async (aruga, message) => {
         const groupAdmins = isGroupMsg ? await aruga.getGroupAdmins(groupId) : ''
         const isGroupAdmins = groupAdmins.includes(sender.id) || false
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
-		const pengirim = sender.id
+        const pengirim = sender.id
+        const GroupLinkDetector = antilink.includes(chatId)
+        const AntiStickerSpam = antisticker.includes(chatId)
+        const stickermsg = message.type === 'sticker'
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
-	
-        
-      const isAdmin = adminNumber.includes(pengirim)
-        const ownerNumber = '6282114499086@c.us'
-        const isOwnerBot = ownerNumber.includes(pengirim)
-        
-        const isWhite = (chatId) => adminNumber.includes(chatId) ? true : false
-        const isWhiteList = (chatId) => {
-            if(adminNumber.includes(pengirim)){
-                if(muted.includes(chatId)) return false
-                return true
-            }else{
-                return false
-            }
-        }
+
         // Bot Prefix
         body = (type === 'chat' && body.startsWith(prefix)) ? body : ((type === 'image' && caption || type === 'video' && caption) && caption.startsWith(prefix)) ? caption : ''
         const command = body.slice(1).trim().split(/ +/).shift().toLowerCase()
@@ -212,8 +176,8 @@ module.exports = HandleMsg = async (aruga, message) => {
 	    const isQuotedVideo = quotedMsg && quotedMsg.type === 'video'
 		
 		// [IDENTIFY]
+		const isOwnerBot = ownerNumber.includes(pengirim)
         const isBanned = banned.includes(pengirim)
-	        const isAntiLink = isGroupMsg ? AntiLink.includes(chat.id) : false
 		const isSimi = simi.includes(chatId)
 		const isNgegas = ngegas.includes(chatId)
 		const isKasar = await cariKasar(chats)
@@ -225,6 +189,83 @@ module.exports = HandleMsg = async (aruga, message) => {
         if(!isCmd && isKasar && isGroupMsg) { console.log(color('[BADW]', 'orange'), color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${argx}`), 'from', color(pushname), 'in', color(name || formattedTitle)) }
         if (isCmd && !isGroupMsg) { console.log(color('[EXEC]'), color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${command} [${args.length}]`), 'from', color(pushname)) }
         if (isCmd && isGroupMsg) { console.log(color('[EXEC]'), color(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'yellow'), color(`${command} [${args.length}]`), 'from', color(pushname), 'in', color(name || formattedTitle)) }
+
+        function isStickerMsg(id){
+            if (isOwner) {return false;}
+            let found = false;
+            for (let i of stickerspam){
+                if(i.id === id){
+                    if (i.msg >= 7) {
+                        found === true 
+                        aruga.reply(from, '*[ANTI STICKER SPAM]*\nKamu telah SPAM STICKER di grup, kamu akan di kick otomatis oleh bot', message.id).then(() => {
+                            aruga.removeParticipant(groupId, id)
+                        }).then(() => {
+                            const cus = id
+                            var found = false
+                            Object.keys(stickerspam).forEach((i) => {
+                                if(stickerspam[i].id == cus){
+                                    found = i
+                                }
+                            })
+                            if (found !== false) {
+                                stickerspam[found].msg = 1;
+                                const result = '✅ DB Sticker Spam has been reset'
+                                console.log(stickerspam[found])
+                                fs.writeFileSync('./lib/helper/stickerspam.json',JSON.stringify(stickerspam));
+                                aruga.sendText(from, result)
+                            } else {
+                                    aruga.reply(from, `${monospace(`Di database ngga ada nomer itu ngab`)}`, id)
+                            }
+                        })
+                        return true;
+                    }else{
+                        found === true
+                        return false;
+                    }   
+                }
+            }
+            if (found === false){
+                let obj = {id: `${id}`, msg:1};
+                stickerspam.push(obj);
+                fs.writeFileSync('./lib/helper/stickerspam.json',JSON.stringify(stickerspam));
+                return false;
+            }  
+        }
+        function addStickerCount(id){
+            if (isOwner) {return;}
+            var found = false
+            Object.keys(stickerspam).forEach((i) => {
+                if(stickerspam[i].id == id){
+                    found = i
+                }
+            })
+            if (found !== false) {
+                stickerspam[found].msg += 1;
+                fs.writeFileSync('./lib/helper/stickerspam.json',JSON.stringify(stickerspam));
+            }
+        }
+
+        //fitur anti link
+        if (isGroupMsg && GroupLinkDetector && !isGroupAdmins && !isOwner){
+            if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
+                const check = await aruga.inviteInfo(chats);
+                if (!check) {
+                    return
+                } else {
+                    aruga.reply(from, '*[GROUP LINK DETECTOR]*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(', id).then(() => {
+                        aruga.removeParticipant(groupId, sender.id)
+                    })
+                }
+            }
+        }
+
+
+        if (isGroupMsg && AntiStickerSpam && !isGroupAdmins && !isOwner){
+            if(stickermsg === true){
+                if(isStickerMsg(serial)) return
+                addStickerCount(serial)
+            }
+        }
 
         // [BETA] Avoid Spam Message
         msgFilter.addFilter(from)
@@ -261,9 +302,9 @@ module.exports = HandleMsg = async (aruga, message) => {
         case 'donasi':
             await aruga.sendText(from, menuId.textDonasi())
             break
-        case 'owner':
+        case 'ownerbot':
             await aruga.sendContact(from, ownerNumber)
-            .then(() => aruga.sendText(from, 'Jika kalian mau donasi / undang bot ke grup bayar bisa chat nomor owner!'))
+            .then(() => aruga.sendText(from, 'Jika kalian ingin request fitur silahkan chat nomor owner!'))
             break
         case 'join':
             if (args.length == 0) return aruga.reply(from, `Jika kalian ingin mengundang bot kegroup silahkan invite atau dengan\nketik ${prefix}join [link group]`, id)
@@ -275,12 +316,12 @@ module.exports = HandleMsg = async (aruga, message) => {
                 await aruga.joinGroupViaLink(linkgrup)
                       .then(async () => {
                           await aruga.sendText(from, 'Berhasil join grup via link!')
-                          await aruga.sendText(chekgrup.id, `Hai minna~, Im Aruga BOT. To find out the commands on this bot type ${prefix}menu`)
+                          await aruga.sendText(chekgrup.id, `Hai minna~, Im Aruga Bot. To find out the commands on this Bot type ${prefix}menu`)
                       })
             } else {
                 let cgrup = await aruga.getAllGroups()
                 if (cgrup.length > groupLimit) return aruga.reply(from, `Sorry, the group on this bot is full\nMax Group is: ${groupLimit}`, id)
-                if (cgrup.size < memberLimit) return aruga.reply(from, `Sorry, BOT wil not join if the group members do not exceed ${memberLimit} people`, id)
+                if (cgrup.size < memberLimit) return aruga.reply(from, `Sorry, Bot wil not join if the group members do not exceed ${memberLimit} people`, id)
                 await aruga.joinGroupViaLink(linkgrup)
                       .then(async () =>{
                           await aruga.reply(from, 'Berhasil join grup via link!', id)
@@ -298,10 +339,89 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         }
 
+	//Sticker Converter
+	case 'stikertoimg':
+	case 'stickertoimg':
+	case 'stimg':
+            if (quotedMsg && quotedMsg.type == 'sticker') {
+                const mediaData = await decryptMedia(quotedMsg)
+                aruga.reply(from, `Sedang di proses! Silahkan tunggu sebentar...`, id)
+                const imageBase64 = `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`
+                await aruga.sendFile(from, imageBase64, 'imgsticker.jpg', 'Berhasil convert Sticker to Image!', id)
+                .then(() => {
+                    console.log(`Sticker to Image Processed for ${processTime(t, moment())} Seconds`)
+                })
+        } else if (!quotedMsg) return aruga.reply(from, `Format salah, silahkan tag sticker yang ingin dijadikan gambar!`, id)
+        break
+          case 'stickerfire':
+                if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+                aruga.reply(from, '[WAIT] Sedang di proses⏳ silahkan tunggu ± 1 min!', id)
+                if (isMedia && type === 'image') {
+                const mediaData = await decryptMedia(message, uaOverride)
+                const getUrli = await uploadImages(mediaData, false)
+                const imgnya = await stickerburn(getUrli)
+                const Sfire = imgnya.result.imgUrl
+                await aruga.sendStickerfromUrl(from, Sfire)
+                } else {
+                await aruga.reply(from, 'Wrong Format!\n⚠️ Harap Kirim Gambar Dengan #stickerfire', id)
+                }
+                break
+         case 'stickerlightning':
+        case 'slightning':
+             aruga.reply(from, `[WAIT] Sedang di proses⏳ silahkan tunggu ± 1 min!`, id)
+            if (isMedia && type === 'image') {
+                const mediaData = await decryptMedia(message, uaOverride)
+                const getUrle = await uploadImages(mediaData, false)
+                const imgnye = await stickerlight(getUrle)
+                const Slight = imgnye.result.imgUrl
+                await aruga.sendStickerfromUrl(from, Slight)
+            } else if (quotedMsg && quotedMsg.type == 'image') {
+                const mediaData = await decryptMedia(quotedMsg, uaOverride)
+                const getUrle = await uploadImages(mediaData, false)
+                const imgnye = await stickerlight(getUrle)
+                const Slight = imgnye.result.imgUrl
+                await aruga.sendStickerfromUrl(from, Slight)
+            } else {
+                await aruga.reply(from, `Wrong Format!\n⚠️ Harap Kirim Gambar Dengan #stickerlightning`, id)
+            }
+            break
+        case 'stickernobg':
+        case 'stikernobg':
+	    if (isMedia) {
+                try {
+                    var mediaData = await decryptMedia(message, uaOverride)
+                    var imageBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`
+                    var base64img = imageBase64
+                    var outFile = './media/img/noBg.png'
+                    // untuk api key kalian bisa dapatkan pada website remove.bg
+                    var result = await removeBackgroundFromImageBase64({ base64img, apiKey: 'API-KEY', size: 'auto', type: 'auto', outFile })
+                    await fs.writeFile(outFile, result.base64img)
+                    await aruga.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`)
+                } catch(err) {
+                    console.log(err)
+                }
+            }
+            break
+			
+			
         // Sticker Creator
+    case 'logopornhub':
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#logopornhub [ |Teks1|Teks2 ]*,\n\n contoh : *#pornhub |Dimas| HUB*`, id)
+            argz = body.trim().split('|')
+            if (argz.length >= 2) {
+                aruga.reply(from, `sabar brok eug proses dolo....`, id)
+                const lpornhub = argz[1]
+                const lpornhub2 = argz[2]   
+                if (lpornhub > 10) return aruga.reply(from, '*Teks1 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+                if (lpornhub2 > 10) return aruga.reply(from, '*Teks2 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+                aruga.sendFileFromUrl(from, `https://docs-jojo.herokuapp.com/api/phblogo?text1=${lpornhub}&text2=${lpornhub2}`)
+            } else {
+                await aruga.reply(from, `Wrong Format!\n[❗] Kirim perintah *#pornhub [ |Teks1| Teks2 ]*,\n\n contoh : *#logopornhub |Dimas| HUB*`, id)
+            }
+            break
 	case 'coolteks':
 	case 'cooltext':
-            if (args.length == 0) return aruga.reply(from, `Untuk membuat teks keren CoolText pada gambar, gunakan ${prefix}cooltext teks\n\nContoh: ${prefix}cooltext fikriganteng`, id)
+            if (args.length == 0) return aruga.reply(from, `Untuk membuat teks keren CoolText pada gambar, gunakan ${prefix}cooltext teks\n\nContoh: ${prefix}cooltext arugaz`, id)
 		rugaapi.cooltext(args[0])
 		.then(async(res) => {
 		await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
@@ -342,6 +462,89 @@ module.exports = HandleMsg = async (aruga, message) => {
                     : aruga.reply(from, 'Here\'s your sticker')).then(() => console.log(`Sticker Processed for ${processTime(t, moment())} Second`))
             } else {
                 await aruga.reply(from, `Tidak ada gambar! Untuk menggunakan ${prefix}sticker\n\n\nKirim gambar dengan caption\n${prefix}sticker <biasa>\n${prefix}sticker nobg <tanpa background>\n\natau Kirim pesan dengan\n${prefix}sticker <link_gambar>`, id)
+            }
+            break
+            case 'antisticker':
+            case 'antistiker':
+                    if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
+                    if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
+                    if (!isBotGroupAdmins) return aruga.reply(from, 'Wahai admin, jadikan saya sebagai admin grup dahulu :)', id)
+                    if (args[0] == 'on') {
+                        var cek = antisticker.includes(chatId);
+                        if(cek){
+                            return aruga.reply(from, '*Anti Spam Sticker Detector* sudah aktif di grup ini', id) //if number already exists on database
+                        } else {
+                            antisticker.push(chatId)
+                            fs.writeFileSync('./lib/helper/antisticker.json', JSON.stringify(antisticker))
+                            aruga.reply(from, '*[Anti Sticker SPAM]* telah di aktifkan\nSetiap member grup yang spam sticker lebih dari 7 akan di kick oleh bot!', id)
+                        }
+                    } else if (args[0] == 'off') {
+                        var cek = antilink.includes(chatId);
+                        if(cek){
+                            return aruga.reply(from, '*Anti Spam Sticker Detector* sudah non-aktif di grup ini', id) //if number already exists on database
+                        } else {
+                            let nixx = antisticker.indexOf(chatId)
+                            antisticker.splice(nixx, 1)
+                            fs.writeFileSync('./lib/helper/antisticker.json', JSON.stringify(antisticker))
+                            aruga.reply(from, '*[Anti Sticker SPAM]* telah di nonaktifkan\n', id)
+                        }
+                    } else {
+                        aruga.reply(from, `pilih on / off\n\n*[Anti Sticker SPAM]*\nSetiap member grup yang spam sticker akan di kick oleh bot!`, id)
+                    }
+                    break
+                    case 'antilink':
+                    if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
+                    if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
+                    if (!isBotGroupAdmins) return aruga.reply(from, 'Wahai admin, jadikan saya sebagai admin grup dahulu :)', id)
+                    if (args[0] == 'on') {
+                        var cek = antilink.includes(chatId);
+                        if(cek){
+                            return aruga.reply(from, '*Anti Group Link Detector* sudah aktif di grup ini', id) //if number already exists on database
+                        } else {
+                            antilink.push(chatId)
+                            fs.writeFileSync('./lib/helper/antilink.json', JSON.stringify(antilink))
+                            aruga.reply(from, '*[Anti Group Link]* telah di aktifkan\nSetiap member grup yang mengirim pesan mengandung link grup akan di kick oleh bot!', id)
+                        }
+                    } else if (args[0] == 'off') {
+                        var cek = antilink.includes(chatId);
+                        if(!cek){
+                            return aruga.reply(from, '*Anti Group Link Detector* sudah non-aktif di grup ini', id) //if number already exists on database
+                        } else {
+                            let nixx = antilink.indexOf(chatId)
+                            antilink.splice(nixx, 1)
+                            fs.writeFileSync('./lib/helper/antilink.json', JSON.stringify(antilink))
+                            aruga.reply(from, '*[Anti Group Link]* telah di nonaktifkan\n', id)
+                        }
+                    } else {
+                        aruga.reply(from, `pilih on / off\n\n*[Anti Group Link]*\nSetiap member grup yang mengirim pesan mengandung link grup akan di kick oleh bot!`, id)
+                    }
+                    break  
+	case 'brainly':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            
+            
+            
+            if (args.length >= 2){
+                const BrainlySearch = require('./lib/brainly')
+                let tanya = body.slice(9)
+                let jum = Number(tanya.split('.')[1]) || 2
+                if (jum > 10) return aruga.reply(from, 'Max 10!', id)
+                if (Number(tanya[tanya.length-1])){
+                    tanya
+                }
+                aruga.reply(from, `➸ *Pertanyaan* : ${tanya.split('.')[0]}\n\n➸ *Jumlah jawaban* : ${Number(jum)}`, id)
+                await BrainlySearch(tanya.split('.')[0],Number(jum), function(res){
+                    res.forEach(x=>{
+                        if (x.jawaban.fotoJawaban.length == 0) {
+                            aruga.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* : ${x.jawaban.judulJawaban}\n`, id)
+			    aruga.sendText(from, 'Selesai ✅, donasi kesini ya paypal.me/benniismael | Pulsa : 082114499086')
+                        } else {
+                            aruga.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* 〙: ${x.jawaban.judulJawaban}\n\n➸ *Link foto jawaban* : ${x.jawaban.fotoJawaban.join('\n')}`, id)
+                        }
+                    })
+                })
+            } else {
+                aruga.reply(from, 'Usage :\n!brainly [pertanyaan] [.jumlah]\n\nEx : \n!brainly NKRI .2', id)
             }
             break
         case 'stickergif':
@@ -396,92 +599,22 @@ module.exports = HandleMsg = async (aruga, message) => {
                 await aruga.reply(from, 'Maaf, command sticker giphy hanya bisa menggunakan link dari giphy.  [Giphy Only]', id)
             }
             break
-        case 'stickerfire':
-                if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-                aruga.reply(from, '[WAIT] Sedang di proses⏳ silahkan tunggu ± 1 min!', id)
-                if (isMedia && type === 'image') {
-                const mediaData = await decryptMedia(message, uaOverride)
-                const getUrli = await uploadImages(mediaData, false)
-                const imgnya = await stickerburn(getUrli)
-                const Sfire = imgnya.result.imgUrl
-                await aruga.sendStickerfromUrl(from, Sfire)
-                } else {
-                await aruga.reply(from, 'Wrong Format!\n⚠️ Harap Kirim Gambar Dengan #stickerfire', id)
-                }
-                break
-        case 'stickertoimg':
-            if (quotedMsg && quotedMsg.type == 'sticker') {
-                const mediaData = await decryptMedia(quotedMsg)
-                aruga.reply(from, '[WAIT] Sedang di proses⏳ silahkan tunggu!', id)
-                const imageBase64 = `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`
-                await aruga.sendFile(from, imageBase64, 'imagesticker.jpg', 'Success Convert Sticker to Image!', id)
-            } else if (!quotedMsg) return aruga.reply(from, 'Mohon tag sticker yang ingin dijadikan gambar!', id)
-            break
-	case 'stickerlightning':
-        case 'slightning':
-             aruga.reply(from, `[WAIT] Sedang di proses⏳ silahkan tunggu ± 1 min!`, id)
-            if (isMedia && type === 'image') {
-                const mediaData = await decryptMedia(message, uaOverride)
-                const getUrle = await uploadImages(mediaData, false)
-                const imgnye = await stickerlight(getUrle)
-                const Slight = imgnye.result.imgUrl
-                await aruga.sendStickerfromUrl(from, Slight)
-            } else if (quotedMsg && quotedMsg.type == 'image') {
-                const mediaData = await decryptMedia(quotedMsg, uaOverride)
-                const getUrle = await uploadImages(mediaData, false)
-                const imgnye = await stickerlight(getUrle)
-                const Slight = imgnye.result.imgUrl
-                await aruga.sendStickerfromUrl(from, Slight)
-            } else {
-                await aruga.reply(from, `Wrong Format!\n⚠️ Harap Kirim Gambar Dengan #stickerlightning`, id)
-            }
-            break
-        case 'stickernobg':
-        case 'stikernobg':
-	    if (isMedia) {
-                try {
-                    var mediaData = await decryptMedia(message, uaOverride)
-                    var imageBase64 = `data:${mimetype};base64,${mediaData.toString('base64')}`
-                    var base64img = imageBase64
-                    var outFile = './media/img/noBg.png'
-                    // untuk api key kalian bisa dapatkan pada website remove.bg
-                    var result = await removeBackgroundFromImageBase64({ base64img, apiKey: 'API-KEY', size: 'auto', type: 'auto', outFile })
-                    await fs.writeFile(outFile, result.base64img)
-                    await aruga.sendImageAsSticker(from, `data:${mimetype};base64,${result.base64img}`)
-                } catch(err) {
-                    console.log(err)
-                }
-            }
-            break
-	 case 'blackpink':
-            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#blackpink [ Teks ]*, contoh *#blackpink benni*`, id)
-            tobz.reply(from, mess.wait, id)
-            const blpk = body.slice(11)
-            if (blpk.length > 10) return aruga.reply(from, '*Teks Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
-            await aruga.sendFileFromUrl(from, `https://api.vhtear.com/blackpinkicon?text=${blpk}&apikey=${vhtearkey}`, 'blackpink.jpg', '', id)
-            break
-        case 'thunder':
-            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#thunder [ Teks ]*, contoh *#thunder Benni*`, id)
-            aruga.reply(from, mess.wait, id)
-            const thndr = body.slice(9)
-            if (thndr.length > 10) return aruga.reply(from, '*Teks Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
-            await aruga.sendFileFromUrl(from, `https://api.vhtear.com/thundertext?text=${thndr}&apikey=${vhtearkey}`, 'thndr.jpg', '', id)
-            break
-        case 'pornhub':
-            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#pornhub [ |Teks1|Teks2 ]*, contoh *#pornhub |Benni|Dev Botstyle*`, id)
-            argz = body.trim().split('|')
-            if (argz.length >= 2) {
-                aruga.reply(from, mess.wait, id)
-                const lpornhub = argz[1]
-                const lpornhub2 = argz[2]
-                if (lpornhub.length > 10) return aruga.reply(from, '*Teks1 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
-                if (lpornhub2.length > 10) return aruga.reply(from, '*Teks2 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
-                tobz.sendFileFromUrl(from, `https://api.vhtear.com/pornlogo?text1=${lpornhub}&text2=${lpornhub2}&apikey=${vhtearkey}`)
-            } else {
-                await aruga.reply(from, `Wrong Format!\n[❗] Kirim perintah *#pornhub [ |Teks1|Teks2 ]*, contoh *#pornhub |Benni|Dev Botstyle*`, id)
-            }
-            break
-
+      case 'qrread':
+        if (args.length !== 1) return aruga.reply(from, `Untuk menggunakan fitur qrread, ketik :\n${prefix}qrread url\n\nContoh: ${prefix}qrcode https://i.ibb.co/phSpp2h/00bed2bb-8b90-4d49-ace1-fe0ac9f73dff.jpg\n\n*Note : Upload terlebih dahaulu qrcode kamu ke https://id.imgbb.com/, kemudian copy url gambar qrcode kamu*`, id)
+        aruga.reply(from, `wait...`, id);
+        rugaapi.qrread(args[0])
+        .then(async (res) => {
+          await aruga.reply(from, `${res}`, id)
+        })
+      break
+    case 'qrcode':
+        if (args.length !== 2) return aruga.reply(from, `Untuk menggunakan fitur qrcode, ketik :\n${prefix}qrcode [kata/url] [size]\n\nContoh: ${prefix}qrcode https://google.com 300\n\n*Size minimal 100 & maksimal 500*`, id)
+        aruga.reply(from, `wait...`, id);
+        rugaapi.qrcode(args[0], args[1])
+        .then(async (res) => {
+          await aruga.sendFileFromUrl(from, `${res}`, id)
+        })
+      break			
         case 'meme':
             if ((isMedia || isQuotedImage) && args.length >= 2) {
                 const top = arg.split('|')[0]
@@ -580,6 +713,20 @@ module.exports = HandleMsg = async (aruga, message) => {
               random = Math.floor(Math.random() * (mirip.length - 1) + 1); 
 	      aruga.reply(from, `${name} mirip dengan ${mirip[random]}`, id); 
            break
+        case 'blackpink':
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#blackpink [ Teks ]*, contoh *#blackpink benni*`, id)
+            tobz.reply(from, mess.wait, id)
+            const blpk = body.slice(11)
+            if (blpk.length > 10) return aruga.reply(from, '*Teks Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+            await aruga.sendFileFromUrl(from, `https://api.vhtear.com/blackpinkicon?text=${blpk}&apikey=${vhtearkey}`, 'blackpink.jpg', '', id)
+            break
+        case 'thunder':
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#thunder [ Teks ]*, contoh *#thunder Benni*`, id)
+            aruga.reply(from, mess.wait, id)
+            const thndr = body.slice(9)
+            if (thndr.length > 10) return aruga.reply(from, '*Teks Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
+            await aruga.sendFileFromUrl(from, `https://api.vhtear.com/thundertext?text=${thndr}&apikey=${vhtearkey}`, 'thndr.jpg', '', id)
+            break
 	case 'ttp2':
             if (args.length === 1) return aruga.reply(from, `Kirim perintah *#ttp2 [ Teks ]*, contoh *#ttp2 Benni*`, id)
             const ttp2t = body.slice(6)
@@ -587,48 +734,16 @@ module.exports = HandleMsg = async (aruga, message) => {
             const rttp2 = lttp2[Math.floor(Math.random() * (lttp2.length))]
             await aruga.sendStickerfromUrl(from, `https://api.vhtear.com/textmaker?text=${ttp2t}&warna=${rttp2}&apikey=${vhtearkey}`)
             break
-        case "revoke":
-	if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
-                    if (isBotGroupAdmins) {
-                        aruga
-                            .revokeGroupInviteLink(from)
-                            .then((res) => {
-                                aruga.reply(from, `Berhasil Revoke Grup Link gunakan *${prefix}linkgrup* untuk mendapatkan group invite link yang terbaru`, id);
-                            })
-                            .catch((err) => {
-                                console.log(`[ERR] ${err}`);
-                            });
-                    }
-                    break;
-        case 'dewabatch':
-		if (args.length == 0) return aruga.reply(from, `Untuk mencari anime batch dari Dewa Batch, ketik ${prefix}dewabatch judul\n\nContoh: ${prefix}dewabatch naruto`, id)
-		rugaapi.dewabatch(args[0])
-		.then(async(res) => {
-		await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
-		})
-		break
-        case 'motivasi':
-            fetch('https://raw.githubusercontent.com/selyxn/motivasi/main/motivasi.txt')
-            .then(res => res.text())
-            .then(body => {
-                let splitmotivasi = body.split('\n')
-                let randommotivasi = splitmotivasi[Math.floor(Math.random() * splitmotivasi.length)]
-                aruga.reply(from, randommotivasi, id)
-            })
-            .catch(() => {
-                aruga.reply(from, 'Ada yang Error!', id)
-            })
-            break
         case 'nulis':
             if (args.length == 0) return aruga.reply(from, `Membuat bot menulis teks yang dikirim menjadi gambar\nPemakaian: ${prefix}nulis [teks]\n\ncontoh: ${prefix}nulis i love you 3000`, id)
             const nulisq = body.slice(7)
             const nulisp = await rugaapi.tulis(nulisq)
-            await aruga.sendImage(from, `${nulisp}`, '', 'ini hasilnya jadi orang jangan males ajg', id)
+            await aruga.sendImage(from, `${nulisp}`, '', 'ini hasilnya jadi orang jangan males makanya ajg', id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-        case 'magernulis1':
+         case 'magernulis1':
                 if (args.length === 4) return await aruga.reply(from, 'Kirim Perintah */nulis2 --[nama]--[kelas]--[teks]*\n\n*Contoh :*\n/nulis2 --Benniismael--7B--Subscribe NEOGAMING CH', id)
                 arg = body.trim().split('--')
                 const diNama = arg[1]
@@ -864,6 +979,29 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
+	//Group All User
+	case 'grouplink':
+            if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
+            if (isGroupMsg) {
+                const inviteLink = await aruga.getGroupInviteLink(groupId);
+                aruga.sendLinkWithAutoPreview(from, inviteLink, `\nLink group *${name}* Gunakan *${prefix}revoke* untuk mereset Link group`)
+            } else {
+            	aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            }
+            break
+	case "revoke":
+	if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
+                    if (isBotGroupAdmins) {
+                        aruga
+                            .revokeGroupInviteLink(from)
+                            .then((res) => {
+                                aruga.reply(from, `Berhasil Revoke Grup Link gunakan *${prefix}linkgrup* untuk mendapatkan group invite link yang terbaru`, id);
+                            })
+                            .catch((err) => {
+                                console.log(`[ERR] ${err}`);
+                            });
+                    }
+                    break;
         //Media
         case 'tiktok':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
@@ -896,7 +1034,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 				await aruga.sendFileFromUrl(from, `${res.result.thumb}`, '', `Lagu ditemukan\n\nJudul: ${res.result.title}\nDesc: ${res.result.desc}\nSabar lagi dikirim`, id)
 				await aruga.sendFileFromUrl(from, `${res.result.url}`, '', '', id)
 				.catch(() => {
-					aruga.reply(from, `URL INI ${args[0]} SUDAH PERNAH DI DOWNLOAD SEBELUMNYA ..URL AKAN RESET SETELAH 60 MENIT`, id)
+					aruga.reply(from, `URL Ini ${args[0]} Sudah pernah di Download sebelumnya. URL Akan di Reset setelah 1 Jam/60 Menit`, id)
 				})
 			})
             break
@@ -909,7 +1047,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 				await aruga.sendFileFromUrl(from, `${res.result.thumb}`, '', `Lagu ditemukan\n\nJudul: ${res.result.title}\nDesc: ${res.result.desc}\nSabar lagi dikirim`, id)
 				await aruga.sendFileFromUrl(from, `${res.result.url}`, '', '', id)
 				.catch(() => {
-					aruga.reply(from, `URL INI ${args[0]} SUDAH PERNAH DI DOWNLOAD SEBELUMNYA ..URL AKAN RESET SETELAH 60 MENIT`, id)
+					aruga.reply(from, `URL Ini ${args[0]} Sudah pernah di Download sebelumnya. URL akan di Reset setelah 1 Jam/60 Menit`, id)
 				})
 			})
             break
@@ -932,25 +1070,13 @@ module.exports = HandleMsg = async (aruga, message) => {
 			
 		//Primbon Menu
 		case 'cekzodiak':
-            if (args.length !== 4) return aruga.reply(from, `Untuk mengecek zodiak, gunakan ${prefix}cekzodiak nama tanggallahir bulanlahir tahunlahir\nContoh: ${prefix}cekzodiak Benni 13 12 2000`, id)
+            if (args.length !== 4) return aruga.reply(from, `Untuk mengecek zodiak, gunakan ${prefix}cekzodiak nama tanggallahir bulanlahir tahunlahir\nContoh: ${prefix}cekzodiak fikri 13 06 2004`, id)
             const cekzodiak = await rugaapi.cekzodiak(args[0],args[1],args[2])
             await aruga.reply(from, cekzodiak, id)
             .catch(() => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-             case 'ramalan':
-      aruga.sendText(from, msg.wait);
-      ramalanCinta(args1, args2, args3, args4)
-        .then((result) => {
-          aruga.sendText(from, result);
-          aruga.sendText(from, msg.done);
-        })
-        .catch((error) => {
-          aruga.sendText(from, msg.errFailed);
-          console.log(error.message);
-        })
-      break	
 		case 'artinama':
 			if (args.length == 0) return aruga.reply(from, `Untuk mengetahui arti nama seseorang\nketik ${prefix}artinama namakamu`, id)
             rugaapi.artinama(body.slice(10))
@@ -959,13 +1085,15 @@ module.exports = HandleMsg = async (aruga, message) => {
 			})
 			break
 		case 'cekjodoh':
-			if (args.length !== 2) return aruga.reply(from, `Untuk mengecek jodoh melalui nama\nketik: ${prefix}cekjodoh nama-kamu nama-pasangan\n\ncontoh: ${prefix}cekjodoh Benni Dia\n\nhanya bisa pakai nama panggilan (satu kata)`)
+			if (args.length !== 2) return aruga.reply(from, `Untuk mengecek jodoh melalui nama\nketik: ${prefix}cekjodoh nama-kamu nama-pasangan\n\ncontoh: ${prefix}cekjodoh bagas siti\n\nhanya bisa pakai nama panggilan (satu kata)`)
 			rugaapi.cekjodoh(args[0],args[1])
 			.then(async(res) => {
 				await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
 			})
 			break
-               case 'katacinta':
+			
+        // Random Kata
+        case 'katacinta':
             fetch('https://raw.githubusercontent.com/beniismael/whatsapp-bot/master/bucin.txt')
             .then(res => res.text())
             .then(body => {
@@ -977,9 +1105,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-			
-        // Random Kata
-	case 'motivasi':
+      	case 'motivasi':
             fetch('https://raw.githubusercontent.com/selyxn/motivasi/main/motivasi.txt')
             .then(res => res.text())
             .then(body => {
@@ -991,8 +1117,8 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-	case 'howgay':
-		if (args.length == 0) return aruga.reply(from, `Untuk mengetahui seberapa gay seseorang gunakan ${prefix}howgay namanya\n\nContoh: #howgay burhan`, id)
+	      case 'howgay':
+        		if (args.length == 0) return aruga.reply(from, `Untuk mengetahui seberapa gay seseorang gunakan ${prefix}howgay namanya\n\nContoh: ${prefix}howgay burhan`, id)
             fetch('https://raw.githubusercontent.com/MrPawNO/howgay/main/howgay.txt')
             .then(res => res.text())
             .then(body => {
@@ -1047,24 +1173,24 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
-		case 'cerpen':
-			rugaapi.cerpen()
-			.then(async (res) => {
-				await aruga.reply(from, res.result, id)
-			})
-			break
-		case 'cersex':
-			rugaapi.cersex()
-			.then(async (res) => {
-				await aruga.reply(from, res.result, id)
-			})
-			break
-		case 'puisi':
-			rugaapi.puisi()
-			.then(async (res) => {
-				await aruga.reply(from, res.result, id)
-			})
-			break
+    		case 'cerpen':
+      			rugaapi.cerpen()
+      			.then(async (res) => {
+		    		await aruga.reply(from, res.result, id)
+      			})
+		      	break
+	     	case 'cersex':
+			      rugaapi.cersex()
+			      .then(async (res) => {
+			    	await aruga.reply(from, res.result, id)
+		      	})
+		      	break
+	    	case 'puisi':
+		      	rugaapi.puisi()
+		      	.then(async (res) => {
+			    	await aruga.reply(from, res.result, id)
+		      	})
+		      	break
 
         //Random Images
         case 'doggo':
@@ -1127,8 +1253,15 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         
         // Search Any
+	case 'dewabatch':
+		if (args.length == 0) return aruga.reply(from, `Untuk mencari anime batch dari Dewa Batch, ketik ${prefix}dewabatch judul\n\nContoh: ${prefix}dewabatch naruto`, id)
+		rugaapi.dewabatch(args[0])
+		.then(async(res) => {
+		await aruga.sendFileFromUrl(from, `${res.link}`, '', `${res.text}`, id)
+		})
+		break
         case 'images':
-            if (args.length == 0) return aruga.reply(from, `Untuk mencari gambar di pinterest\nketik: ${prefix}images [search]\ncontoh: ${prefix}images naruto`, id)
+            if (args.length == 0) return aruga.reply(from, `Untuk mencari gambar dari pinterest\nketik: ${prefix}images [search]\ncontoh: ${prefix}images naruto`, id)
             const cariwall = body.slice(8)
             const hasilwall = await images.fdci(cariwall)
             await aruga.sendFileFromUrl(from, hasilwall, '', '', id)
@@ -1137,7 +1270,7 @@ module.exports = HandleMsg = async (aruga, message) => {
             })
             break
         case 'sreddit':
-            if (args.length == 0) return aruga.reply(from, `Untuk mencari gambar di sub reddit\nketik: ${prefix}sreddit [search]\ncontoh: ${prefix}sreddit naruto`, id)
+            if (args.length == 0) return aruga.reply(from, `Untuk mencari gambar dari sub reddit\nketik: ${prefix}sreddit [search]\ncontoh: ${prefix}sreddit naruto`, id)
             const carireddit = body.slice(9)
             const hasilreddit = await images.sreddit(carireddit)
             await aruga.sendFileFromUrl(from, hasilreddit, '', '', id)
@@ -1188,6 +1321,12 @@ module.exports = HandleMsg = async (aruga, message) => {
                 aruga.reply(from, 'Ada yang Error!', id)
             })
             break
+       case 'toxic':
+                Toxic().then(toxic => {
+                    aruga.sendText(from, toxic)
+                })
+                insert(author, type, content, pushname, from, argv)
+                break
         case 'cuaca':
             if (args.length == 0) return aruga.reply(from, `Untuk melihat cuaca pada suatu daerah\nketik: ${prefix}cuaca [daerah]`, id)
             const cuacaq = body.slice(7)
@@ -1233,7 +1372,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 					await aruga.sendFileFromUrl(from, `${res.thumb}`, '', `Lagu ditemukan\n\nJudul ${res.title}\n\nSabar lagi dikirim`, id)
 					await aruga.sendFileFromUrl(from, `${res.link}`, '', '', id)
 					.catch(() => {
-						aruga.reply(from, `URL INI ${args[0]} SUDAH PERNAH DI DOWNLOAD SEBELUMNYA ..URL AKAN RESET SETELAH 60 MENIT`, id)
+						aruga.reply(from, `URL Ini ${args[0]} Sudah pernah di Download sebelumnya. URL akan di Reset setelah 1 Jam/60 Menit`, id)
 					})
 				})
             })
@@ -1267,7 +1406,7 @@ module.exports = HandleMsg = async (aruga, message) => {
                 .then(respon => respon.json())
                 .then(resolt => {
                 	if (resolt.docs && resolt.docs.length <= 0) {
-                		aruga.reply(from, 'Maaf, saya tidak tau ini anime apa, pa\an gambar yang akan di Search tidak Buram/Kepotong', id)
+                		aruga.reply(from, 'Maaf, saya tidak tau ini anime apa, pastikan gambar yang akan di Search tidak Buram/Kepotong', id)
                 	}
                     const { is_adult, title, title_chinese, title_romaji, title_english, episode, similarity, filename, at, tokenthumb, anilist_id } = resolt.docs[0]
                     teks = ''
@@ -1289,10 +1428,6 @@ module.exports = HandleMsg = async (aruga, message) => {
             } else {
 				aruga.reply(from, `Maaf format salah\n\nSilahkan kirim foto dengan caption ${prefix}whatanime\n\nAtau reply foto dengan caption ${prefix}whatanime`, id)
 			}
-            break
-	case 'loli':
-            const loli = await axios.get('https://mhankbarbars.herokuapp.com/api/randomloli')
-            aruga.sendFileFromUrl(from, loli.result, 'loli.jpeg', 'Lolinya om pedo', id)
             break
             
         // Other Command
@@ -1344,39 +1479,6 @@ module.exports = HandleMsg = async (aruga, message) => {
             const text = `*CEK LOKASI PENYEBARAN COVID-19*\nHasil pemeriksaan dari lokasi yang anda kirim adalah *${zoneStatus.status}* ${zoneStatus.optional}\n\nInformasi lokasi terdampak disekitar anda:\n${datax}`
             aruga.sendText(from, text)
             break
-        case 'brainly':
-            if (args.length >= 2){
-                const BrainlySearch = require('./lib/brainly')
-                let tanya = body.slice(9)
-                let jum = Number(tanya.split('.')[1]) || 2
-                if (jum > 10) return aruga.reply(from, 'Max 10!', id)
-                if (Number(tanya[tanya.length-1])){
-                    tanya
-                }
-                aruga.reply(from, `➸ *Pertanyaan* : ${tanya.split('.')[0]}\n\n➸ *Jumlah jawaban* : ${Number(jum)}`, id)
-                await BrainlySearch(tanya.split('.')[0],Number(jum), function(res){
-                    res.forEach(x=>{
-                        if (x.jawaban.fotoJawaban.length == 0) {
-                            aruga.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* : ${x.jawaban.judulJawaban}\n`, id)
-                        } else {
-                            aruga.reply(from, `➸ *Pertanyaan* : ${x.pertanyaan}\n\n➸ *Jawaban* : ${x.jawaban.judulJawaban}\n\n➸ *Link foto jawaban* : ${x.jawaban.fotoJawaban.join('\n')}`, id)
-                        }
-                    })
-                })
-            } else {
-                aruga.reply(from, 'Usage :\n#brainly [pertanyaan] [.jumlah]\n\nEx : \n#brainly NKRI .2', id)
-            }
-            break
-        case 'math':
-            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            if (args.length === 1) return aruga.reply(from, '[❗] Kirim perintah *#math [ Angka ]*\nContoh : #math 12*12\n*NOTE* :\n- Untuk Perkalian Menggunakan *\n- Untuk Pertambahan Menggunakan +\n- Untuk Pengurangan Mennggunakan -\n- Untuk Pembagian Menggunakan /')
-            const mtk = body.slice(6)
-            if (typeof Math_js.evaluate(mtk) !== "number") {
-            aruga.reply(from, `"${mtk}", bukan angka!\n[❗] Kirim perintah *#math [ Angka ]*\nContoh : #math 12*12\n*NOTE* :\n- Untuk Perkalian Menggunakan *\n- Untuk Pertambahan Menggunakan +\n- Untuk Pengurangan Mennggunakan -\n- Untuk Pembagian Menggunakan /`, id)
-        } else {
-            aruga.reply(from, `*「 MATH 」*\n\n*Kalkulator*\n${mtk} = ${Math_js.evaluate(mtk)}`, id)
-        }
-        break
         case 'shortlink':
             if (args.length == 0) return aruga.reply(from, `ketik ${prefix}shortlink <url>`, id)
             if (!isUrl(args[0])) return aruga.reply(from, 'Maaf, url yang kamu kirim tidak valid.', id)
@@ -1393,21 +1495,51 @@ module.exports = HandleMsg = async (aruga, message) => {
 				await aruga.reply(from, `${res}`, id)
 			})
 			break
-               case 'toxic':
-                Toxic().then(toxic => {
-                    aruga.sendText(from, toxic)
-                })
-                insert(author, type, content, pushname, from, argv)
-                break
-         case 'fakename':
+        case 'hilihfont':
+            if (args.length == 0) return aruga.reply(from, `Mengubah kalimat menjadi hilih gitu deh\n\nketik ${prefix}hilihfont kalimat`, id)
+            rugaapi.hilihfont(body.slice(11))
+            .then(async(res) => {
+                await aruga.reply(from, `${res}`, id)
+            })
+            break
+
+		//Fun Menu
+    case 'tod':
+    aruga.reply(from, 'Sebelum bermain berjanjilah akan melaksanakan apapun perintah yang diberikan.\n\nSilahkan Pilih:\n➥ #truth\n➥ #dare', id)
+    break
+    case 'truth':
+    if (!isGroupMsg) return aruga.reply(from, menuId.textPrem())
+            fetch('https://raw.githubusercontent.com/AlvioAdjiJanuar/random/main/truth.txt')
+            .then(res => res.text())
+            .then(body => {
+                let truthx = body.split('\n')
+                let truthz = truthx[Math.floor(Math.random() * truthx.length)]
+                aruga.reply(from, truthz, id)
+            })
+            .catch(() => {
+                aruga.reply(from, 'Hayolohhh, ada yang error!!', id)
+            })
+            break
+    case 'dare':
+    if (!isGroupMsg) return aruga.reply(from, menuId.textPrem())
+            fetch('https://raw.githubusercontent.com/AlvioAdjiJanuar/random/main/dare.txt')
+            .then(res => res.text())
+            .then(body => {
+                let darex = body.split('\n')
+                let darez = darex[Math.floor(Math.random() * darex.length)]
+                aruga.reply(from, darez, id)
+            })
+            .catch(() => {
+                aruga.reply(from, 'Hayolohhh, ada yang error!!', id)
+            })
+            break
+        case 'fakename':
             if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
             const linkfake = await axios.get(`https://freerestapi.herokuapp.com/api/v1/fakename?country=en`)
             const fakelink = linkfake.data
             aruga.reply(from, `_*Name :*_ _${fakelink.name}_\n_*Birthday :*_ _${fakelink.birthday}_\n_*Address :*_ _${fakelink.address}_\n_*City :*_ _${fakelink.city}_\n*Region :* _${fakelink.region}_\n*Country :* _${fakelink.country}_\n*Zip :* _${fakelink.zip}_\n*Phone Numbber :* _${fakelink.phone_number}_\n*Username :* _${fakelink.username}_\n*Password :* _${fakelink.password}_\n*Email :* _${fakelink.email}_`, id)
             console.log(fakelink)
             break
-		
-		//Fun Menu
         case 'klasemen':
 		case 'klasmen':
 			if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
@@ -1423,43 +1555,6 @@ module.exports = HandleMsg = async (aruga, message) => {
 			break
 
         // Group Commands (group admin only)
-	    case 'linkgrup':
-            if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
-            if (isGroupMsg) {
-                const inviteLink = await aruga.getGroupInviteLink(groupId);
-                aruga.sendLinkWithAutoPreview(from, inviteLink, `\nLink group *${name}*`)
-            } else {
-            	aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            }
-            break
-	    case 'adminlist':
-            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            let mimin = ''
-            for (let admon of groupAdmins) {
-                mimin += `➸ @${admon.replace(/@c.us/g, '')}\n` 
-            }
-            await aruga.sendTextWithMentions(from, mimin)
-            break
-	    case 'listblock':
-            let hih = `This is list of blocked number\nTotal : ${blockNumber.length}\n`
-            for (let i of blockNumber) {
-                hih += `➸ @${i.replace(/@c.us/g,'')}\n`
-            }
-            aruga.sendTextWithMentions(from, hih, id)
-            break
-            case 'ceksider': 
-           if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
-           if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
-           if (!quotedMsgObj.fromMe) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
-		   {
-           const reader = await aruga.getMessageReaders(quotedMsgObj.id)
-           let list = ''
-           for (let pembaca of reader) {
-           list += `- @${pembaca.id.replace(/@c.us/g, '')}\n` 
-             }
-           aruga.sendTextWithMentions(from, `nah. ini nih sider mau nimbrung apa gua kick\n${list}`)
-		   }
-           break
 	    case 'add':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
             if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
@@ -1514,24 +1609,8 @@ module.exports = HandleMsg = async (aruga, message) => {
             if (!quotedMsgObj.fromMe) return aruga.reply(from, `Maaf, format pesan salah silahkan.\nReply pesan bot dengan caption ${prefix}del`, id)
             aruga.deleteMessage(quotedMsgObj.chatId, quotedMsgObj.id, false)
             break
-	case 'antilink':		
-	    if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
-            if (!isGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan oleh Admin group!', id)
-            if (args.length === 1) return aruga.reply(from, 'Pilih enable atau disable setan!', id)
-            if (args[1].toLowerCase() === 'enable') {
-                AntiLink.push(chat.id)
-                fs.writeFileSync('./lib/database/AntiLink.json', JSON.stringify(AntiLink))
-                aruga.reply(from, 'Fitur AntiLink berhasil di aktifkan di group ini!', id)
-            } else if (args[1].toLowerCase() === 'disable') {
-                AntiLink.splice(chat.id, 1)
-                fs.writeFileSync('./lib/data/AntiLink.json', JSON.stringify(AntiLink))
-                aruga.reply(from, 'Fitur AntiLink berhasil di nonaktifkan di group ini!', id)
-            } else {
-                aruga.reply(from, 'Pilih enable atau disable setan!', id)
-            }
-            break
+        case 'tagall':
         case 'mentionall':
-        case 'everyone':
             if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
             if (!isGroupAdmins) return aruga.reply(from, 'Gagal, perintah ini hanya dapat digunakan oleh admin grup!', id)
             const groupMem = await aruga.getGroupMembers(groupId)
@@ -1626,11 +1705,12 @@ module.exports = HandleMsg = async (aruga, message) => {
 			}
 			break
 		
+			
         //Owner Group
         case 'kickall': //mengeluarkan semua member
         if (!isGroupMsg) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai didalam grup!', id)
         let isOwner = chat.groupMetadata.owner == pengirim
-        if (!isOwnerBot) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai oleh owner grup!', id)
+        if (!isOwner) return aruga.reply(from, 'Maaf, perintah ini hanya dapat dipakai oleh owner grup!', id)
         if (!isBotGroupAdmins) return aruga.reply(from, 'Gagal, silahkan tambahkan bot sebagai admin grup!', id)
             const allMem = await aruga.getGroupMembers(groupId)
             for (let i = 0; i < allMem.length; i++) {
@@ -1644,13 +1724,6 @@ module.exports = HandleMsg = async (aruga, message) => {
         break
 
         //Owner Bot
-        case 'unban':
-            if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
-            let inx = ban.indexOf(mentionedJidList[0])
-            ban.splice(inx, 1)
-            fs.writeFileSync('./settings/banned.json', JSON.stringify(banned))
-            aruga.reply(from, 'Unbanned User!', message.id)
-            break
         case 'ban':
             if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
             if (args.length == 0) return aruga.reply(from, `Untuk banned seseorang agar tidak bisa menggunakan commands\n\nCaranya ketik: \n${prefix}ban add 628xx --untuk mengaktifkan\n${prefix}ban del 628xx --untuk nonaktifkan\n\ncara cepat ban banyak digrup ketik:\n${prefix}ban @tag @tag @tag`, id)
@@ -1672,7 +1745,43 @@ module.exports = HandleMsg = async (aruga, message) => {
                 }
             }
             break
-        
+        case 'linkgrup':
+            if (!isBotGroupAdmins) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan ketika bot menjadi admin', id)
+            if (isGroupMsg) {
+                const inviteLink = await aruga.getGroupInviteLink(groupId);
+                aruga.sendLinkWithAutoPreview(from, inviteLink, `\nLink group *${name}*`)
+            } else {
+            	aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            }
+            break
+	    case 'adminlist':
+            if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)
+            let mimin = ''
+            for (let admon of groupAdmins) {
+                mimin += `➸ @${admon.replace(/@c.us/g, '')}\n` 
+            }
+            await aruga.sendTextWithMentions(from, mimin)
+            break
+	    case 'listblock':
+            let hih = `This is list of blocked number\nTotal : ${blockNumber.length}\n`
+            for (let i of blockNumber) {
+                hih += `➸ @${i.replace(/@c.us/g,'')}\n`
+            }
+            aruga.sendTextWithMentions(from, hih, id)
+            break
+            case 'ceksider': 
+           if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', id)                
+           if (!quotedMsg) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
+           if (!quotedMsgObj.fromMe) return aruga.reply(from, 'Balas/reply pesan saya kak', id)
+		   {
+           const reader = await aruga.getMessageReaders(quotedMsgObj.id)
+           let list = ''
+           for (let pembaca of reader) {
+           list += `- @${pembaca.id.replace(/@c.us/g, '')}\n` 
+             }
+           aruga.sendTextWithMentions(from, `nah. ini nih sider mau nimbrung apa gua kick\n${list}`)
+		   }
+           break
         case 'bc': //untuk broadcast atau promosi
             if (!isOwnerBot) return aruga.reply(from, 'Perintah ini hanya untuk Owner bot!', id)
             if (args.length == 0) return aruga.reply(from, `Untuk broadcast ke semua chat ketik:\n${prefix}bc [isi chat]`)
@@ -1708,20 +1817,6 @@ module.exports = HandleMsg = async (aruga, message) => {
             break
         }
 		
-	    
-	     // END HELPER FUNCTION
-                if (!isGroupMsg && isAntiLink && !isGroupAdmins && !isAdmin && !isOwnerBot){
-                    if (chats.match(/(https:\/\/chat.whatsapp.com)/gi)) {
-                        const check = await aruga.inviteInfo(chats);
-                        if (!check) {
-                            return
-                        } else {
-                            aruga.reply(from, `*「 GROUP LINK DETECTOR 」*\nKamu mengirimkan link grup chat, maaf kamu di kick dari grup :(`, id).then(() => {
-                                aruga.removeParticipant(groupId, sender.id)
-                            })
-                        }
-                    }
-                }
 		// Simi-simi function
 		if ((!isCmd && isGroupMsg && isSimi) && message.type === 'chat') {
 			axios.get(`https://arugaz.herokuapp.com/api/simisimi?kata=${encodeURIComponent(message.body)}&apikey=${apiSimi}`)
