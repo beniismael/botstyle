@@ -405,11 +405,11 @@ module.exports = HandleMsg = async (aruga, message) => {
 			
 			
         // Sticker Creator
-    case 'logopornhub':
-            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#logopornhub [ |Teks1|Teks2 ]*,\n\n contoh : *#pornhub |Dimas| HUB*`, id)
+    case 'pornhub':
+            if (args.length === 1) return aruga.reply(from, `Kirim perintah *#logopornhub [ |Teks1|Teks2 ]*,\n\n contoh : *#pornhub |BENNI|Ganteng*`, id)
             argz = body.trim().split('|')
             if (argz.length >= 2) {
-                aruga.reply(from, `sabar brok eug proses dolo....`, id)
+                aruga.reply(from, `sabar ajg ini lagi di proses....`, id)
                 const lpornhub = argz[1]
                 const lpornhub2 = argz[2]   
                 if (lpornhub > 10) return aruga.reply(from, '*Teks1 Terlalu Panjang!*\n_Maksimal 10 huruf!_', id)
