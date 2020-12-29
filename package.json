@@ -1,12 +1,12 @@
 {
-  "name": "botstyle",
-  "version": "2.0.0",
+  "name": "whatsapp-bot",
+  "version": "2.1.0",
   "description": "Whatsapp Bot - Node Js",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Benniismae",
+  "author": "Benniismael",
   "repository": {
     "type": "git",
     "url": "https://github.com/beniismael/botstyle.git"
@@ -14,15 +14,15 @@
   "bugs": {
     "url": "https://github.com/beniismael/botstyle/issues"
   },
-  "homepage": "https://github.com/benniismael/botstyle",
+  "homepage": "https://github.com/beniismael/botstyle",
   "license": "ISC",
   "dependencies": {
     "@open-wa/wa-automate": "^3.1.0",
     "app-root-path": "^3.0.0",
     "axios": "^0.21.0",
-    "brainly-scraper": "^1.0.2",
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
+    "brainly-scraper": "^1.0.2",
     "dotenv": "^8.2.0",
     "figlet": "^1.5.0",
     "file-type": "^16.0.1",
@@ -34,9 +34,9 @@
     "node-gtts": "^2.0.2",
     "promise": "^8.1.0",
     "remove.bg": "^1.3.0",
-	  "request": "^2.88.2",
+    "request": "^2.88.2",
     "sastrawijs": "^1.0.3",
-    "sharp": "^0.26.1"
+    "sharp": "^0.27.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
