@@ -8,7 +8,7 @@ const fetch = require('node-fetch')
 
 const appRoot = require('app-root-path')
 const low = require('lowdb')
-const {getStickerMaker} = require(./lib/ttp.json')
+const { getStickerMaker } = require('./lib/ttp')
 const FileSync = require('lowdb/adapters/FileSync')
 const db_group = new FileSync(appRoot+'/lib/data/group.json')
 const db = low(db_group)
