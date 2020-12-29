@@ -53,17 +53,14 @@ const start = (aruga = new Client()) => {
         // kondisi ketika seseorang diinvite/join group lewat link
         if (event.action === 'add' && event.who !== host) {
             await aruga.sendTextWithMentions(event.chat, `@${event.who.replace('@c.us', '')} \n
-╔╦╦╦═╦╗╔═╦═╦══╦═╗
-║║║║╩╣╚╣═╣║║║║║╩╣
-╚══╩═╩═╩═╩═╩╩╩╩═╝ 
 ╔━━❖❖❁❖❖❖❖❁❖❖━━╗
-║      ${name}             ║
+║  bot kami         ║
 ╚━━❖❖❁❖❖❖❖❁❖❖━━╝
 
-╭───✪═⟪ *OPEN LONTE TARIF MURAH* ! ⟫═✪
+╭───✪═⟪ *warnet* ! ⟫═✪
 │
 │╭──✪═⟪ ⟫══✪
-│├≽ _berapa jam:_
+│├≽ 
 │╰──✪══⟪ END ⟫══
 ━━━━❰･❉･❱━━━━
         
