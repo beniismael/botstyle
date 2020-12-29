@@ -8,6 +8,7 @@ const fetch = require('node-fetch')
 
 const appRoot = require('app-root-path')
 const low = require('lowdb')
+const {getStickerMaker} = require(./lib/ttp.json')
 const FileSync = require('lowdb/adapters/FileSync')
 const db_group = new FileSync(appRoot+'/lib/data/group.json')
 const db = low(db_group)
@@ -613,7 +614,49 @@ module.exports = HandleMsg = async (aruga, message) => {
         .then(async (res) => {
           await aruga.sendFileFromUrl(from, `${res}`, id)
         })
-      break			
+      break
+        case 'ttp':
+                if (!isGroupMsg) return aruga.reply(from, 'Perintah ini hanya bisa di gunakan dalam group!', message.id)
+                try
+                {
+                    const string = body.toLowerCase().includes('#ttp') ? body.slice(5) : body.slice(5)
+                    if(args)
+                    {
+                        if(quotedMsgObj == null)
+                        {
+                            const gasMake = await getStickerMaker(string)
+                            if(gasMake.status == true)
+                            {
+                                try{
+                                    await aruga.sendImageAsSticker(from, gasMake.base64)
+                                }catch(err) {
+                                    await aruga.reply(from, 'Gagal membuat.', id)
+                                } 
+                            }else{
+                                await aruga.reply(from, gasMake.reason, id)
+                            }
+                        }else if(quotedMsgObj != null){
+                            const gasMake = await getStickerMaker(quotedMsgObj.body)
+                            if(gasMake.status == true)
+                            {
+                                try{
+                                    await aruga.sendImageAsSticker(from, gasMake.base64)
+                                }catch(err) {
+                                    await aruga.reply(from, 'Gagal membuat.', id)
+                                } 
+                            }else{
+                                await aruga.reply(from, gasMake.reason, id)
+                            }
+                        }
+                       
+                    }else{
+                        await aruga.reply(from, 'Tidak boleh kosong.', id)
+                    }
+                }catch(error)
+                {
+                    console.log(error)
+                }
+            break			
         case 'meme':
             if ((isMedia || isQuotedImage) && args.length >= 2) {
                 const top = arg.split('|')[0]
