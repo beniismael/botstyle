@@ -54,17 +54,20 @@ const start = (aruga = new Client()) => {
         if (event.action === 'add' && event.who !== host) {
             await aruga.sendTextWithMentions(event.chat, `@${event.who.replace('@c.us', '')} \n
 ╔━━❖❖❁❖❖❖❖❁❖❖━━╗
-║  bot kami         ║
+║   ${name}         ║
 ╚━━❖❖❁❖❖❖❖❁❖❖━━╝
 
 ╭───✪═⟪ *warnet* ! ⟫═✪
 │
 │╭──✪═⟪ ⟫══✪
-│├≽ 
+│├≽ _nama=_
+│├≽ _askot=_
+│├≽ _kelas=_
+│├≽ _agama=_
 │╰──✪══⟪ END ⟫══
 ━━━━❰･❉･❱━━━━
         
-*Patuhi aturan group ini  jika ingin dihargai*`)
+*Patuhi aturan group ${name} jika ingin dihargai*`)
         }
         // kondisi ketika seseorang dikick/keluar dari group
         if (event.action === 'remove' && event.who !== host) {
