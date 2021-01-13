@@ -160,7 +160,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
         const pengirim = sender.id
         const dari = sender && sender.isMe ? to : from
-        const isNoLink =  ? NoLink.includes(chatId) : false
+        const isNoLink = NoLink.includes(chatId) : false
         const AntiStickerSpam = antisticker.includes(chatId)
         const stickermsg = message.type === 'sticker'
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
