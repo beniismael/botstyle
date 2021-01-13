@@ -159,7 +159,8 @@ module.exports = HandleMsg = async (aruga, message) => {
         const isGroupAdmins = groupAdmins.includes(sender.id) || false
 		const chats = (type === 'chat') ? body : (type === 'image' || type === 'video') ? caption : ''
         const pengirim = sender.id
-        const isNoLink = isGroupMsg ? NoLink.includes(chatId) : false
+        const dari = sender && sender.isMe ? to : from
+        const isNoLink =  ? NoLink.includes(chatId) : false
         const AntiStickerSpam = antisticker.includes(chatId)
         const stickermsg = message.type === 'sticker'
         const isBotGroupAdmins = groupAdmins.includes(botNumber) || false
@@ -408,7 +409,7 @@ module.exports = HandleMsg = async (aruga, message) => {
         // Sticker Creator
          case 'textbp':
 	case 'teksbp':
-		    if (args.length === 1) return aruga.reply(from, 'Teksnya mana??`, id)
+		    if (args.length === 1) return aruga.reply(dari, 'Teksnya mana??`, id)
 			aruga.reply(dari, mess.wait, id)
 			const textnyo = body.slice(8)
 			const bpnya = `http://docs-jojo.herokuapp.com/api/blackpink?text=${textnyo}`
@@ -424,7 +425,7 @@ module.exports = HandleMsg = async (aruga, message) => {
       break
       case 'textblood':
 	case 'teksblood':
-	     if (args.length === 1) return aruga.reply(from, 'Teks nya mana??`, id)
+	     if (args.length === 1) return aruga.reply(dari, 'Teks nya mana??`, id)
 		 aruga.reply(dari, mess.wait, id)
 		 const textblood = body.slice(11)
 		 const blood = await fetch(`https://tobz-api.herokuapp.com/api/textpro?theme=blood&text=${textblood}&apikey=BotWeA`)
