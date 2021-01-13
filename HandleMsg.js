@@ -408,14 +408,14 @@ module.exports = HandleMsg = async (aruga, message) => {
         // Sticker Creator
          case 'textbp':
 	case 'teksbp':
-		    if (args.length === 1) return aruga.reply(dari, 'Teksnya mana??', id)
+		    if (args.length === 1) return aruga.reply(from, 'Teksnya mana??`, id)
 			aruga.reply(dari, mess.wait, id)
 			const textnyo = body.slice(8)
 			const bpnya = `http://docs-jojo.herokuapp.com/api/blackpink?text=${textnyo}`
 			aruga.sendFileFromUrl(dari, bpnya, '', 'ini hasilnya sayang muach 😘', id)
             break
      case 'lava':
-      if (!isGroupMsg) return aruga.reply (from, 'maaff perintah hanya di dalam Group', id)
+      if (!isGroupMsg) return aruga.reply (from, 'maaff perintah hanya di dalam Group`, id)
       if (args.length === 1) return aruga.reply('*Neh Contoh Mhank*\n*#lava [TEXT]*\n*_nih gw kasih bonus:_*\n*#lava benniga tentang*', id)
       aruga.reply (from, `tunggu yaahh ${pushname} sayang kagak bakal lama\n*Ngk kayak Nunggu si Dia ngk pernah Datang Datang*`, id)
       const laver = body.slice(6)
@@ -424,7 +424,7 @@ module.exports = HandleMsg = async (aruga, message) => {
       break
       case 'textblood':
 	case 'teksblood':
-	     if (args.length === 1) return aruga.reply(dari, 'Teks nya mana??', id)
+	     if (args.length === 1) return aruga.reply(from, 'Teks nya mana??`, id)
 		 aruga.reply(dari, mess.wait, id)
 		 const textblood = body.slice(11)
 		 const blood = await fetch(`https://tobz-api.herokuapp.com/api/textpro?theme=blood&text=${textblood}&apikey=BotWeA`)
@@ -433,7 +433,7 @@ module.exports = HandleMsg = async (aruga, message) => {
 		 break
 		case 'textgaming':
 	case 'teksgaming':
-	  if (args.length === 1) return benny.reply(dari, 'Teks nya mana??', id)
+	  if (args.length === 1) return aruga.reply(dari, `Teks nya mana??`, id)
 	   aruga.reply(dari, mess.wait, id)
 		const gamenya = body.slice(12)
 		 const gaming = await fetch(`https://api-jojo.herokuapp.com/api/gaming?text=${gamenya}`)
